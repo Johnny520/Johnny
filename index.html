@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1020">
-<title>Johnny · 文强哥 (Johnny520)</title>
-<meta name="description" content="Johnny（文强哥 / Johnny520）的个人主页 —— 液态玻璃 UI 风格，聚合分区清理大师、anti-detect、JohnnyAdBlock 等开源项目。">
+<title>Johnny · 文强哥 (Johnny520) ✨</title>
+<meta name="description" content="Johnny（文强哥 / Johnny520）的个人主页 —— 液态玻璃 UI + 专属吉祥物 Johnny 猫，酷炫又可爱，聚合分区清理大师、anti-detect、JohnnyAdBlock 等开源项目。">
 <meta name="author" content="文强哥 (Johnny520)">
 <style>
   :root{
@@ -14,9 +14,11 @@
     --card-strong: rgba(255,255,255,.16);
     --text:#eaf0ff; --muted:#9fb0d6; --faint:#6b7aa3;
     --accent:#4F7CFF; --accent2:#7C5CFF; --accent3:#21D4FD;
+    --cute:#FF7EB6; --cute2:#FFB3D9;
     --border: rgba(255,255,255,.22);
     --hl: rgba(255,255,255,.45);
     --shadow: rgba(0,0,0,.45);
+    --neon: 0 0 8px rgba(124,92,255,.7), 0 0 22px rgba(79,124,255,.5);
   }
   html[data-theme="light"]{
     --bg1:#eaf0ff; --bg2:#dbe4ff; --bg3:#eadcff;
@@ -24,9 +26,11 @@
     --card-strong: rgba(255,255,255,.72);
     --text:#16203a; --muted:#566389; --faint:#8a97b8;
     --accent:#3a66ff; --accent2:#7C5CFF; --accent3:#0fb6e6;
+    --cute:#FF5FA2; --cute2:#FF9ECE;
     --border: rgba(255,255,255,.85);
     --hl: rgba(255,255,255,.9);
     --shadow: rgba(80,110,180,.25);
+    --neon: 0 0 6px rgba(124,92,255,.45), 0 0 16px rgba(79,124,255,.3);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
@@ -37,27 +41,45 @@
     padding:28px 16px; overflow-x:hidden; position:relative;
     transition:color .4s ease, background .4s ease;
   }
-  /* 动态渐变背景 + 流动光斑 */
-  .bg{position:fixed; inset:0; z-index:-2; overflow:hidden;
+  /* 动态极光渐变背景 + 流动光斑 */
+  .bg{position:fixed; inset:0; z-index:-3; overflow:hidden;
     background:
       radial-gradient(1200px 800px at 10% 0%, rgba(79,124,255,.35), transparent 60%),
       radial-gradient(1000px 700px at 90% 10%, rgba(124,92,255,.30), transparent 60%),
-      radial-gradient(900px 900px at 50% 100%, rgba(33,212,253,.25), transparent 60%),
+      radial-gradient(900px 900px at 50% 100%, rgba(33,212,253,.22), transparent 60%),
+      radial-gradient(700px 600px at 80% 80%, rgba(255,126,182,.22), transparent 60%),
       linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
     transition:background .6s ease;
   }
-  .blob{position:fixed; z-index:-1; border-radius:50%; filter:blur(60px); opacity:.55;
+  .blob{position:fixed; z-index:-2; border-radius:50%; filter:blur(60px); opacity:.5;
     mix-blend-mode:screen; animation:float 18s ease-in-out infinite;}
   .blob.b1{width:42vw;height:42vw;left:-8vw;top:-10vh;background:radial-gradient(circle,#4F7CFF,transparent 70%)}
   .blob.b2{width:38vw;height:38vw;right:-6vw;top:8vh;background:radial-gradient(circle,#7C5CFF,transparent 70%);animation-delay:-6s}
   .blob.b3{width:46vw;height:46vw;left:20vw;bottom:-18vh;background:radial-gradient(circle,#21D4FD,transparent 70%);animation-delay:-12s}
-  html[data-theme="light"] .blob{mix-blend-mode:multiply; opacity:.4}
+  .blob.b4{width:30vw;height:30vw;right:12vw;bottom:6vh;background:radial-gradient(circle,#FF7EB6,transparent 70%);animation-delay:-9s;opacity:.4}
+  html[data-theme="light"] .blob{mix-blend-mode:multiply; opacity:.38}
   @keyframes float{
     0%,100%{transform:translate(0,0) scale(1)}
     33%{transform:translate(4vw,3vh) scale(1.08)}
     66%{transform:translate(-3vw,-2vh) scale(.95)}
   }
+  /* 鼠标液态光晕 */
+  .glow{position:fixed; width:420px;height:420px; left:0;top:0; border-radius:50%;
+    background:radial-gradient(circle, rgba(124,92,255,.22), rgba(33,212,253,.10) 40%, transparent 65%);
+    transform:translate(-50%,-50%); pointer-events:none; z-index:-1; mix-blend-mode:screen;
+    transition:opacity .3s; opacity:0;}
+  @media (hover:none){ .glow{display:none} }
   #stars{position:fixed; inset:0; z-index:-1; pointer-events:none}
+
+  /* 漂浮可爱元素 */
+  .floaters{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden}
+  .floaters span{position:absolute; bottom:-40px; font-size:22px; opacity:.0; animation:rise linear infinite}
+  @keyframes rise{
+    0%{transform:translateY(0) rotate(0); opacity:0}
+    10%{opacity:.85}
+    90%{opacity:.85}
+    100%{transform:translateY(-115vh) rotate(360deg); opacity:0}
+  }
 
   /* 液态玻璃卡片 */
   .glass{
@@ -65,7 +87,7 @@
     backdrop-filter:blur(26px) saturate(180%);
     -webkit-backdrop-filter:blur(26px) saturate(180%);
     border:1px solid var(--border);
-    border-radius:28px;
+    border-radius:30px;
     box-shadow:0 18px 50px var(--shadow), inset 0 1px 0 var(--hl);
     position:relative; overflow:hidden;
   }
@@ -73,142 +95,204 @@
     background:linear-gradient(180deg, rgba(255,255,255,.22), transparent 38%);
     pointer-events:none;}
 
-  .card{width:min(880px,100%); padding:34px 32px 26px; z-index:1}
-  header{display:flex; align-items:center; justify-content:space-between; gap:12px}
-  .brand{font-size:30px; font-weight:800; letter-spacing:.5px;
-    background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-    text-shadow:0 1px 0 var(--hl);}
-  .brand small{display:block; font-size:12px; font-weight:600; color:var(--muted);
-    letter-spacing:2px; margin-top:2px; -webkit-text-fill-color:var(--muted)}
+  .card{width:min(880px,100%); padding:34px 32px 26px; z-index:1;
+    animation:pop .9s cubic-bezier(.18,.9,.32,1.4) both;}
+  @keyframes pop{0%{transform:scale(.86) translateY(20px); opacity:0}
+    55%{transform:scale(1.03) translateY(0)} 100%{transform:scale(1); opacity:1}}
 
-  .hero{display:flex; align-items:center; gap:24px; margin:26px 0 8px; flex-wrap:wrap}
-  .avatar{width:96px; height:96px; flex:0 0 auto; filter:drop-shadow(0 6px 18px var(--shadow))}
-  .hero .info{flex:1 1 220px; min-width:0}
-  .greet{color:var(--muted); font-size:14px; letter-spacing:.5px}
-  .name{font-size:26px; font-weight:800; margin:2px 0 8px}
-  .name span{font-size:15px; font-weight:600; color:var(--accent3); margin-left:8px;
-    background:var(--card); border:1px solid var(--border); padding:2px 10px; border-radius:999px;
+  header{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  .brand{font-size:34px; font-weight:900; letter-spacing:.5px; position:relative;
+    background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3),var(--cute));
+    background-size:300% 100%; -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:var(--neon); animation:hue 8s linear infinite;}
+  @keyframes hue{to{background-position:300% 0}}
+  .brand .spark{display:inline-block; animation:spin 6s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .brand small{display:block; font-size:12px; font-weight:700; color:var(--muted);
+    letter-spacing:3px; margin-top:3px; -webkit-text-fill-color:var(--muted); text-shadow:none; animation:none}
+  .hi{font-size:13px; font-weight:800; color:var(--text); padding:8px 14px; border-radius:999px;
+    background:var(--card); border:1px solid var(--border); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+    animation:wiggle 2.4s ease-in-out infinite;}
+  @keyframes wiggle{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+
+  .hero{display:flex; align-items:center; gap:26px; margin:24px 0 6px; flex-wrap:wrap}
+  .mascot-wrap{position:relative; flex:0 0 auto; cursor:pointer; user-select:none}
+  .mascot{width:128px; height:128px; display:block; animation:bob 3.4s ease-in-out infinite;
+    filter:drop-shadow(0 10px 22px var(--shadow));}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
+  .mascot .eye{transform-origin:center; animation:blink 4.2s infinite}
+  @keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+  .mascot .tail{transform-origin:96px 84px; animation:wag 2.2s ease-in-out infinite}
+  @keyframes wag{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(10deg)}}
+  .mascot-shadow{position:absolute; left:50%; bottom:-6px; width:84px; height:16px; transform:translateX(-50%);
+    background:radial-gradient(ellipse, var(--shadow), transparent 70%); border-radius:50%; animation:shadow 3.4s ease-in-out infinite;}
+  @keyframes shadow{0%,100%{transform:translateX(-50%) scale(1); opacity:.5}50%{transform:translateX(-50%) scale(.82); opacity:.32}}
+  .mascot-tip{position:absolute; top:-26px; left:50%; transform:translateX(-50%); white-space:nowrap;
+    font-size:11.5px; font-weight:800; color:var(--accent3); background:var(--card); border:1px solid var(--border);
+    padding:4px 10px; border-radius:999px; opacity:0; transition:.3s; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+  .mascot-wrap:hover .mascot-tip{opacity:1; transform:translateX(-50%) translateY(-4px)}
+
+  .hero .info{flex:1 1 230px; min-width:0}
+  .greet{color:var(--muted); font-size:14.5px; letter-spacing:.3px}
+  .greet .wave{display:inline-block; animation:wave 2s ease-in-out infinite; transform-origin:70% 70%}
+  @keyframes wave{0%,100%{transform:rotate(0)}25%{transform:rotate(18deg)}50%{transform:rotate(-8deg)}75%{transform:rotate(12deg)}}
+  .name{font-size:27px; font-weight:900; margin:3px 0 8px}
+  .name span{font-size:14.5px; font-weight:700; color:var(--accent3); margin-left:8px;
+    background:var(--card); border:1px solid var(--border); padding:2px 11px; border-radius:999px;
     -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
   .clockrow{display:flex; align-items:center; gap:14px}
-  .analog{width:54px;height:54px; filter:drop-shadow(0 2px 6px var(--shadow))}
+  .analog{width:56px;height:56px; filter:drop-shadow(0 2px 6px var(--shadow))}
   .analog .face{fill:var(--card); stroke:var(--border); stroke-width:2}
   .analog .tick{stroke:var(--faint); stroke-width:1.5}
   .analog .h{stroke:var(--text); stroke-width:3.4; stroke-linecap:round; transform-origin:50px 50px}
   .analog .m{stroke:var(--accent); stroke-width:2.6; stroke-linecap:round; transform-origin:50px 50px}
   .analog .s{stroke:var(--accent3); stroke-width:1.4; stroke-linecap:round; transform-origin:50px 50px}
   .analog .dot{fill:var(--accent3)}
-  .digi{font-variant-numeric:tabular-nums; font-size:22px; font-weight:700; letter-spacing:1px}
-  .digi small{display:block; font-size:12px; font-weight:600; color:var(--muted); letter-spacing:1px}
+  .digi{font-variant-numeric:tabular-nums; font-size:23px; font-weight:800; letter-spacing:1px}
+  .digi small{display:block; font-size:12px; font-weight:700; color:var(--muted); letter-spacing:1px}
 
-  .tabs{display:flex; gap:6px; margin:24px 0 18px; padding:5px;
+  .tabs{display:flex; gap:6px; margin:24px 0 18px; padding:5px; position:relative;
     background:var(--card); border:1px solid var(--border); border-radius:16px;
     -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
   .tabs button{flex:1; border:0; background:transparent; color:var(--muted);
-    font-size:15px; font-weight:700; padding:11px 8px; border-radius:11px; cursor:pointer;
-    transition:.25s}
-  .tabs button.active{color:var(--text);
+    font-size:15px; font-weight:800; padding:11px 8px; border-radius:11px; cursor:pointer; position:relative; z-index:2; transition:.25s}
+  .tabs button.active{color:#fff}
+  .tabs .pill{position:absolute; z-index:1; top:5px; bottom:5px; border-radius:11px;
     background:linear-gradient(135deg,var(--accent),var(--accent2));
-    box-shadow:0 6px 18px rgba(79,124,255,.4), inset 0 1px 0 var(--hl)}
+    box-shadow:0 6px 18px rgba(79,124,255,.45), inset 0 1px 0 var(--hl);
+    transition:left .35s cubic-bezier(.5,1.6,.4,1), width .35s cubic-bezier(.5,1.6,.4,1)}
 
-  .panel{display:none; animation:fade .4s ease}
-  .panel.active{display:block}
-  @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+  .panel{display:none}
+  .panel.active{display:block; animation:jelly .5s cubic-bezier(.5,1.6,.4,1) both}
+  @keyframes jelly{0%{transform:scale(.94); opacity:0}60%{transform:scale(1.02)}100%{transform:scale(1); opacity:1}}
   .panel h3{font-size:16px; margin-bottom:12px; display:flex; align-items:center; gap:8px}
   .panel h3::before{content:""; width:6px; height:18px; border-radius:3px;
     background:linear-gradient(var(--accent),var(--accent2))}
-  .lead{color:var(--muted); line-height:1.8; font-size:14.5px}
+  .lead{color:var(--muted); line-height:1.85; font-size:14.5px}
+  .lead b{color:var(--text)}
   .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
-  .chip{font-size:12.5px; font-weight:600; color:var(--text);
-    background:var(--card); border:1px solid var(--border); padding:6px 12px; border-radius:999px;
-    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+  .chip{font-size:12.5px; font-weight:700; color:var(--text);
+    background:var(--card); border:1px solid var(--border); padding:6px 13px; border-radius:999px;
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); transition:.2s}
+  .chip:hover{transform:translateY(-3px) scale(1.05); border-color:var(--cute); color:var(--cute)}
 
   .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px}
   .proj{display:block; text-decoration:none; color:inherit; padding:16px 16px 14px;
     border-radius:18px; background:var(--card); border:1px solid var(--border);
     -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
-    transition:transform .25s, box-shadow .25s, background .25s}
-  .proj:hover{transform:translateY(-4px); background:var(--card-strong);
-    box-shadow:0 14px 34px var(--shadow), inset 0 1px 0 var(--hl)}
-  .proj .pt{font-size:15.5px; font-weight:800; margin-bottom:4px}
+    transition:transform .3s cubic-bezier(.5,1.6,.4,1), box-shadow .3s, background .3s;}
+  .proj:hover{transform:translateY(-6px) rotate(-1deg); background:var(--card-strong);
+    box-shadow:0 16px 38px var(--shadow), inset 0 1px 0 var(--hl), var(--neon)}
+  .proj .pt{font-size:15.5px; font-weight:900; margin-bottom:4px}
   .proj .pd{font-size:12.5px; color:var(--muted); line-height:1.6}
-  .proj .pg{margin-top:10px; font-size:11.5px; font-weight:700; color:var(--accent3)}
+  .proj .pg{margin-top:10px; font-size:11.5px; font-weight:800; color:var(--accent3)}
   .proj .pg::before{content:"↗ ";}
 
   .msgbox{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap}
   .msgbox input,.msgbox textarea{flex:1 1 160px; min-width:0; font:inherit; font-size:14px;
-    color:var(--text); background:var(--card); border:1px solid var(--border);
-    border-radius:14px; padding:11px 14px; outline:none;
-    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+    color:var(--text); background:var(--card); border:2px solid var(--border);
+    border-radius:16px; padding:11px 14px; outline:none;
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:.2s}
+  .msgbox input:focus,.msgbox textarea:focus{border-color:var(--cute); box-shadow:0 0 0 4px rgba(255,126,182,.18)}
   .msgbox textarea{flex:1 1 100%; resize:vertical; min-height:64px}
   .msgbox input::placeholder,.msgbox textarea::placeholder{color:var(--faint)}
-  .btn{border:0; cursor:pointer; font:inherit; font-weight:800; font-size:14px; color:#fff;
-    padding:11px 22px; border-radius:14px;
+  .btn{border:0; cursor:pointer; font:inherit; font-weight:900; font-size:14px; color:#fff;
+    padding:11px 24px; border-radius:16px;
     background:linear-gradient(135deg,var(--accent),var(--accent2));
-    box-shadow:0 8px 22px rgba(79,124,255,.45), inset 0 1px 0 var(--hl); transition:transform .2s}
-  .btn:hover{transform:translateY(-2px)}
+    box-shadow:0 8px 22px rgba(79,124,255,.45), inset 0 1px 0 var(--hl); transition:transform .25s}
+  .btn:hover{transform:scale(1.06)} .btn:active{transform:scale(.94)}
   .msgs{display:flex; flex-direction:column; gap:10px; max-height:280px; overflow:auto; padding-right:4px}
-  .msgs .m{padding:12px 14px; border-radius:14px; background:var(--card);
-    border:1px solid var(--border); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
-  .msgs .m b{font-size:13.5px} .msgs .m p{font-size:13.5px; color:var(--muted); margin-top:4px; line-height:1.6}
+  .msgs .m{padding:12px 14px; border-radius:16px; background:var(--card);
+    border:1px solid var(--border); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    position:relative; animation:jelly .45s cubic-bezier(.5,1.6,.4,1) both}
+  .msgs .m b{font-size:13.5px; color:var(--cute)} .msgs .m p{font-size:13.5px; color:var(--muted); margin-top:4px; line-height:1.6}
   .msgs .m time{font-size:11px; color:var(--faint); float:right}
   .empty{color:var(--faint); font-size:13px; text-align:center; padding:18px}
 
   footer{margin-top:24px; padding-top:16px; border-top:1px solid var(--border);
     display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between;
     font-size:12.5px; color:var(--muted)}
-  footer a{color:var(--accent3); text-decoration:none; font-weight:700}
+  footer a{color:var(--accent3); text-decoration:none; font-weight:800}
   footer a:hover{text-decoration:underline}
 
-  /* 右下浮动工具 */
   .tools{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:10px; z-index:5}
-  .tool{width:46px;height:46px; display:grid; place-items:center; cursor:pointer; font-size:20px;
+  .tool{width:48px;height:48px; display:grid; place-items:center; cursor:pointer; font-size:21px;
     color:var(--text); text-decoration:none;
     background:linear-gradient(135deg,var(--card-strong),var(--card));
-    border:1px solid var(--border); border-radius:14px;
+    border:1px solid var(--border); border-radius:15px;
     -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
-    box-shadow:0 8px 22px var(--shadow), inset 0 1px 0 var(--hl); transition:transform .2s}
-  .tool:hover{transform:translateY(-3px)}
+    box-shadow:0 8px 22px var(--shadow), inset 0 1px 0 var(--hl); transition:transform .25s}
+  .tool:hover{transform:translateY(-4px) scale(1.08)}
+
+  #confetti{position:fixed; inset:0; z-index:50; pointer-events:none}
 
   @media (max-width:560px){
     .card{padding:26px 18px 20px}
-    .brand{font-size:24px}
+    .brand{font-size:27px}
     .hero{gap:16px}
     .name{font-size:22px}
+    .mascot{width:104px;height:104px}
   }
-  /* 降低动效（无障碍） */
   @media (prefers-reduced-motion:reduce){
-    .blob{animation:none} *{transition:none!important}
+    .blob,.brand,.hi,.mascot,.floaters span,.spark{animation:none!important}
+    *{transition:none!important} .card{animation:none}
   }
 </style>
 </head>
 <body>
   <div class="bg"></div>
-  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+  <div class="glow" id="glow"></div>
+  <div class="floaters" id="floaters"></div>
   <canvas id="stars"></canvas>
+  <canvas id="confetti"></canvas>
 
   <main class="glass card">
     <header>
-      <div class="brand">Johnny<small>文强哥 · JOHNNY520</small></div>
+      <div class="brand">Johnny<span class="spark">✨</span><small>文强哥 · JOHNNY520</small></div>
+      <div class="hi">👋 嗨，欢迎来玩！</div>
     </header>
 
     <section class="hero">
-      <svg class="avatar" viewBox="0 0 100 100" aria-label="头像">
-        <defs>
-          <linearGradient id="ag" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#4F7CFF"/><stop offset=".5" stop-color="#7C5CFF"/><stop offset="1" stop-color="#21D4FD"/>
-          </linearGradient>
-          <linearGradient id="agl" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="rgba(255,255,255,.9)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/>
-          </linearGradient>
-        </defs>
-        <circle cx="50" cy="50" r="48" fill="url(#ag)"/>
-        <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
-        <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="52" font-weight="800" fill="#fff" font-family="sans-serif">J</text>
-        <path d="M14 26 A48 48 0 0 1 86 26" fill="none" stroke="url(#agl)" stroke-width="6" stroke-linecap="round" opacity=".8"/>
-      </svg>
+      <div class="mascot-wrap" id="mascot" title="戳我一下 🎉">
+        <div class="mascot-tip">戳我试试 🎉</div>
+        <svg class="mascot" viewBox="0 0 120 120" aria-label="Johnny 猫吉祥物">
+          <defs>
+            <linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#4F7CFF"/><stop offset=".5" stop-color="#7C5CFF"/><stop offset="1" stop-color="#21D4FD"/>
+            </linearGradient>
+            <linearGradient id="mgl" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="rgba(255,255,255,.9)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+          </defs>
+          <!-- 尾巴 -->
+          <path class="tail" d="M98 86 Q120 84 112 58" fill="none" stroke="url(#mg)" stroke-width="9" stroke-linecap="round"/>
+          <!-- 耳朵 -->
+          <path d="M30 44 L18 12 L50 36 Z" fill="url(#mg)"/>
+          <path d="M90 44 L102 12 L70 36 Z" fill="url(#mg)"/>
+          <path d="M34 38 L28 22 L44 34 Z" fill="#FFB3D9"/>
+          <path d="M86 38 L92 22 L76 34 Z" fill="#FFB3D9"/>
+          <!-- 脸/身体 -->
+          <ellipse cx="60" cy="66" rx="40" ry="36" fill="url(#mg)"/>
+          <ellipse cx="60" cy="66" rx="40" ry="36" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+          <path d="M22 30 A40 36 0 0 1 98 30" fill="none" stroke="url(#mgl)" stroke-width="6" stroke-linecap="round" opacity=".8"/>
+          <!-- 肚皮 J -->
+          <circle cx="60" cy="80" r="16" fill="rgba(255,255,255,.22)"/>
+          <text x="60" y="87" text-anchor="middle" dominant-baseline="central" font-size="22" font-weight="900" fill="#fff" font-family="sans-serif">J</text>
+          <!-- 眼睛 -->
+          <circle class="eye" cx="46" cy="60" r="6.5" fill="#16203a"/>
+          <circle class="eye" cx="74" cy="60" r="6.5" fill="#16203a"/>
+          <circle cx="48" cy="58" r="2" fill="#fff"/><circle cx="76" cy="58" r="2" fill="#fff"/>
+          <!-- 腮红 -->
+          <ellipse cx="38" cy="72" rx="6.5" ry="4.2" fill="#FF7EB6" opacity=".75"/>
+          <ellipse cx="82" cy="72" rx="6.5" ry="4.2" fill="#FF7EB6" opacity=".75"/>
+          <!-- 嘴 -->
+          <path d="M54 72 Q60 78 66 72" fill="none" stroke="#16203a" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+        <div class="mascot-shadow"></div>
+      </div>
       <div class="info">
-        <div class="greet" id="greet">你好</div>
+        <div class="greet" id="greet"><span class="wave">👋</span> 你好呀～</div>
         <div class="name">文强哥 <span>Johnny520</span></div>
         <div class="clockrow">
           <svg class="analog" viewBox="0 0 100 100">
@@ -227,24 +311,25 @@
       </div>
     </section>
 
-    <nav class="tabs">
-      <button data-tab="about" class="active">关于</button>
-      <button data-tab="projects">项目</button>
-      <button data-tab="msg">留言</button>
+    <nav class="tabs" id="tabs">
+      <span class="pill" id="pill"></span>
+      <button data-tab="about" class="active">🌟 关于</button>
+      <button data-tab="projects">🚀 项目</button>
+      <button data-tab="msg">💬 留言</button>
     </nav>
 
     <div class="panel active" id="about">
       <h3>关于我</h3>
-      <p class="lead">我是 <b>文强哥（Johnny520）</b>，一名 Android 个人开发者，专注实用工具与隐私防护类应用。
+      <p class="lead">我是 <b>文强哥（Johnny520）</b>，一只爱写代码的喵～ 不，是一个人 😼。Android 个人开发者，专注实用工具与隐私防护类应用。
       喜欢把复杂能力做成简单好用的产品——从系统清理到 LSPosed 模块，尽量自己造轮子、自己发版。
-      以下站点与开源项目，欢迎 Star 与共建。</p>
+      下面的开源项目，欢迎来 <b>Star</b> 与共建 💖</p>
       <div class="chips">
-        <span class="chip">Android 开发</span>
-        <span class="chip">Kotlin / Java</span>
-        <span class="chip">Flutter / Dart</span>
-        <span class="chip">LSPosed 模块</span>
-        <span class="chip">逆向 & 隐私防护</span>
-        <span class="chip">Python 工具</span>
+        <span class="chip">🤖 Android 开发</span>
+        <span class="chip">🟣 Kotlin / Java</span>
+        <span class="chip">💙 Flutter / Dart</span>
+        <span class="chip">🔧 LSPosed 模块</span>
+        <span class="chip">🛡️ 逆向 & 隐私防护</span>
+        <span class="chip">🐍 Python 工具</span>
       </div>
     </div>
 
@@ -256,15 +341,15 @@
     <div class="panel" id="msg">
       <h3>留言板</h3>
       <div class="msgbox">
-        <input id="msgName" placeholder="你的昵称" maxlength="20">
-        <textarea id="msgText" placeholder="说点什么吧～（本地保存，仅展示）" maxlength="200"></textarea>
-        <button class="btn" id="msgSend">发送</button>
+        <input id="msgName" placeholder="你的昵称 ✏️" maxlength="20">
+        <textarea id="msgText" placeholder="说点什么吧～（本地保存，仅展示）💭" maxlength="200"></textarea>
+        <button class="btn" id="msgSend">发送 💌</button>
       </div>
       <div class="msgs" id="msgList"></div>
     </div>
 
     <footer>
-      <span>© <span id="year"></span> 文强哥 (Johnny520) · 版权所有</span>
+      <span>© <span id="year"></span> 文强哥 (Johnny520) · 版权所有 🐾</span>
       <span>开源地址：<a href="https://github.com/Johnny520" target="_blank" rel="noopener">github.com/Johnny520</a></span>
     </footer>
   </main>
@@ -280,12 +365,12 @@
   "use strict";
   var GH = "https://github.com/Johnny520/";
   var projects = [
-    {t:"分区清理大师", d:"partition-cleaner · 安卓磁盘/分区清理工具", r:"partition-cleaner"},
-    {t:"anti-detect", d:"LSPosed 隐私防护模块 · 反检测/防追踪", r:"anti-detect"},
-    {t:"JohnnyAdBlock", d:"LSPosed 广告拦截模块", r:"JohnnyAdBlock"},
-    {t:"企信查 Web", d:"qixincha · 企业信息查询 (Python)", r:"qixincha"},
-    {t:"企信查 Android", d:"qixincha-android · 安卓端", r:"qixincha-android"},
-    {t:"企信查 Flutter", d:"qixincha-flutter · 跨端客户端", r:"qixincha-flutter"}
+    {t:"分区清理大师", d:"partition-cleaner · 安卓磁盘/分区清理工具 🧹", r:"partition-cleaner"},
+    {t:"anti-detect", d:"LSPosed 隐私防护模块 · 反检测/防追踪 🛡️", r:"anti-detect"},
+    {t:"JohnnyAdBlock", d:"LSPosed 广告拦截模块 🚫", r:"JohnnyAdBlock"},
+    {t:"企信查 Web", d:"qixincha · 企业信息查询 (Python) 🔍", r:"qixincha"},
+    {t:"企信查 Android", d:"qixincha-android · 安卓端 📱", r:"qixincha-android"},
+    {t:"企信查 Flutter", d:"qixincha-flutter · 跨端客户端 ✨", r:"qixincha-flutter"}
   ];
   var grid = document.getElementById("projGrid");
   projects.forEach(function(p){
@@ -296,8 +381,7 @@
   });
 
   // 主题
-  var root = document.documentElement;
-  var saved = null;
+  var root = document.documentElement, saved = null;
   try { saved = localStorage.getItem("johnny-theme"); } catch(e){}
   if (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) saved = "light";
   if (saved) root.setAttribute("data-theme", saved);
@@ -306,6 +390,28 @@
     root.setAttribute("data-theme", next);
     try { localStorage.setItem("johnny-theme", next); } catch(e){}
   });
+
+  // 鼠标液态光晕
+  var glow = document.getElementById("glow");
+  if (window.matchMedia && !window.matchMedia("(hover:none)").matches){
+    window.addEventListener("mousemove", function(e){
+      glow.style.left = e.clientX + "px"; glow.style.top = e.clientY + "px"; glow.style.opacity = "1";
+    });
+    window.addEventListener("mouseleave", function(){ glow.style.opacity = "0"; });
+  }
+
+  // 漂浮可爱元素
+  var fbox = document.getElementById("floaters");
+  var emos = ["✨","💗","🌟","🫧","💫","🐾","🌈","💖"];
+  for (var i=0;i<16;i++){
+    var s = document.createElement("span");
+    s.textContent = emos[i % emos.length];
+    s.style.left = (Math.random()*100) + "vw";
+    s.style.fontSize = (16 + Math.random()*18) + "px";
+    s.style.animationDuration = (10 + Math.random()*12) + "s";
+    s.style.animationDelay = (-Math.random()*18) + "s";
+    fbox.appendChild(s);
+  }
 
   // 时钟
   var g = document.getElementById("greet"), digi = document.getElementById("digi"),
@@ -321,19 +427,24 @@
     ah.style.transform = "rotate("+(h12*30 + m*0.5)+"deg)";
     am.style.transform = "rotate("+(m*6 + s*0.1)+"deg)";
     as.style.transform = "rotate("+(s*6)+"deg)";
-    var greet = h<5?"夜深了":h<11?"早上好":h<13?"中午好":h<18?"下午好":h<23?"晚上好":"夜深了";
-    g.textContent = greet + "，欢迎来到 Johnny 的主页";
+    var greet = h<5?"夜深了，喵～":h<11?"早上好呀 ☀️":h<13?"中午好 🍱":h<18?"下午好 🌤️":h<23?"晚上好 🌙":"夜深了，喵～";
+    g.innerHTML = '<span class="wave">👋</span> ' + greet + '，欢迎来到 Johnny 的家';
   }
   tick(); setInterval(tick, 1000);
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // 标签切换
-  document.querySelectorAll(".tabs button").forEach(function(b){
+  // 标签切换（果冻滑动）
+  var tabs = document.getElementById("tabs"), pill = document.getElementById("pill"), btns = tabs.querySelectorAll("button");
+  function movePill(b){ pill.style.left = b.offsetLeft + "px"; pill.style.width = b.offsetWidth + "px"; }
+  movePill(tabs.querySelector(".active"));
+  window.addEventListener("resize", function(){ var a = tabs.querySelector(".active"); if(a) movePill(a); });
+  btns.forEach(function(b){
     b.addEventListener("click", function(){
-      document.querySelectorAll(".tabs button").forEach(function(x){x.classList.remove("active");});
+      btns.forEach(function(x){x.classList.remove("active");});
       document.querySelectorAll(".panel").forEach(function(x){x.classList.remove("active");});
       b.classList.add("active");
       document.getElementById(b.getAttribute("data-tab")).classList.add("active");
+      movePill(b);
     });
   });
 
@@ -354,7 +465,7 @@
     });
   }
   document.getElementById("msgSend").addEventListener("click", function(){
-    var name = (nameI.value || "").trim() || "匿名访客", text = (textI.value || "").trim();
+    var name = (nameI.value || "").trim() || "匿名访客 🐱", text = (textI.value || "").trim();
     if (!text){ textI.focus(); return; }
     var arr = []; try { arr = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){}
     var d = new Date();
@@ -376,10 +487,9 @@
   var N = innerWidth < 600 ? 26 : 48;
   for (var i=0;i<N;i++){ pts.push({x:Math.random()*cv.width, y:Math.random()*cv.height,
     r:Math.random()*1.6+0.4, vx:(Math.random()-.5)*0.25, vy:(Math.random()-.5)*0.25}); }
-  var light = root.getAttribute("data-theme") !== "light";
   function draw(){
     ctx.clearRect(0,0,cv.width,cv.height);
-    ctx.fillStyle = light ? "rgba(255,255,255,.7)" : "rgba(180,210,255,.55)";
+    ctx.fillStyle = root.getAttribute("data-theme") !== "light" ? "rgba(255,255,255,.7)" : "rgba(120,150,230,.5)";
     pts.forEach(function(p){
       p.x+=p.vx; p.y+=p.vy;
       if(p.x<0||p.x>cv.width) p.vx*=-1; if(p.y<0||p.y>cv.height) p.vy*=-1;
@@ -388,6 +498,36 @@
     requestAnimationFrame(draw);
   }
   if (!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches)) draw();
+
+  // 戳吉祥物撒花 🎉
+  var cf = document.getElementById("confetti"), cctx = cf.getContext("2d"), parts = [];
+  function cfResize(){ cf.width = innerWidth; cf.height = innerHeight; }
+  cfResize(); addEventListener("resize", cfResize);
+  var cols = ["#4F7CFF","#7C5CFF","#21D4FD","#FF7EB6","#FFD166","#06D6A0"];
+  function burst(x,y){
+    for (var i=0;i<90;i++){
+      var a = Math.random()*Math.PI*2, sp = 3+Math.random()*7;
+      parts.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3,
+        g:0.16, sz:5+Math.random()*7, rot:Math.random()*6, vr:(Math.random()-.5)*.4,
+        c:cols[(Math.random()*cols.length)|0], life:1});
+    }
+    if (!cfRun) { cfRun = true; requestAnimationFrame(cfLoop); }
+  }
+  var cfRun = false;
+  function cfLoop(){
+    cctx.clearRect(0,0,cf.width,cf.height);
+    parts.forEach(function(p){
+      p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life -= 0.012;
+      cctx.save(); cctx.translate(p.x,p.y); cctx.rotate(p.rot); cctx.globalAlpha = Math.max(p.life,0);
+      cctx.fillStyle = p.c; cctx.fillRect(-p.sz/2,-p.sz/2,p.sz,p.sz*0.6); cctx.restore();
+    });
+    parts = parts.filter(function(p){ return p.life>0 && p.y < cf.height+40; });
+    if (parts.length){ requestAnimationFrame(cfLoop); } else { cfRun = false; cctx.clearRect(0,0,cf.width,cf.height); }
+  }
+  document.getElementById("mascot").addEventListener("click", function(e){
+    var r = this.getBoundingClientRect();
+    burst(r.left + r.width/2, r.top + r.height/2);
+  });
 })();
 </script>
 </body>

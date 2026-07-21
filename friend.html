@@ -4,23 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1020">
-<title>友链申请 · Johnny (文强哥)</title>
-<meta name="description" content="与文强哥 (Johnny520) 互换友情链接的申请页。">
+<title>友链申请 · Johnny (文强哥) 💗</title>
+<meta name="description" content="与文强哥 (Johnny520) 互换友情链接的申请页，液态玻璃 + 可爱风。">
 <meta name="author" content="文强哥 (Johnny520)">
 <style>
   :root{
     --bg1:#0b1020; --bg2:#131a33; --bg3:#1a1140;
     --card:rgba(255,255,255,.10); --card-strong:rgba(255,255,255,.16);
     --text:#eaf0ff; --muted:#9fb0d6; --faint:#6b7aa3;
-    --accent:#4F7CFF; --accent2:#7C5CFF; --accent3:#21D4FD;
+    --accent:#4F7CFF; --accent2:#7C5CFF; --accent3:#21D4FD; --cute:#FF7EB6;
     --border:rgba(255,255,255,.22); --hl:rgba(255,255,255,.45); --shadow:rgba(0,0,0,.45);
+    --neon:0 0 8px rgba(124,92,255,.7), 0 0 22px rgba(79,124,255,.5);
   }
   html[data-theme="light"]{
     --bg1:#eaf0ff; --bg2:#dbe4ff; --bg3:#eadcff;
     --card:rgba(255,255,255,.55); --card-strong:rgba(255,255,255,.72);
     --text:#16203a; --muted:#566389; --faint:#8a97b8;
-    --accent:#3a66ff; --accent2:#7C5CFF; --accent3:#0fb6e6;
+    --accent:#3a66ff; --accent2:#7C5CFF; --accent3:#0fb6e6; --cute:#FF5FA2;
     --border:rgba(255,255,255,.85); --hl:rgba(255,255,255,.9); --shadow:rgba(80,110,180,.25);
+    --neon:0 0 6px rgba(124,92,255,.45), 0 0 16px rgba(79,124,255,.3);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
@@ -32,80 +34,102 @@
       radial-gradient(1100px 700px at 12% 0%, rgba(79,124,255,.32), transparent 60%),
       radial-gradient(900px 700px at 88% 12%, rgba(124,92,255,.28), transparent 60%),
       radial-gradient(900px 800px at 50% 100%, rgba(33,212,253,.22), transparent 60%),
+      radial-gradient(700px 600px at 20% 80%, rgba(255,126,182,.20), transparent 60%),
       linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3)); transition:background .6s}
   .blob{position:fixed; z-index:-1; border-radius:50%; filter:blur(60px); opacity:.5; mix-blend-mode:screen; animation:fl 18s ease-in-out infinite}
   .blob.b1{width:40vw;height:40vw;left:-6vw;top:-8vh;background:radial-gradient(circle,#4F7CFF,transparent 70%)}
   .blob.b2{width:36vw;height:36vw;right:-5vw;top:10vh;background:radial-gradient(circle,#7C5CFF,transparent 70%);animation-delay:-7s}
-  html[data-theme="light"] .blob{mix-blend-mode:multiply;opacity:.4}
+  .blob.b3{width:28vw;height:28vw;right:14vw;bottom:4vh;background:radial-gradient(circle,#FF7EB6,transparent 70%);opacity:.4;animation-delay:-4s}
+  html[data-theme="light"] .blob{mix-blend-mode:multiply;opacity:.38}
   @keyframes fl{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.07)}66%{transform:translate(-3vw,-2vh) scale(.96)}}
+  .floaters{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden}
+  .floaters span{position:absolute; bottom:-40px; font-size:20px; opacity:0; animation:rise linear infinite}
+  @keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.85}90%{opacity:.85}100%{transform:translateY(-115vh) rotate(360deg);opacity:0}}
 
   .glass{background:linear-gradient(135deg,var(--card-strong),var(--card));
     backdrop-filter:blur(26px) saturate(180%); -webkit-backdrop-filter:blur(26px) saturate(180%);
-    border:1px solid var(--border); border-radius:28px;
+    border:1px solid var(--border); border-radius:30px;
     box-shadow:0 18px 50px var(--shadow), inset 0 1px 0 var(--hl); position:relative; overflow:hidden}
   .glass::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.22),transparent 38%);pointer-events:none}
+  .card{width:min(620px,100%); padding:32px 30px 26px; z-index:1; animation:pop .9s cubic-bezier(.18,.9,.32,1.4) both}
+  @keyframes pop{0%{transform:scale(.86) translateY(20px); opacity:0}55%{transform:scale(1.03)}100%{transform:scale(1); opacity:1}}
 
-  .card{width:min(620px,100%); padding:32px 30px 26px; z-index:1}
-  .brand{font-size:26px; font-weight:800; letter-spacing:.5px;
-    background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
-    -webkit-background-clip:text; background-clip:text; color:transparent}
-  .brand small{display:block; font-size:11.5px; font-weight:600; color:var(--muted); letter-spacing:2px; margin-top:2px; -webkit-text-fill-color:var(--muted)}
+  .brand{font-size:28px; font-weight:900; letter-spacing:.5px; display:flex; align-items:center; gap:10px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3),var(--cute));
+    background-size:300% 100%; -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:var(--neon); animation:hue 8s linear infinite}
+  @keyframes hue{to{background-position:300% 0}}
+  .brand small{display:block; font-size:11.5px; font-weight:700; color:var(--muted); letter-spacing:3px; margin-top:3px; -webkit-text-fill-color:var(--muted); text-shadow:none; animation:none}
+  .brand svg{width:42px;height:42px; filter:drop-shadow(0 4px 10px var(--shadow))}
   h3{font-size:16px; margin:22px 0 12px; display:flex; align-items:center; gap:8px}
   h3::before{content:""; width:6px; height:18px; border-radius:3px; background:linear-gradient(var(--accent),var(--accent2))}
   .lead{color:var(--muted); line-height:1.8; font-size:14px}
   ol{margin:6px 0 0 18px; color:var(--muted); font-size:13.5px; line-height:2}
   ol b{color:var(--text)}
   .field{margin-top:14px}
-  .field label{display:block; font-size:13px; font-weight:700; margin-bottom:6px; color:var(--text)}
+  .field label{display:block; font-size:13px; font-weight:800; margin-bottom:6px; color:var(--text)}
   .field input, .field textarea{width:100%; font:inherit; font-size:14px; color:var(--text);
-    background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px 14px; outline:none;
-    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+    background:var(--card); border:2px solid var(--border); border-radius:16px; padding:12px 14px; outline:none;
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:.2s}
   .field textarea{resize:vertical; min-height:70px}
+  .field input:focus, .field textarea:focus{border-color:var(--cute); box-shadow:0 0 0 4px rgba(255,126,182,.18)}
   .field input::placeholder, .field textarea::placeholder{color:var(--faint)}
   .field .err{color:#ff7a90; font-size:12px; margin-top:5px; display:none}
   .field.invalid .err{display:block}
   .field.invalid input, .field.invalid textarea{border-color:#ff7a90}
   .actions{display:flex; gap:12px; margin-top:20px; align-items:center; flex-wrap:wrap}
-  .btn{border:0; cursor:pointer; font:inherit; font-weight:800; font-size:14px; color:#fff; padding:12px 24px; border-radius:14px;
-    background:linear-gradient(135deg,var(--accent),var(--accent2)); box-shadow:0 8px 22px rgba(79,124,255,.45), inset 0 1px 0 var(--hl); transition:transform .2s}
-  .btn:hover{transform:translateY(-2px)}
-  .ghost{color:var(--accent3); text-decoration:none; font-weight:700; font-size:14px}
+  .btn{border:0; cursor:pointer; font:inherit; font-weight:900; font-size:14px; color:#fff; padding:12px 26px; border-radius:16px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    box-shadow:0 8px 22px rgba(79,124,255,.45), inset 0 1px 0 var(--hl); transition:transform .25s}
+  .btn:hover{transform:scale(1.06)} .btn:active{transform:scale(.94)}
+  .ghost{color:var(--accent3); text-decoration:none; font-weight:800; font-size:14px}
   .ghost:hover{text-decoration:underline}
-  .preview{margin-top:18px; display:none; padding:14px 16px; border-radius:14px; background:var(--card);
+  .preview{margin-top:18px; display:none; padding:14px 16px; border-radius:16px; background:var(--card);
     border:1px solid var(--border); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
   .preview code{display:block; white-space:pre-wrap; word-break:break-all; font-size:12.5px; color:var(--muted); line-height:1.7}
   .toast{position:fixed; left:50%; bottom:32px; transform:translateX(-50%) translateY(20px); opacity:0;
-    background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-weight:700; font-size:14px;
-    padding:13px 22px; border-radius:14px; box-shadow:0 12px 30px var(--shadow); transition:.35s; z-index:9; pointer-events:none}
+    background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-weight:800; font-size:14px;
+    padding:13px 22px; border-radius:16px; box-shadow:0 12px 30px var(--shadow); transition:.35s; z-index:9; pointer-events:none}
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
   footer{margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:12.5px; color:var(--muted); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
-  footer a{color:var(--accent3); text-decoration:none; font-weight:700}
+  footer a{color:var(--accent3); text-decoration:none; font-weight:800}
 
   .tools{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:10px; z-index:5}
-  .tool{width:46px;height:46px; display:grid; place-items:center; cursor:pointer; font-size:20px; color:var(--text); text-decoration:none;
-    background:linear-gradient(135deg,var(--card-strong),var(--card)); border:1px solid var(--border); border-radius:14px;
-    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); box-shadow:0 8px 22px var(--shadow), inset 0 1px 0 var(--hl); transition:transform .2s}
-  .tool:hover{transform:translateY(-3px)}
+  .tool{width:48px;height:48px; display:grid; place-items:center; cursor:pointer; font-size:21px; color:var(--text); text-decoration:none;
+    background:linear-gradient(135deg,var(--card-strong),var(--card)); border:1px solid var(--border); border-radius:15px;
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); box-shadow:0 8px 22px var(--shadow), inset 0 1px 0 var(--hl); transition:transform .25s}
+  .tool:hover{transform:translateY(-4px) scale(1.08)}
   @media (max-width:560px){ .card{padding:26px 18px 20px} }
-  @media (prefers-reduced-motion:reduce){ .blob{animation:none} *{transition:none!important} }
+  @media (prefers-reduced-motion:reduce){ .blob,.brand,.floaters span{animation:none!important} *{transition:none!important} .card{animation:none} }
 </style>
 </head>
 <body>
-  <div class="bg"></div><div class="blob b1"></div><div class="blob b2"></div>
+  <div class="bg"></div><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="floaters" id="floaters"></div>
 
   <main class="glass card">
-    <div class="brand">友链申请<small>JOHNNY · 文强哥 (JOHNNY520)</small></div>
+    <div class="brand">友链申请
+      <svg viewBox="0 0 120 120" aria-label="Johnny 猫">
+        <defs><linearGradient id="mg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F7CFF"/><stop offset=".5" stop-color="#7C5CFF"/><stop offset="1" stop-color="#21D4FD"/></linearGradient></defs>
+        <path d="M30 44 L18 12 L50 36 Z" fill="url(#mg2)"/><path d="M90 44 L102 12 L70 36 Z" fill="url(#mg2)"/>
+        <ellipse cx="60" cy="66" rx="40" ry="36" fill="url(#mg2)"/>
+        <circle cx="46" cy="60" r="6.5" fill="#16203a"/><circle cx="74" cy="60" r="6.5" fill="#16203a"/>
+        <ellipse cx="38" cy="72" rx="6.5" ry="4.2" fill="#FF7EB6" opacity=".75"/><ellipse cx="82" cy="72" rx="6.5" ry="4.2" fill="#FF7EB6" opacity=".75"/>
+        <path d="M54 72 Q60 78 66 72" fill="none" stroke="#16203a" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <small>JOHNNY · 文强哥 (JOHNNY520)</small>
+    </div>
 
-    <h3>互换友链规范</h3>
+    <h3>互换友链规范 💞</h3>
     <ol>
       <li>本站名称：<b>Johnny · 文强哥</b></li>
       <li>本站地址：<b>https://johnny520.github.io</b></li>
-      <li>本站简介：Android 个人开发者，开源实用工具与 LSPosed 模块。</li>
+      <li>本站简介：Android 个人开发者，开源实用工具与 LSPosed 模块 🐾</li>
       <li>已添加本站友链者优先收录；内容合规、长期可访问优先。</li>
-      <li>提交后请在下方生成代码，并通过 <b>GitHub Issues</b> 发给文强哥。</li>
+      <li>提交后请在下方生成代码，并通过 <b>GitHub Issues</b> 发给文强哥 😼</li>
     </ol>
 
-    <h3>填写你的站点</h3>
+    <h3>填写你的站点 ✏️</h3>
     <div class="field" id="f-name">
       <label>网站名称</label>
       <input id="web-name" placeholder="例如：文强哥的小站" maxlength="20">
@@ -123,12 +147,12 @@
     </div>
     <div class="field" id="f-intro">
       <label>网站介绍 (≤40字)</label>
-      <textarea id="web-intro" placeholder="一句话介绍你的站点" maxlength="40"></textarea>
+      <textarea id="web-intro" placeholder="一句话介绍你的站点 💭" maxlength="40"></textarea>
       <div class="err">请填写站点介绍</div>
     </div>
 
     <div class="actions">
-      <button class="btn" id="gen">生成友链代码</button>
+      <button class="btn" id="gen">生成友链代码 🎀</button>
       <a class="ghost" href="index.html">← 返回主页</a>
     </div>
 
@@ -155,13 +179,16 @@
     root.setAttribute("data-theme", n); try{ localStorage.setItem("johnny-theme", n); }catch(e){}
   });
 
+  var fbox = document.getElementById("floaters"), emos = ["✨","💗","🌟","🫧","💫","🐾","🌈","💖"];
+  for (var i=0;i<14;i++){ var s=document.createElement("span"); s.textContent=emos[i%emos.length];
+    s.style.left=(Math.random()*100)+"vw"; s.style.fontSize=(16+Math.random()*16)+"px";
+    s.style.animationDuration=(10+Math.random()*12)+"s"; s.style.animationDelay=(-Math.random()*18)+"s"; fbox.appendChild(s); }
+
   function val(id){ return (document.getElementById(id).value || "").trim(); }
   function setErr(id, on){ document.getElementById(id).classList.toggle("invalid", on); }
   function isUrl(s){ return /^https?:\/\/.+\..+/.test(s); }
-
   var toast = document.getElementById("toast"), t;
-  function show(msg){ toast.textContent = msg; toast.classList.add("show");
-    clearTimeout(t); t = setTimeout(function(){ toast.classList.remove("show"); }, 2600); }
+  function show(msg){ toast.textContent = msg; toast.classList.add("show"); clearTimeout(t); t = setTimeout(function(){ toast.classList.remove("show"); }, 2600); }
 
   document.getElementById("gen").addEventListener("click", function(){
     var name = val("web-name"), url = val("web-url"), ico = val("web-ico"), intro = val("web-intro");
@@ -171,10 +198,7 @@
     setErr("f-ico", ico && !isUrl(ico)); if(ico && !isUrl(ico)) ok=false;
     setErr("f-intro", !intro); if(!intro) ok=false;
     if(!ok){ show("请检查标红的字段 🔍"); return; }
-    var code = '<a href="'+url+'" target="_blank" rel="noopener">\n'
-            + '  <img src="'+(ico||"")+'" alt="'+name+'"> '+name+'\n'
-            + '</a>\n'
-            + '<!-- '+name+'：'+(intro)+' | '+url+' -->';
+    var code = '<a href="'+url+'" target="_blank" rel="noopener">\n  <img src="'+(ico||"")+'" alt="'+name+'"> '+name+'\n</a>\n<!-- '+name+'：'+(intro)+' | '+url+' -->';
     document.getElementById("code").textContent = code;
     document.getElementById("preview").style.display = "block";
     show("已生成 ✅ 请通过 GitHub Issues 发给文强哥");
