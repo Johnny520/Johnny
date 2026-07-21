@@ -224,7 +224,7 @@
   <div class="floaters" id="floaters"></div>
   <canvas id="stars"></canvas>
   <canvas id="confetti"></canvas>
-  <audio id="bgm" loop preload="auto"><source src="assets/music/forgot.mp3" type="audio/mpeg"></audio>
+  <audio id="bgm" preload="auto"></audio>
 
   <main class="glass card">
     <header>
@@ -448,9 +448,21 @@
     if(parts.length){ requestAnimationFrame(cfLoop); } else { cfRun=false; cctx.clearRect(0,0,cf.width,cf.height); } }
   document.getElementById("mascot").addEventListener("click", function(e){ var r=this.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2); });
 
-  // 背景音乐《忘了》：优先播放 assets/music/forgot.mp3，缺失则用 Web Audio 合成轻柔演示旋律
-  var bgm=document.getElementById("bgm"), musicBtn=document.getElementById("musicBtn"), playing=false, synthOn=false, actx=null, synthTimer=null;
-  bgm.addEventListener("error", function(){ /* 文件缺失，将走合成兜底 */ });
+  // 背景音乐：4 首歌随机播放（忘了-枫贝 / 搁浅 / 根本你不懂得爱我 / 下雨天）
+  // 真实音频请放入 assets/music/ 下对应文件；全部缺失时回退 Web Audio 演示旋律。
+  var SONGS=[
+    {f:"assets/music/forgot.mp3", n:"忘了 - 枫贝"},
+    {f:"assets/music/geshan.mp3",  n:"搁浅"},
+    {f:"assets/music/budong.mp3",  n:"根本你不懂得爱我"},
+    {f:"assets/music/xiayu.mp3",   n:"下雨天"}
+  ];
+  var bgm=document.getElementById("bgm"), musicBtn=document.getElementById("musicBtn"),
+      playing=false, synthOn=false, actx=null, synthTimer=null, cur=-1;
+  bgm.loop=false;
+  function pick(){ var r; do{ r=Math.floor(Math.random()*SONGS.length); }while(SONGS.length>1 && r===cur); return r; }
+  function playSong(){ cur=pick(); bgm.src=SONGS[cur].f; musicBtn.title="🎵 正在播放："+SONGS[cur].n;
+    var p=bgm.play(); if(p&&p.catch){ p.catch(function(){ if(!synthOn){ startSynth(); musicBtn.title="🎵 演示旋律（放入 mp3 后随机播放真实歌曲）"; } }); } }
+  bgm.addEventListener("ended", function(){ if(playing) playSong(); });
   var scale=[261.63,293.66,329.63,392.00,440.00,523.25]; // C D E G A C 五声风
   function startSynth(){ try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
     var i=0; synthTimer=setInterval(function(){ if(!actx) return;
@@ -461,16 +473,10 @@
       o.connect(gn); gn.connect(actx.destination); o.start(); o.stop(actx.currentTime+1.35); i++; }, 720); synthOn=true; }
   function stopSynth(){ if(synthTimer) clearInterval(synthTimer); synthTimer=null; synthOn=false; if(actx){ try{actx.close();}catch(e){} actx=null; } }
   musicBtn.addEventListener("click", function(){
-    if(!playing){
-      var p=bgm.play();
-      if(p&&p.catch){ p.catch(function(){ if(!synthOn) startSynth(); }); }
-      else if(bgm.error){ if(!synthOn) startSynth(); }
-      playing=true; musicBtn.classList.add("on"); musicBtn.title="背景音乐：忘了 - 枫贝（演示旋律）";
-    } else {
-      if(synthOn) stopSynth(); else bgm.pause();
-      playing=false; musicBtn.classList.remove("on"); musicBtn.title="背景音乐：忘了 - 枫贝";
-    }
+    if(!playing){ playing=true; musicBtn.classList.add("on"); playSong(); }
+    else { playing=false; musicBtn.classList.remove("on"); if(synthOn) stopSynth(); else bgm.pause(); musicBtn.title="背景音乐：4 首随机播放"; }
   });
+  musicBtn.title="背景音乐：4 首随机播放";
 })();
 </script>
 </body>
