@@ -254,10 +254,16 @@
           <radialGradient id="dbelly" cx=".5" cy=".38" r=".72">
             <stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
           </radialGradient>
+          <linearGradient id="dw" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#B79CFF" stop-opacity=".95"/><stop offset="1" stop-color="#7C5CFF" stop-opacity=".8"/>
+          </linearGradient>
         </defs>
         <!-- 卷卷尾巴 + 小爱心尖 -->
         <path class="tail" d="M49 47 q15 1 13 -13 q-3 9 -11 8" fill="none" stroke="url(#dg)" stroke-width="4.5" stroke-linecap="round"/>
         <path d="M60 31 q-3 -4 -6 0 q-3 -4 -6 0 q0 5 6 8 q6 -3 6 -8 Z" fill="#FF8FA3"/>
+        <!-- 小蝙蝠翅膀（在身体后面） -->
+        <path d="M19 24 C12 16 4 17 3 25 C6 22 7 26 10 25 C10 30 14 30 16 27 C17 31 19 30 19 26 Z" fill="url(#dw)"/>
+        <path d="M45 24 C52 16 60 17 61 25 C58 22 57 26 54 25 C54 30 50 30 48 27 C47 31 45 30 45 26 Z" fill="url(#dw)"/>
         <!-- 圆润小角 -->
         <path d="M22 14 C20 7 16 5 13 6 C16 9 18 12 21 15 Z" fill="url(#dg)"/>
         <path d="M42 14 C44 7 48 5 51 6 C48 9 46 12 43 15 Z" fill="url(#dg)"/>
@@ -363,8 +369,9 @@
 
     <footer>
       <div class="vstat">
-        <span>👀 今日访问 <b id="vToday">0</b></span>
-        <span>📊 总访问 <b id="vTotal">0</b></span>
+        <span>👀 今日(本机) <b id="vToday">0</b></span>
+        <span>📊 总访问(全站) <b id="busuanzi_value_site_pv">0</b></span>
+        <span>👥 总访客(全站) <b id="busuanzi_value_site_uv">0</b></span>
       </div>
       <span>© <span id="year"></span> 文强哥 (Johnny520) · 版权所有 🐾</span>
       <span>GitHub：<a href="https://github.com/Johnny520" target="_blank" rel="noopener">@Johnny520</a> · <a href="https://github.com/Johnny520?tab=repositories" target="_blank" rel="noopener">所有仓库</a></span>
@@ -530,16 +537,16 @@
   });
 })();
 
-  // 访客统计（本地计数：本浏览器累计访问 + 当日访问；刷新即 +1）
+  // 今日访问：本机计数（刷新即 +1，按日期重置）；总访问/总访客由「不蒜子」全站计数（底部脚本）
   (function(){
     try{
       var d=new Date(), key="jv_"+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-      var total=+(localStorage.getItem("jv_total")||0)+1; localStorage.setItem("jv_total",total);
       var today=+(localStorage.getItem(key)||0)+1; localStorage.setItem(key,today);
-      var te=document.getElementById("vToday"), oe=document.getElementById("vTotal");
-      if(te) te.textContent=today; if(oe) oe.textContent=total;
+      var te=document.getElementById("vToday"); if(te) te.textContent=today;
     }catch(e){}
   })();
 </script>
+  <!-- 不蒜子：全站真实访问量/访客数计数（国内可达，服务端持久化） -->
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
