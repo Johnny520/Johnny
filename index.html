@@ -477,6 +477,14 @@
     else { playing=false; musicBtn.classList.remove("on"); if(synthOn) stopSynth(); else bgm.pause(); musicBtn.title="背景音乐：4 首随机播放"; }
   });
   musicBtn.title="背景音乐：4 首随机播放";
+  // 默认自动播放：进网站即尝试播放；被浏览器拦截则在首次交互时解锁
+  var autoStarted=false;
+  function autoStart(){ if(autoStarted) return; autoStarted=true; playing=true; musicBtn.classList.add("on"); playSong(); }
+  window.addEventListener("load", autoStart);
+  window.addEventListener("pointerdown", function(){
+    if(actx && actx.state==="suspended"){ try{ actx.resume(); }catch(e){} }
+    if(playing && bgm.paused && !synthOn) playSong();
+  });
 })();
 </script>
 </body>
