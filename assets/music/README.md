@@ -7,7 +7,7 @@
 | `forgot.mp3` | 《忘了》- 周林枫 (DJ阿智版) |
 | `geshan.mp3` | 《搁浅》 |
 | `budong.mp3` | 《根本你不懂得爱我》 |
-| `xiayu.mp3`  | 《下雨天》 |
+| `xiayu.mp3`  | 《下雨天》- PPR (氛围R&B) |
 
 ## 如何使用
 把上面 4 个 mp3 文件放到本目录（即 `assets/music/`），
