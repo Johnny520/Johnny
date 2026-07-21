@@ -38,7 +38,7 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
     color:var(--text); background:var(--bg1);
     min-height:100vh; display:flex; align-items:center; justify-content:center;
-    padding:28px 16px; overflow-x:hidden; position:relative;
+    padding:76px 16px 64px; overflow-x:hidden; position:relative;
     transition:color .4s ease, background .4s ease;
   }
   .bg{position:fixed; inset:0; z-index:-3; overflow:hidden;
@@ -81,6 +81,15 @@
   .card{width:min(880px,100%); padding:34px 32px 26px; z-index:1;
     animation:pop .9s cubic-bezier(.18,.9,.32,1.4) both;}
   @keyframes pop{0%{transform:scale(.86) translateY(20px); opacity:0}55%{transform:scale(1.03)}100%{transform:scale(1); opacity:1}}
+  .devil-track{position:fixed; top:0; left:0; right:0; height:66px; z-index:4; pointer-events:none; overflow:hidden}
+  .devil{position:absolute; top:8px; left:0; width:58px; height:56px; cursor:pointer; pointer-events:auto;
+    transition:transform .09s linear; will-change:transform}
+  .devil svg{width:58px; height:56px; display:block; animation:bobdevil .52s ease-in-out infinite; filter:drop-shadow(0 6px 10px var(--shadow))}
+  @keyframes bobdevil{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  .devil .eye{transform-origin:center; animation:blink 3.4s infinite}
+  .devil .tail{transform-origin:50px 44px; animation:tailwag 1.4s ease-in-out infinite}
+  @keyframes tailwag{0%,100%{transform:rotate(0)}50%{transform:rotate(14deg)}}
+  @media (prefers-reduced-motion:reduce){ .devil svg,.devil .eye,.devil .tail{animation:none} }
 
   header{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
   .brand{font-size:34px; font-weight:900; letter-spacing:.5px; position:relative;
@@ -233,6 +242,28 @@
   <canvas id="confetti"></canvas>
   <audio id="bgm" preload="auto"></audio>
 
+  <div class="devil-track" id="devilTrack">
+    <div class="devil" id="devil" title="戳我一下 🎉">
+      <svg viewBox="0 0 64 64" aria-label="Johnny 小恶魔吉祥物">
+        <defs><linearGradient id="dg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#FF6B6B"/><stop offset=".5" stop-color="#FF5FA2"/><stop offset="1" stop-color="#7C5CFF"/>
+        </linearGradient></defs>
+        <path class="tail" d="M50 44 q16 0 12 -16 q-3 9 -12 7" fill="none" stroke="url(#dg)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M23 16 L18 3 L29 13 Z" fill="url(#dg)"/>
+        <path d="M41 16 L46 3 L35 13 Z" fill="url(#dg)"/>
+        <path d="M32 12 C16 12 12 28 14 42 C15 53 22 57 32 57 C42 57 49 53 50 42 C52 28 48 12 32 12 Z" fill="url(#dg)"/>
+        <path d="M32 16 C20 16 17 28 18 41" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+        <ellipse class="eye" cx="25" cy="34" rx="5.2" ry="6.8" fill="#16203a"/>
+        <ellipse class="eye" cx="39" cy="34" rx="5.2" ry="6.8" fill="#16203a"/>
+        <circle cx="27" cy="31" r="1.9" fill="#fff"/><circle cx="41" cy="31" r="1.9" fill="#fff"/>
+        <ellipse cx="18" cy="42" rx="4.3" ry="2.8" fill="#FF7EB6" opacity=".7"/>
+        <ellipse cx="46" cy="42" rx="4.3" ry="2.8" fill="#FF7EB6" opacity=".7"/>
+        <path d="M27 45 q5 5 10 0" fill="none" stroke="#16203a" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M29 47 l2 4 l2 -4 Z" fill="#fff"/>
+      </svg>
+    </div>
+  </div>
+
   <main class="glass card">
     <header>
       <div class="brand">Johnny<span class="spark">✨</span><small>文强哥 · JOHNNY520</small></div>
@@ -243,38 +274,7 @@
     </header>
 
     <section class="hero">
-      <div class="mascot-wrap" id="mascot" title="戳我一下 🎉">
-        <div class="mascot-tip">戳我试试 🎉</div>
-        <svg class="ghost" viewBox="0 0 120 130" aria-label="Johnny 小幽灵吉祥物">
-          <defs>
-            <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#4F7CFF"/><stop offset=".5" stop-color="#7C5CFF"/><stop offset="1" stop-color="#21D4FD"/>
-            </linearGradient>
-            <linearGradient id="ggl" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="rgba(255,255,255,.9)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/>
-            </linearGradient>
-          </defs>
-          <!-- 小手 -->
-          <path class="arm" d="M20 76 q-12 2 -10 18" fill="none" stroke="url(#gg)" stroke-width="9" stroke-linecap="round"/>
-          <path class="arm" d="M100 76 q12 2 10 18" fill="none" stroke="url(#gg)" stroke-width="9" stroke-linecap="round"/>
-          <!-- 身体（圆顶 + 波浪裙摆） -->
-          <path d="M60 8 C28 8 18 36 18 66 L18 116 q7 -12 14 0 t14 0 t14 0 t14 0 t14 0 t14 0 L102 66 C102 36 92 8 60 8 Z" fill="url(#gg)"/>
-          <path d="M60 8 C28 8 18 36 18 66 L18 116 q7 -12 14 0 t14 0 t14 0 t14 0 t14 0 t14 0 L102 66 C102 36 92 8 60 8 Z" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
-          <path d="M22 36 A40 30 0 0 1 98 36" fill="none" stroke="url(#ggl)" stroke-width="6" stroke-linecap="round" opacity=".8"/>
-          <!-- 眼睛 -->
-          <ellipse class="eye" cx="46" cy="60" rx="7" ry="9.5" fill="#16203a"/>
-          <ellipse class="eye" cx="74" cy="60" rx="7" ry="9.5" fill="#16203a"/>
-          <circle cx="48.5" cy="56" r="2.6" fill="#fff"/><circle cx="76.5" cy="56" r="2.6" fill="#fff"/>
-          <!-- 腮红 -->
-          <ellipse cx="35" cy="74" rx="6.5" ry="4.2" fill="#FF7EB6" opacity=".75"/>
-          <ellipse cx="85" cy="74" rx="6.5" ry="4.2" fill="#FF7EB6" opacity=".75"/>
-          <!-- 嘴 -->
-          <path d="M52 75 q8 10 16 0" fill="none" stroke="#16203a" stroke-width="3" stroke-linecap="round"/>
-          <ellipse cx="60" cy="80" rx="3" ry="2.2" fill="#FF7EB6" opacity=".85"/>
-        </svg>
-        <span class="sparkle s1">✨</span><span class="sparkle s2">💗</span>
-        <div class="ghost-shadow"></div>
-      </div>
+
       <div class="info">
         <div class="greet" id="greet"><span class="wave">👋</span> 你好呀～</div>
         <div class="name">文强哥 <span>Johnny520</span></div>
@@ -455,7 +455,15 @@
       cctx.save(); cctx.translate(p.x,p.y); cctx.rotate(p.rot); cctx.globalAlpha=Math.max(p.life,0); cctx.fillStyle=p.c; cctx.fillRect(-p.sz/2,-p.sz/2,p.sz,p.sz*0.6); cctx.restore(); });
     parts=parts.filter(function(p){ return p.life>0 && p.y<cf.height+40; });
     if(parts.length){ requestAnimationFrame(cfLoop); } else { cfRun=false; cctx.clearRect(0,0,cf.width,cf.height); } }
-  document.getElementById("mascot").addEventListener("click", function(e){ var r=this.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2); });
+  var track=document.getElementById("devilTrack"), devil=document.getElementById("devil");
+  var dx=Math.random()*(track.clientWidth-58), ddir=Math.random()<.5?-1:1, dspeed=0.6+Math.random()*1.6, dstop=0;
+  function stepDevil(){ if(dstop>0){ dstop--; } else { dx+=ddir*dspeed;
+      if(dx<=0){dx=0;ddir=1;} if(dx>=track.clientWidth-58){dx=track.clientWidth-58;ddir=-1;}
+      if(Math.random()<0.008) ddir*=-1;
+      if(Math.random()<0.01) dstop=20+(Math.random()*70|0); }
+    devil.style.transform="translateX("+dx+"px) scaleX("+(ddir<0?-1:1)+")"; requestAnimationFrame(stepDevil); }
+  if(track.clientWidth>58) stepDevil();
+  devil.addEventListener("click", function(){ var r=this.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2); });
 
   // 背景音乐：4 首歌随机播放（忘了-枫贝 / 搁浅 / 根本你不懂得爱我 / 下雨天）
   // 真实音频请放入 assets/music/ 下对应文件；全部缺失时回退 Web Audio 演示旋律。
