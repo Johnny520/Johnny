@@ -341,7 +341,7 @@
 
   <div class="tools">
     <a class="tool" id="themeBtn" href="javascript:void(0)" title="切换主题">🌗</a>
-    <a class="tool music" id="musicBtn" href="javascript:void(0)" title="背景音乐：忘了">🎵</a>
+    <a class="tool music" id="musicBtn" href="javascript:void(0)" title="背景音乐：忘了 - 枫贝">🎵</a>
     <a class="tool" href="friend.html" title="友链申请">🔗</a>
     <a class="tool" id="topBtn" href="javascript:void(0)" title="返回顶部">↑</a>
   </div>
@@ -465,10 +465,10 @@
       var p=bgm.play();
       if(p&&p.catch){ p.catch(function(){ if(!synthOn) startSynth(); }); }
       else if(bgm.error){ if(!synthOn) startSynth(); }
-      playing=true; musicBtn.classList.add("on"); musicBtn.title="背景音乐：忘了（演示旋律）";
+      playing=true; musicBtn.classList.add("on"); musicBtn.title="背景音乐：忘了 - 枫贝（演示旋律）";
     } else {
       if(synthOn) stopSynth(); else bgm.pause();
-      playing=false; musicBtn.classList.remove("on"); musicBtn.title="背景音乐：忘了";
+      playing=false; musicBtn.classList.remove("on"); musicBtn.title="背景音乐：忘了 - 枫贝";
     }
   });
 })();
