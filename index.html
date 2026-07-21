@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1020">
-<title>Johnny · 文强哥 (Johnny520) ✨</title>
-<meta name="description" content="Johnny（文强哥 / Johnny520）的个人主页 —— Android 个人开发者 · 隐私防护与 LSPosed 模块作者。液态玻璃 UI + 专属吉祥物小幽灵，酷炫又可爱。">
+<title>文强网络科技</title>
+<meta name="description" content="文强网络科技（文强哥 / Johnny520）的个人主页 —— Android 个人开发者 · 隐私防护与 LSPosed 模块作者。液态玻璃 UI + 专属吉祥物小恶魔，酷炫又可爱。">
 <meta name="author" content="文强哥 (Johnny520)">
 <style>
   :root{
@@ -215,6 +215,8 @@
     display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between; font-size:12.5px; color:var(--muted)}
   footer a{color:var(--accent3); text-decoration:none; font-weight:800}
   footer a:hover{text-decoration:underline}
+  .vstat{flex:1 0 100%; display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-bottom:6px; font-size:13px; color:var(--text); opacity:.95}
+  .vstat b{color:var(--cute); font-size:15px; font-weight:800; padding:0 2px}
 
   .tools{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:10px; z-index:5}
   .tool{width:48px;height:48px; display:grid; place-items:center; cursor:pointer; font-size:21px; color:var(--text); text-decoration:none;
@@ -245,21 +247,38 @@
   <div class="devil-track" id="devilTrack">
     <div class="devil" id="devil" title="戳我一下 🎉">
       <svg viewBox="0 0 64 64" aria-label="Johnny 小恶魔吉祥物">
-        <defs><linearGradient id="dg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#FF6B6B"/><stop offset=".5" stop-color="#FF5FA2"/><stop offset="1" stop-color="#7C5CFF"/>
-        </linearGradient></defs>
-        <path class="tail" d="M50 44 q16 0 12 -16 q-3 9 -12 7" fill="none" stroke="url(#dg)" stroke-width="5" stroke-linecap="round"/>
-        <path d="M23 16 L18 3 L29 13 Z" fill="url(#dg)"/>
-        <path d="M41 16 L46 3 L35 13 Z" fill="url(#dg)"/>
-        <path d="M32 12 C16 12 12 28 14 42 C15 53 22 57 32 57 C42 57 49 53 50 42 C52 28 48 12 32 12 Z" fill="url(#dg)"/>
-        <path d="M32 16 C20 16 17 28 18 41" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round" opacity=".7"/>
-        <ellipse class="eye" cx="25" cy="34" rx="5.2" ry="6.8" fill="#16203a"/>
-        <ellipse class="eye" cx="39" cy="34" rx="5.2" ry="6.8" fill="#16203a"/>
-        <circle cx="27" cy="31" r="1.9" fill="#fff"/><circle cx="41" cy="31" r="1.9" fill="#fff"/>
-        <ellipse cx="18" cy="42" rx="4.3" ry="2.8" fill="#FF7EB6" opacity=".7"/>
-        <ellipse cx="46" cy="42" rx="4.3" ry="2.8" fill="#FF7EB6" opacity=".7"/>
-        <path d="M27 45 q5 5 10 0" fill="none" stroke="#16203a" stroke-width="2.4" stroke-linecap="round"/>
-        <path d="M29 47 l2 4 l2 -4 Z" fill="#fff"/>
+        <defs>
+          <linearGradient id="dg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#FF9DB0"/><stop offset=".5" stop-color="#FF6FB5"/><stop offset="1" stop-color="#9B6BFF"/>
+          </linearGradient>
+          <radialGradient id="dbelly" cx=".5" cy=".38" r=".72">
+            <stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- 卷卷尾巴 + 小爱心尖 -->
+        <path class="tail" d="M49 47 q15 1 13 -13 q-3 9 -11 8" fill="none" stroke="url(#dg)" stroke-width="4.5" stroke-linecap="round"/>
+        <path d="M60 31 q-3 -4 -6 0 q-3 -4 -6 0 q0 5 6 8 q6 -3 6 -8 Z" fill="#FF8FA3"/>
+        <!-- 圆润小角 -->
+        <path d="M22 14 C20 7 16 5 13 6 C16 9 18 12 21 15 Z" fill="url(#dg)"/>
+        <path d="M42 14 C44 7 48 5 51 6 C48 9 46 12 43 15 Z" fill="url(#dg)"/>
+        <!-- 萌身体 -->
+        <path d="M32 10 C17 10 11 22 12 35 C13 48 22 58 32 58 C42 58 51 48 52 35 C53 22 47 10 32 10 Z" fill="url(#dg)"/>
+        <!-- 肚皮柔光 -->
+        <path d="M32 19 C25 19 22 28 22 37 C22 46 26 51 32 51 C38 51 42 46 42 37 C42 28 39 19 32 19 Z" fill="url(#dbelly)"/>
+        <!-- 腮红 -->
+        <ellipse cx="17" cy="40" rx="4.6" ry="3" fill="#FF7EB6" opacity=".8"/>
+        <ellipse cx="47" cy="40" rx="4.6" ry="3" fill="#FF7EB6" opacity=".8"/>
+        <!-- 大眼睛 + 高光 -->
+        <ellipse class="eye" cx="24" cy="34" rx="6.2" ry="7.6" fill="#2a1733"/>
+        <ellipse class="eye" cx="40" cy="34" rx="6.2" ry="7.6" fill="#2a1733"/>
+        <circle cx="26.4" cy="30.5" r="2.7" fill="#fff"/>
+        <circle cx="42.4" cy="30.5" r="2.7" fill="#fff"/>
+        <circle cx="22.4" cy="37" r="1.5" fill="#fff" opacity=".85"/>
+        <circle cx="38.4" cy="37" r="1.5" fill="#fff" opacity=".85"/>
+        <!-- 嘴巴 + 小尖牙 -->
+        <path d="M28 44 q4 4 8 0 q-4 2.6 -8 0 Z" fill="#5a1f3d"/>
+        <path d="M29.6 44 l1.5 3 l1.5 -3 Z" fill="#fff"/>
+        <path d="M34 44 l1.5 3 l1.5 -3 Z" fill="#fff"/>
       </svg>
     </div>
   </div>
@@ -343,6 +362,10 @@
     </div>
 
     <footer>
+      <div class="vstat">
+        <span>👀 今日访问 <b id="vToday">0</b></span>
+        <span>📊 总访问 <b id="vTotal">0</b></span>
+      </div>
       <span>© <span id="year"></span> 文强哥 (Johnny520) · 版权所有 🐾</span>
       <span>GitHub：<a href="https://github.com/Johnny520" target="_blank" rel="noopener">@Johnny520</a> · <a href="https://github.com/Johnny520?tab=repositories" target="_blank" rel="noopener">所有仓库</a></span>
     </footer>
@@ -506,6 +529,17 @@
     if(playing && !synthOn && bgm.paused){ playSong(); }
   });
 })();
+
+  // 访客统计（本地计数：本浏览器累计访问 + 当日访问；刷新即 +1）
+  (function(){
+    try{
+      var d=new Date(), key="jv_"+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+      var total=+(localStorage.getItem("jv_total")||0)+1; localStorage.setItem("jv_total",total);
+      var today=+(localStorage.getItem(key)||0)+1; localStorage.setItem(key,today);
+      var te=document.getElementById("vToday"), oe=document.getElementById("vTotal");
+      if(te) te.textContent=today; if(oe) oe.textContent=total;
+    }catch(e){}
+  })();
 </script>
 </body>
 </html>
