@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1020">
 <title>Johnny · 文强哥 (Johnny520) ✨</title>
-<meta name="description" content="Johnny（文强哥 / Johnny520）的个人主页 —— 液态玻璃 UI + 专属吉祥物 Johnny 猫，酷炫又可爱，聚合分区清理大师、anti-detect、JohnnyAdBlock 等开源项目。">
+<meta name="description" content="Johnny（文强哥 / Johnny520）的个人主页 —— Android 个人开发者 · 隐私防护与 LSPosed 模块作者。液态玻璃 UI + 专属吉祥物小幽灵，酷炫又可爱。">
 <meta name="author" content="文强哥 (Johnny520)">
 <style>
   :root{
@@ -41,7 +41,6 @@
     padding:28px 16px; overflow-x:hidden; position:relative;
     transition:color .4s ease, background .4s ease;
   }
-  /* 动态极光渐变背景 + 流动光斑 */
   .bg{position:fixed; inset:0; z-index:-3; overflow:hidden;
     background:
       radial-gradient(1200px 800px at 10% 0%, rgba(79,124,255,.35), transparent 60%),
@@ -58,47 +57,30 @@
   .blob.b3{width:46vw;height:46vw;left:20vw;bottom:-18vh;background:radial-gradient(circle,#21D4FD,transparent 70%);animation-delay:-12s}
   .blob.b4{width:30vw;height:30vw;right:12vw;bottom:6vh;background:radial-gradient(circle,#FF7EB6,transparent 70%);animation-delay:-9s;opacity:.4}
   html[data-theme="light"] .blob{mix-blend-mode:multiply; opacity:.38}
-  @keyframes float{
-    0%,100%{transform:translate(0,0) scale(1)}
-    33%{transform:translate(4vw,3vh) scale(1.08)}
-    66%{transform:translate(-3vw,-2vh) scale(.95)}
-  }
-  /* 鼠标液态光晕 */
+  @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.08)}66%{transform:translate(-3vw,-2vh) scale(.95)}}
   .glow{position:fixed; width:420px;height:420px; left:0;top:0; border-radius:50%;
     background:radial-gradient(circle, rgba(124,92,255,.22), rgba(33,212,253,.10) 40%, transparent 65%);
     transform:translate(-50%,-50%); pointer-events:none; z-index:-1; mix-blend-mode:screen;
     transition:opacity .3s; opacity:0;}
   @media (hover:none){ .glow{display:none} }
   #stars{position:fixed; inset:0; z-index:-1; pointer-events:none}
-
-  /* 漂浮可爱元素 */
   .floaters{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden}
-  .floaters span{position:absolute; bottom:-40px; font-size:22px; opacity:.0; animation:rise linear infinite}
-  @keyframes rise{
-    0%{transform:translateY(0) rotate(0); opacity:0}
-    10%{opacity:.85}
-    90%{opacity:.85}
-    100%{transform:translateY(-115vh) rotate(360deg); opacity:0}
-  }
+  .floaters span{position:absolute; bottom:-40px; font-size:22px; opacity:0; animation:rise linear infinite}
+  @keyframes rise{0%{transform:translateY(0) rotate(0); opacity:0}10%{opacity:.85}90%{opacity:.85}100%{transform:translateY(-115vh) rotate(360deg); opacity:0}}
 
-  /* 液态玻璃卡片 */
   .glass{
     background:linear-gradient(135deg, var(--card-strong), var(--card));
-    backdrop-filter:blur(26px) saturate(180%);
-    -webkit-backdrop-filter:blur(26px) saturate(180%);
-    border:1px solid var(--border);
-    border-radius:30px;
+    backdrop-filter:blur(26px) saturate(180%); -webkit-backdrop-filter:blur(26px) saturate(180%);
+    border:1px solid var(--border); border-radius:30px;
     box-shadow:0 18px 50px var(--shadow), inset 0 1px 0 var(--hl);
     position:relative; overflow:hidden;
   }
   .glass::before{content:""; position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(255,255,255,.22), transparent 38%);
-    pointer-events:none;}
+    background:linear-gradient(180deg, rgba(255,255,255,.22), transparent 38%); pointer-events:none;}
 
   .card{width:min(880px,100%); padding:34px 32px 26px; z-index:1;
     animation:pop .9s cubic-bezier(.18,.9,.32,1.4) both;}
-  @keyframes pop{0%{transform:scale(.86) translateY(20px); opacity:0}
-    55%{transform:scale(1.03) translateY(0)} 100%{transform:scale(1); opacity:1}}
+  @keyframes pop{0%{transform:scale(.86) translateY(20px); opacity:0}55%{transform:scale(1.03)}100%{transform:scale(1); opacity:1}}
 
   header{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
   .brand{font-size:34px; font-weight:900; letter-spacing:.5px; position:relative;
@@ -110,23 +92,25 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   .brand small{display:block; font-size:12px; font-weight:700; color:var(--muted);
     letter-spacing:3px; margin-top:3px; -webkit-text-fill-color:var(--muted); text-shadow:none; animation:none}
-  .hi{font-size:13px; font-weight:800; color:var(--text); padding:8px 14px; border-radius:999px;
-    background:var(--card); border:1px solid var(--border); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
-    animation:wiggle 2.4s ease-in-out infinite;}
-  @keyframes wiggle{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+  .gh-btn{display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:800; color:var(--text);
+    text-decoration:none; padding:8px 14px; border-radius:999px; background:var(--card);
+    border:1px solid var(--border); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+    box-shadow:inset 0 1px 0 var(--hl); transition:.25s}
+  .gh-btn:hover{transform:translateY(-3px); border-color:var(--accent); color:var(--accent3); box-shadow:var(--neon)}
+  .gh-btn svg{width:17px;height:17px; fill:currentColor}
 
-  .hero{display:flex; align-items:center; gap:26px; margin:24px 0 6px; flex-wrap:wrap}
+  .hero{display:flex; align-items:center; gap:26px; margin:22px 0 4px; flex-wrap:wrap}
   .mascot-wrap{position:relative; flex:0 0 auto; cursor:pointer; user-select:none}
-  .mascot{width:128px; height:128px; display:block; animation:bob 3.4s ease-in-out infinite;
-    filter:drop-shadow(0 10px 22px var(--shadow));}
-  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
-  .mascot .eye{transform-origin:center; animation:blink 4.2s infinite}
-  @keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
-  .mascot .tail{transform-origin:96px 84px; animation:wag 2.2s ease-in-out infinite}
-  @keyframes wag{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(10deg)}}
-  .mascot-shadow{position:absolute; left:50%; bottom:-6px; width:84px; height:16px; transform:translateX(-50%);
-    background:radial-gradient(ellipse, var(--shadow), transparent 70%); border-radius:50%; animation:shadow 3.4s ease-in-out infinite;}
-  @keyframes shadow{0%,100%{transform:translateX(-50%) scale(1); opacity:.5}50%{transform:translateX(-50%) scale(.82); opacity:.32}}
+  .ghost{width:120px; height:130px; display:block; animation:bob 3.6s ease-in-out infinite;
+    filter:drop-shadow(0 12px 22px var(--shadow));}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-13px) rotate(3deg)}}
+  .ghost .eye{transform-origin:center; animation:blink 4.6s infinite}
+  @keyframes blink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.12)}}
+  .ghost .arm{transform-origin:top center; animation:wave-arm 2.6s ease-in-out infinite}
+  @keyframes wave-arm{0%,100%{transform:rotate(0)}50%{transform:rotate(-12deg)}}
+  .ghost-shadow{position:absolute; left:50%; bottom:-4px; width:78px; height:15px; transform:translateX(-50%);
+    background:radial-gradient(ellipse, var(--shadow), transparent 70%); border-radius:50%; animation:shadow 3.6s ease-in-out infinite;}
+  @keyframes shadow{0%,100%{transform:translateX(-50%) scale(1); opacity:.5}50%{transform:translateX(-50%) scale(.8); opacity:.3}}
   .mascot-tip{position:absolute; top:-26px; left:50%; transform:translateX(-50%); white-space:nowrap;
     font-size:11.5px; font-weight:800; color:var(--accent3); background:var(--card); border:1px solid var(--border);
     padding:4px 10px; border-radius:999px; opacity:0; transition:.3s; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
@@ -136,10 +120,17 @@
   .greet{color:var(--muted); font-size:14.5px; letter-spacing:.3px}
   .greet .wave{display:inline-block; animation:wave 2s ease-in-out infinite; transform-origin:70% 70%}
   @keyframes wave{0%,100%{transform:rotate(0)}25%{transform:rotate(18deg)}50%{transform:rotate(-8deg)}75%{transform:rotate(12deg)}}
-  .name{font-size:27px; font-weight:900; margin:3px 0 8px}
+  .name{font-size:27px; font-weight:900; margin:3px 0 6px}
   .name span{font-size:14.5px; font-weight:700; color:var(--accent3); margin-left:8px;
     background:var(--card); border:1px solid var(--border); padding:2px 11px; border-radius:999px;
     -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+  .idline{display:flex; flex-wrap:wrap; gap:7px; margin:4px 0 10px}
+  .idtag{font-size:11.5px; font-weight:800; color:var(--text); background:var(--card);
+    border:1px solid var(--border); padding:4px 10px; border-radius:999px; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+  .gh-line{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:800; color:var(--accent3);
+    text-decoration:none; margin-bottom:8px}
+  .gh-line svg{width:15px;height:15px; fill:currentColor}
+  .gh-line:hover{text-decoration:underline}
   .clockrow{display:flex; align-items:center; gap:14px}
   .analog{width:56px;height:56px; filter:drop-shadow(0 2px 6px var(--shadow))}
   .analog .face{fill:var(--card); stroke:var(--border); stroke-width:2}
@@ -151,9 +142,8 @@
   .digi{font-variant-numeric:tabular-nums; font-size:23px; font-weight:800; letter-spacing:1px}
   .digi small{display:block; font-size:12px; font-weight:700; color:var(--muted); letter-spacing:1px}
 
-  .tabs{display:flex; gap:6px; margin:24px 0 18px; padding:5px; position:relative;
-    background:var(--card); border:1px solid var(--border); border-radius:16px;
-    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+  .tabs{display:flex; gap:6px; margin:22px 0 18px; padding:5px; position:relative;
+    background:var(--card); border:1px solid var(--border); border-radius:16px; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
   .tabs button{flex:1; border:0; background:transparent; color:var(--muted);
     font-size:15px; font-weight:800; padding:11px 8px; border-radius:11px; cursor:pointer; position:relative; z-index:2; transition:.25s}
   .tabs button.active{color:#fff}
@@ -166,13 +156,12 @@
   .panel.active{display:block; animation:jelly .5s cubic-bezier(.5,1.6,.4,1) both}
   @keyframes jelly{0%{transform:scale(.94); opacity:0}60%{transform:scale(1.02)}100%{transform:scale(1); opacity:1}}
   .panel h3{font-size:16px; margin-bottom:12px; display:flex; align-items:center; gap:8px}
-  .panel h3::before{content:""; width:6px; height:18px; border-radius:3px;
-    background:linear-gradient(var(--accent),var(--accent2))}
+  .panel h3::before{content:""; width:6px; height:18px; border-radius:3px; background:linear-gradient(var(--accent),var(--accent2))}
   .lead{color:var(--muted); line-height:1.85; font-size:14.5px}
   .lead b{color:var(--text)}
   .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
-  .chip{font-size:12.5px; font-weight:700; color:var(--text);
-    background:var(--card); border:1px solid var(--border); padding:6px 13px; border-radius:999px;
+  .chip{font-size:12.5px; font-weight:700; color:var(--text); background:var(--card);
+    border:1px solid var(--border); padding:6px 13px; border-radius:999px;
     -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); transition:.2s}
   .chip:hover{transform:translateY(-3px) scale(1.05); border-color:var(--cute); color:var(--cute)}
 
@@ -189,54 +178,43 @@
   .proj .pg::before{content:"↗ ";}
 
   .msgbox{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap}
-  .msgbox input,.msgbox textarea{flex:1 1 160px; min-width:0; font:inherit; font-size:14px;
-    color:var(--text); background:var(--card); border:2px solid var(--border);
-    border-radius:16px; padding:11px 14px; outline:none;
+  .msgbox input,.msgbox textarea{flex:1 1 160px; min-width:0; font:inherit; font-size:14px; color:var(--text);
+    background:var(--card); border:2px solid var(--border); border-radius:16px; padding:11px 14px; outline:none;
     -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:.2s}
   .msgbox input:focus,.msgbox textarea:focus{border-color:var(--cute); box-shadow:0 0 0 4px rgba(255,126,182,.18)}
   .msgbox textarea{flex:1 1 100%; resize:vertical; min-height:64px}
   .msgbox input::placeholder,.msgbox textarea::placeholder{color:var(--faint)}
-  .btn{border:0; cursor:pointer; font:inherit; font-weight:900; font-size:14px; color:#fff;
-    padding:11px 24px; border-radius:16px;
+  .btn{border:0; cursor:pointer; font:inherit; font-weight:900; font-size:14px; color:#fff; padding:11px 24px; border-radius:16px;
     background:linear-gradient(135deg,var(--accent),var(--accent2));
     box-shadow:0 8px 22px rgba(79,124,255,.45), inset 0 1px 0 var(--hl); transition:transform .25s}
   .btn:hover{transform:scale(1.06)} .btn:active{transform:scale(.94)}
   .msgs{display:flex; flex-direction:column; gap:10px; max-height:280px; overflow:auto; padding-right:4px}
-  .msgs .m{padding:12px 14px; border-radius:16px; background:var(--card);
-    border:1px solid var(--border); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
-    position:relative; animation:jelly .45s cubic-bezier(.5,1.6,.4,1) both}
+  .msgs .m{padding:12px 14px; border-radius:16px; background:var(--card); border:1px solid var(--border);
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); position:relative; animation:jelly .45s cubic-bezier(.5,1.6,.4,1) both}
   .msgs .m b{font-size:13.5px; color:var(--cute)} .msgs .m p{font-size:13.5px; color:var(--muted); margin-top:4px; line-height:1.6}
   .msgs .m time{font-size:11px; color:var(--faint); float:right}
   .empty{color:var(--faint); font-size:13px; text-align:center; padding:18px}
 
   footer{margin-top:24px; padding-top:16px; border-top:1px solid var(--border);
-    display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between;
-    font-size:12.5px; color:var(--muted)}
+    display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between; font-size:12.5px; color:var(--muted)}
   footer a{color:var(--accent3); text-decoration:none; font-weight:800}
   footer a:hover{text-decoration:underline}
 
   .tools{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:10px; z-index:5}
-  .tool{width:48px;height:48px; display:grid; place-items:center; cursor:pointer; font-size:21px;
-    color:var(--text); text-decoration:none;
-    background:linear-gradient(135deg,var(--card-strong),var(--card));
-    border:1px solid var(--border); border-radius:15px;
+  .tool{width:48px;height:48px; display:grid; place-items:center; cursor:pointer; font-size:21px; color:var(--text); text-decoration:none;
+    background:linear-gradient(135deg,var(--card-strong),var(--card)); border:1px solid var(--border); border-radius:15px;
     -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
-    box-shadow:0 8px 22px var(--shadow), inset 0 1px 0 var(--hl); transition:transform .25s}
+    box-shadow:0 8px 22px var(--shadow), inset 0 1px 0 var(--hl); transition:transform .25s; position:relative}
   .tool:hover{transform:translateY(-4px) scale(1.08)}
+  .tool.music.on{color:var(--cute); border-color:var(--cute)}
+  .tool.music.on::after{content:"♪"; position:absolute; top:-6px; right:-2px; font-size:13px; color:var(--cute);
+    animation:note 1s ease-in-out infinite}
+  .tool.music.on::before{content:"♫"; position:absolute; bottom:-4px; left:-2px; font-size:11px; color:var(--accent3); animation:note 1.3s ease-in-out infinite}
+  @keyframes note{0%,100%{transform:translateY(0); opacity:.6}50%{transform:translateY(-5px); opacity:1}}
 
   #confetti{position:fixed; inset:0; z-index:50; pointer-events:none}
-
-  @media (max-width:560px){
-    .card{padding:26px 18px 20px}
-    .brand{font-size:27px}
-    .hero{gap:16px}
-    .name{font-size:22px}
-    .mascot{width:104px;height:104px}
-  }
-  @media (prefers-reduced-motion:reduce){
-    .blob,.brand,.hi,.mascot,.floaters span,.spark{animation:none!important}
-    *{transition:none!important} .card{animation:none}
-  }
+  @media (max-width:560px){ .card{padding:26px 18px 20px} .brand{font-size:27px} .hero{gap:16px} .name{font-size:22px} .ghost{width:100px;height:108px} }
+  @media (prefers-reduced-motion:reduce){ .blob,.brand,.gh-btn,.ghost,.floaters span,.spark{animation:none!important} *{transition:none!important} .card{animation:none} }
 </style>
 </head>
 <body>
@@ -246,54 +224,60 @@
   <div class="floaters" id="floaters"></div>
   <canvas id="stars"></canvas>
   <canvas id="confetti"></canvas>
+  <audio id="bgm" loop preload="auto"><source src="assets/music/forgot.mp3" type="audio/mpeg"></audio>
 
   <main class="glass card">
     <header>
       <div class="brand">Johnny<span class="spark">✨</span><small>文强哥 · JOHNNY520</small></div>
-      <div class="hi">👋 嗨，欢迎来玩！</div>
+      <a class="gh-btn" href="https://github.com/Johnny520" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub @Johnny520
+      </a>
     </header>
 
     <section class="hero">
       <div class="mascot-wrap" id="mascot" title="戳我一下 🎉">
         <div class="mascot-tip">戳我试试 🎉</div>
-        <svg class="mascot" viewBox="0 0 120 120" aria-label="Johnny 猫吉祥物">
+        <svg class="ghost" viewBox="0 0 120 130" aria-label="Johnny 小幽灵吉祥物">
           <defs>
-            <linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stop-color="#4F7CFF"/><stop offset=".5" stop-color="#7C5CFF"/><stop offset="1" stop-color="#21D4FD"/>
             </linearGradient>
-            <linearGradient id="mgl" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="ggl" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stop-color="rgba(255,255,255,.9)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/>
             </linearGradient>
           </defs>
-          <!-- 尾巴 -->
-          <path class="tail" d="M98 86 Q120 84 112 58" fill="none" stroke="url(#mg)" stroke-width="9" stroke-linecap="round"/>
-          <!-- 耳朵 -->
-          <path d="M30 44 L18 12 L50 36 Z" fill="url(#mg)"/>
-          <path d="M90 44 L102 12 L70 36 Z" fill="url(#mg)"/>
-          <path d="M34 38 L28 22 L44 34 Z" fill="#FFB3D9"/>
-          <path d="M86 38 L92 22 L76 34 Z" fill="#FFB3D9"/>
-          <!-- 脸/身体 -->
-          <ellipse cx="60" cy="66" rx="40" ry="36" fill="url(#mg)"/>
-          <ellipse cx="60" cy="66" rx="40" ry="36" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
-          <path d="M22 30 A40 36 0 0 1 98 30" fill="none" stroke="url(#mgl)" stroke-width="6" stroke-linecap="round" opacity=".8"/>
-          <!-- 肚皮 J -->
-          <circle cx="60" cy="80" r="16" fill="rgba(255,255,255,.22)"/>
-          <text x="60" y="87" text-anchor="middle" dominant-baseline="central" font-size="22" font-weight="900" fill="#fff" font-family="sans-serif">J</text>
+          <!-- 小手 -->
+          <path class="arm" d="M20 76 q-12 2 -10 18" fill="none" stroke="url(#gg)" stroke-width="9" stroke-linecap="round"/>
+          <path class="arm" d="M100 76 q12 2 10 18" fill="none" stroke="url(#gg)" stroke-width="9" stroke-linecap="round"/>
+          <!-- 身体（圆顶 + 波浪裙摆） -->
+          <path d="M60 8 C28 8 18 36 18 66 L18 116 q7 -12 14 0 t14 0 t14 0 t14 0 t14 0 t14 0 L102 66 C102 36 92 8 60 8 Z" fill="url(#gg)"/>
+          <path d="M60 8 C28 8 18 36 18 66 L18 116 q7 -12 14 0 t14 0 t14 0 t14 0 t14 0 t14 0 L102 66 C102 36 92 8 60 8 Z" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+          <path d="M22 36 A40 30 0 0 1 98 36" fill="none" stroke="url(#ggl)" stroke-width="6" stroke-linecap="round" opacity=".8"/>
           <!-- 眼睛 -->
-          <circle class="eye" cx="46" cy="60" r="6.5" fill="#16203a"/>
-          <circle class="eye" cx="74" cy="60" r="6.5" fill="#16203a"/>
-          <circle cx="48" cy="58" r="2" fill="#fff"/><circle cx="76" cy="58" r="2" fill="#fff"/>
+          <ellipse class="eye" cx="46" cy="60" rx="7" ry="9.5" fill="#16203a"/>
+          <ellipse class="eye" cx="74" cy="60" rx="7" ry="9.5" fill="#16203a"/>
+          <circle cx="48.5" cy="56" r="2.6" fill="#fff"/><circle cx="76.5" cy="56" r="2.6" fill="#fff"/>
           <!-- 腮红 -->
-          <ellipse cx="38" cy="72" rx="6.5" ry="4.2" fill="#FF7EB6" opacity=".75"/>
-          <ellipse cx="82" cy="72" rx="6.5" ry="4.2" fill="#FF7EB6" opacity=".75"/>
+          <ellipse cx="35" cy="74" rx="6.5" ry="4.2" fill="#FF7EB6" opacity=".75"/>
+          <ellipse cx="85" cy="74" rx="6.5" ry="4.2" fill="#FF7EB6" opacity=".75"/>
           <!-- 嘴 -->
-          <path d="M54 72 Q60 78 66 72" fill="none" stroke="#16203a" stroke-width="2.2" stroke-linecap="round"/>
+          <ellipse cx="60" cy="78" rx="4.5" ry="5.5" fill="#16203a"/>
         </svg>
-        <div class="mascot-shadow"></div>
+        <div class="ghost-shadow"></div>
       </div>
       <div class="info">
         <div class="greet" id="greet"><span class="wave">👋</span> 你好呀～</div>
         <div class="name">文强哥 <span>Johnny520</span></div>
+        <div class="idline">
+          <span class="idtag">🤖 Android 开发者</span>
+          <span class="idtag">🛡️ 隐私防护</span>
+          <span class="idtag">🔧 LSPosed 模块作者</span>
+        </div>
+        <a class="gh-line" href="https://github.com/Johnny520" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          github.com/Johnny520
+        </a>
         <div class="clockrow">
           <svg class="analog" viewBox="0 0 100 100">
             <circle class="face" cx="50" cy="50" r="46"/>
@@ -319,22 +303,23 @@
     </nav>
 
     <div class="panel active" id="about">
-      <h3>关于我</h3>
-      <p class="lead">我是 <b>文强哥（Johnny520）</b>，一只爱写代码的喵～ 不，是一个人 😼。Android 个人开发者，专注实用工具与隐私防护类应用。
-      喜欢把复杂能力做成简单好用的产品——从系统清理到 LSPosed 模块，尽量自己造轮子、自己发版。
-      下面的开源项目，欢迎来 <b>Star</b> 与共建 💖</p>
+      <h3>关于我 & 我的专业</h3>
+      <p class="lead">我是 <b>文强哥（Johnny520）</b> 👻，一只爱写代码的幽灵～ 不，是一个 <b>Android 个人开发者</b>。
+      专注把复杂能力做成简单好用的产品：从系统清理、磁盘分区优化，到 <b>LSPosed 隐私防护模块</b>、广告拦截，尽量自己造轮子、自己发版。
+      相信「工具应当私密、可靠、属于用户自己」。下面这些开源项目，欢迎来 <b>GitHub</b> 看源码、提 Issue、点 <b>Star</b> 💖</p>
       <div class="chips">
         <span class="chip">🤖 Android 开发</span>
         <span class="chip">🟣 Kotlin / Java</span>
         <span class="chip">💙 Flutter / Dart</span>
-        <span class="chip">🔧 LSPosed 模块</span>
-        <span class="chip">🛡️ 逆向 & 隐私防护</span>
+        <span class="chip">🔧 LSPosed / Xposed</span>
+        <span class="chip">🛡️ 隐私 & 反检测</span>
         <span class="chip">🐍 Python 工具</span>
+        <span class="chip">📦 自签名发版</span>
       </div>
     </div>
 
     <div class="panel" id="projects">
-      <h3>开源项目</h3>
+      <h3>GitHub 开源项目</h3>
       <div class="grid" id="projGrid"></div>
     </div>
 
@@ -350,12 +335,13 @@
 
     <footer>
       <span>© <span id="year"></span> 文强哥 (Johnny520) · 版权所有 🐾</span>
-      <span>开源地址：<a href="https://github.com/Johnny520" target="_blank" rel="noopener">github.com/Johnny520</a></span>
+      <span>GitHub：<a href="https://github.com/Johnny520" target="_blank" rel="noopener">@Johnny520</a> · <a href="https://github.com/Johnny520?tab=repositories" target="_blank" rel="noopener">所有仓库</a></span>
     </footer>
   </main>
 
   <div class="tools">
     <a class="tool" id="themeBtn" href="javascript:void(0)" title="切换主题">🌗</a>
+    <a class="tool music" id="musicBtn" href="javascript:void(0)" title="背景音乐：忘了">🎵</a>
     <a class="tool" href="friend.html" title="友链申请">🔗</a>
     <a class="tool" id="topBtn" href="javascript:void(0)" title="返回顶部">↑</a>
   </div>
@@ -380,153 +366,110 @@
     grid.appendChild(a);
   });
 
-  // 主题
   var root = document.documentElement, saved = null;
   try { saved = localStorage.getItem("johnny-theme"); } catch(e){}
   if (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) saved = "light";
   if (saved) root.setAttribute("data-theme", saved);
   document.getElementById("themeBtn").addEventListener("click", function(){
     var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-    root.setAttribute("data-theme", next);
-    try { localStorage.setItem("johnny-theme", next); } catch(e){}
+    root.setAttribute("data-theme", next); try { localStorage.setItem("johnny-theme", next); } catch(e){}
   });
 
   // 鼠标液态光晕
   var glow = document.getElementById("glow");
   if (window.matchMedia && !window.matchMedia("(hover:none)").matches){
-    window.addEventListener("mousemove", function(e){
-      glow.style.left = e.clientX + "px"; glow.style.top = e.clientY + "px"; glow.style.opacity = "1";
-    });
-    window.addEventListener("mouseleave", function(){ glow.style.opacity = "0"; });
+    window.addEventListener("mousemove", function(e){ glow.style.left=e.clientX+"px"; glow.style.top=e.clientY+"px"; glow.style.opacity="1"; });
+    window.addEventListener("mouseleave", function(){ glow.style.opacity="0"; });
   }
 
   // 漂浮可爱元素
-  var fbox = document.getElementById("floaters");
-  var emos = ["✨","💗","🌟","🫧","💫","🐾","🌈","💖"];
-  for (var i=0;i<16;i++){
-    var s = document.createElement("span");
-    s.textContent = emos[i % emos.length];
-    s.style.left = (Math.random()*100) + "vw";
-    s.style.fontSize = (16 + Math.random()*18) + "px";
-    s.style.animationDuration = (10 + Math.random()*12) + "s";
-    s.style.animationDelay = (-Math.random()*18) + "s";
-    fbox.appendChild(s);
-  }
+  var fbox = document.getElementById("floaters"), emos = ["✨","💗","🌟","🫧","💫","🐾","🌈","💖","👻"];
+  for (var i=0;i<16;i++){ var s=document.createElement("span"); s.textContent=emos[i%emos.length];
+    s.style.left=(Math.random()*100)+"vw"; s.style.fontSize=(16+Math.random()*18)+"px";
+    s.style.animationDuration=(10+Math.random()*12)+"s"; s.style.animationDelay=(-Math.random()*18)+"s"; fbox.appendChild(s); }
 
   // 时钟
-  var g = document.getElementById("greet"), digi = document.getElementById("digi"),
-      dateEl = document.getElementById("date"), ah = document.getElementById("ah"),
-      am = document.getElementById("am"), as = document.getElementById("as");
-  function pad(n){ return n < 10 ? "0"+n : ""+n; }
-  function tick(){
-    var d = new Date(), h = d.getHours(), m = d.getMinutes(), s = d.getSeconds();
-    digi.textContent = pad(h)+":"+pad(m)+":"+pad(s);
-    var w = ["日","一","二","三","四","五","六"][d.getDay()];
-    dateEl.textContent = d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日 周"+w;
-    var h12 = h % 12;
-    ah.style.transform = "rotate("+(h12*30 + m*0.5)+"deg)";
-    am.style.transform = "rotate("+(m*6 + s*0.1)+"deg)";
-    as.style.transform = "rotate("+(s*6)+"deg)";
-    var greet = h<5?"夜深了，喵～":h<11?"早上好呀 ☀️":h<13?"中午好 🍱":h<18?"下午好 🌤️":h<23?"晚上好 🌙":"夜深了，喵～";
-    g.innerHTML = '<span class="wave">👋</span> ' + greet + '，欢迎来到 Johnny 的家';
-  }
-  tick(); setInterval(tick, 1000);
-  document.getElementById("year").textContent = new Date().getFullYear();
+  var g = document.getElementById("greet"), digi = document.getElementById("digi"), dateEl = document.getElementById("date"),
+      ah = document.getElementById("ah"), am = document.getElementById("am"), as = document.getElementById("as");
+  function pad(n){ return n<10?"0"+n:""+n; }
+  function tick(){ var d=new Date(),h=d.getHours(),m=d.getMinutes(),s=d.getSeconds();
+    digi.textContent=pad(h)+":"+pad(m)+":"+pad(s);
+    dateEl.textContent=d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日 周"+["日","一","二","三","四","五","六"][d.getDay()];
+    ah.style.transform="rotate("+((h%12)*30+m*0.5)+"deg)"; am.style.transform="rotate("+(m*6+s*0.1)+"deg)"; as.style.transform="rotate("+(s*6)+"deg)";
+    var gr=h<5?"夜深了，喵～":h<11?"早上好呀 ☀️":h<13?"中午好 🍱":h<18?"下午好 🌤️":h<23?"晚上好 🌙":"夜深了，喵～";
+    g.innerHTML='<span class="wave">👋</span> '+gr+'，欢迎来到 Johnny 的家'; }
+  tick(); setInterval(tick,1000);
+  document.getElementById("year").textContent=new Date().getFullYear();
 
-  // 标签切换（果冻滑动）
-  var tabs = document.getElementById("tabs"), pill = document.getElementById("pill"), btns = tabs.querySelectorAll("button");
-  function movePill(b){ pill.style.left = b.offsetLeft + "px"; pill.style.width = b.offsetWidth + "px"; }
+  // 标签切换
+  var tabs=document.getElementById("tabs"), pill=document.getElementById("pill"), btns=tabs.querySelectorAll("button");
+  function movePill(b){ pill.style.left=b.offsetLeft+"px"; pill.style.width=b.offsetWidth+"px"; }
   movePill(tabs.querySelector(".active"));
-  window.addEventListener("resize", function(){ var a = tabs.querySelector(".active"); if(a) movePill(a); });
-  btns.forEach(function(b){
-    b.addEventListener("click", function(){
-      btns.forEach(function(x){x.classList.remove("active");});
-      document.querySelectorAll(".panel").forEach(function(x){x.classList.remove("active");});
-      b.classList.add("active");
-      document.getElementById(b.getAttribute("data-tab")).classList.add("active");
-      movePill(b);
-    });
-  });
+  window.addEventListener("resize", function(){ var a=tabs.querySelector(".active"); if(a) movePill(a); });
+  btns.forEach(function(b){ b.addEventListener("click", function(){
+    btns.forEach(function(x){x.classList.remove("active");}); document.querySelectorAll(".panel").forEach(function(x){x.classList.remove("active");});
+    b.classList.add("active"); document.getElementById(b.getAttribute("data-tab")).classList.add("active"); movePill(b);
+  }); });
 
-  // 留言板（localStorage）
-  var KEY = "johnny-msgs", list = document.getElementById("msgList"),
-      nameI = document.getElementById("msgName"), textI = document.getElementById("msgText");
-  function load(){
-    var arr = []; try { arr = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){}
-    if (!arr.length){ list.innerHTML = '<div class="empty">还没有留言，来抢沙发吧 🛋️</div>'; return; }
-    list.innerHTML = "";
-    arr.slice().reverse().forEach(function(it){
-      var d = document.createElement("div"); d.className = "m";
-      d.innerHTML = '<b></b><time></time><p></p>';
-      d.querySelector("b").textContent = it.name;
-      d.querySelector("time").textContent = it.time;
-      d.querySelector("p").textContent = it.text;
-      list.appendChild(d);
-    });
-  }
+  // 留言板
+  var KEY="johnny-msgs", list=document.getElementById("msgList"), nameI=document.getElementById("msgName"), textI=document.getElementById("msgText");
+  function load(){ var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){}
+    if(!arr.length){ list.innerHTML='<div class="empty">还没有留言，来抢沙发吧 🛋️</div>'; return; }
+    list.innerHTML=""; arr.slice().reverse().forEach(function(it){ var d=document.createElement("div"); d.className="m";
+      d.innerHTML='<b></b><time></time><p></p>'; d.querySelector("b").textContent=it.name; d.querySelector("time").textContent=it.time; d.querySelector("p").textContent=it.text; list.appendChild(d); }); }
   document.getElementById("msgSend").addEventListener("click", function(){
-    var name = (nameI.value || "").trim() || "匿名访客 🐱", text = (textI.value || "").trim();
-    if (!text){ textI.focus(); return; }
-    var arr = []; try { arr = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){}
-    var d = new Date();
-    arr.push({name:name, text:text, time:d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+pad(d.getHours())+":"+pad(d.getMinutes())});
-    try { localStorage.setItem(KEY, JSON.stringify(arr.slice(-50))); } catch(e){}
-    textI.value = ""; load();
-  });
+    var name=(nameI.value||"").trim()||"匿名访客 🐱", text=(textI.value||"").trim(); if(!text){ textI.focus(); return; }
+    var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){} var d=new Date();
+    arr.push({name:name,text:text,time:d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+pad(d.getHours())+":"+pad(d.getMinutes())});
+    try{localStorage.setItem(KEY,JSON.stringify(arr.slice(-50)));}catch(e){} textI.value=""; load(); });
   load();
 
-  // 返回顶部
-  document.getElementById("topBtn").addEventListener("click", function(){
-    window.scrollTo({top:0, behavior:"smooth"});
-  });
+  document.getElementById("topBtn").addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
 
-  // 轻量光点背景
-  var cv = document.getElementById("stars"), ctx = cv.getContext("2d"), pts = [];
-  function resize(){ cv.width = innerWidth; cv.height = innerHeight; }
-  resize(); addEventListener("resize", resize);
-  var N = innerWidth < 600 ? 26 : 48;
-  for (var i=0;i<N;i++){ pts.push({x:Math.random()*cv.width, y:Math.random()*cv.height,
-    r:Math.random()*1.6+0.4, vx:(Math.random()-.5)*0.25, vy:(Math.random()-.5)*0.25}); }
-  function draw(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    ctx.fillStyle = root.getAttribute("data-theme") !== "light" ? "rgba(255,255,255,.7)" : "rgba(120,150,230,.5)";
-    pts.forEach(function(p){
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>cv.width) p.vx*=-1; if(p.y<0||p.y>cv.height) p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-  if (!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches)) draw();
+  // 光点背景
+  var cv=document.getElementById("stars"), ctx=cv.getContext("2d"), pts=[];
+  function resize(){ cv.width=innerWidth; cv.height=innerHeight; } resize(); addEventListener("resize",resize);
+  var N=innerWidth<600?26:48; for(var i=0;i<N;i++){ pts.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.6+0.4,vx:(Math.random()-.5)*0.25,vy:(Math.random()-.5)*0.25}); }
+  function draw(){ ctx.clearRect(0,0,cv.width,cv.height); ctx.fillStyle=root.getAttribute("data-theme")!=="light"?"rgba(255,255,255,.7)":"rgba(120,150,230,.5)";
+    pts.forEach(function(p){ p.x+=p.vx;p.y+=p.vy; if(p.x<0||p.x>cv.width)p.vx*=-1; if(p.y<0||p.y>cv.height)p.vy*=-1; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill(); }); requestAnimationFrame(draw); }
+  if(!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches)) draw();
 
-  // 戳吉祥物撒花 🎉
-  var cf = document.getElementById("confetti"), cctx = cf.getContext("2d"), parts = [];
-  function cfResize(){ cf.width = innerWidth; cf.height = innerHeight; }
-  cfResize(); addEventListener("resize", cfResize);
-  var cols = ["#4F7CFF","#7C5CFF","#21D4FD","#FF7EB6","#FFD166","#06D6A0"];
-  function burst(x,y){
-    for (var i=0;i<90;i++){
-      var a = Math.random()*Math.PI*2, sp = 3+Math.random()*7;
-      parts.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3,
-        g:0.16, sz:5+Math.random()*7, rot:Math.random()*6, vr:(Math.random()-.5)*.4,
-        c:cols[(Math.random()*cols.length)|0], life:1});
+  // 戳吉祥物撒花
+  var cf=document.getElementById("confetti"), cctx=cf.getContext("2d"), parts=[], cfRun=false;
+  function cfResize(){ cf.width=innerWidth; cf.height=innerHeight; } cfResize(); addEventListener("resize",cfResize);
+  var cols=["#4F7CFF","#7C5CFF","#21D4FD","#FF7EB6","#FFD166","#06D6A0"];
+  function burst(x,y){ for(var i=0;i<90;i++){ var a=Math.random()*Math.PI*2,sp=3+Math.random()*7;
+    parts.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3,g:0.16,sz:5+Math.random()*7,rot:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[(Math.random()*cols.length)|0],life:1}); }
+    if(!cfRun){ cfRun=true; requestAnimationFrame(cfLoop); } }
+  function cfLoop(){ cctx.clearRect(0,0,cf.width,cf.height);
+    parts.forEach(function(p){ p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.life-=0.012;
+      cctx.save(); cctx.translate(p.x,p.y); cctx.rotate(p.rot); cctx.globalAlpha=Math.max(p.life,0); cctx.fillStyle=p.c; cctx.fillRect(-p.sz/2,-p.sz/2,p.sz,p.sz*0.6); cctx.restore(); });
+    parts=parts.filter(function(p){ return p.life>0 && p.y<cf.height+40; });
+    if(parts.length){ requestAnimationFrame(cfLoop); } else { cfRun=false; cctx.clearRect(0,0,cf.width,cf.height); } }
+  document.getElementById("mascot").addEventListener("click", function(e){ var r=this.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2); });
+
+  // 背景音乐《忘了》：优先播放 assets/music/forgot.mp3，缺失则用 Web Audio 合成轻柔演示旋律
+  var bgm=document.getElementById("bgm"), musicBtn=document.getElementById("musicBtn"), playing=false, synthOn=false, actx=null, synthTimer=null;
+  bgm.addEventListener("error", function(){ /* 文件缺失，将走合成兜底 */ });
+  var scale=[261.63,293.66,329.63,392.00,440.00,523.25]; // C D E G A C 五声风
+  function startSynth(){ try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
+    var i=0; synthTimer=setInterval(function(){ if(!actx) return;
+      var o=actx.createOscillator(), gn=actx.createGain(); o.type="sine";
+      o.frequency.value=scale[i%scale.length]*(i%8<4?1:0.5);
+      gn.gain.setValueAtTime(0.0001,actx.currentTime); gn.gain.exponentialRampToValueAtTime(0.10,actx.currentTime+0.06);
+      gn.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+1.25);
+      o.connect(gn); gn.connect(actx.destination); o.start(); o.stop(actx.currentTime+1.35); i++; }, 720); synthOn=true; }
+  function stopSynth(){ if(synthTimer) clearInterval(synthTimer); synthTimer=null; synthOn=false; if(actx){ try{actx.close();}catch(e){} actx=null; } }
+  musicBtn.addEventListener("click", function(){
+    if(!playing){
+      var p=bgm.play();
+      if(p&&p.catch){ p.catch(function(){ if(!synthOn) startSynth(); }); }
+      else if(bgm.error){ if(!synthOn) startSynth(); }
+      playing=true; musicBtn.classList.add("on"); musicBtn.title="背景音乐：忘了（演示旋律）";
+    } else {
+      if(synthOn) stopSynth(); else bgm.pause();
+      playing=false; musicBtn.classList.remove("on"); musicBtn.title="背景音乐：忘了";
     }
-    if (!cfRun) { cfRun = true; requestAnimationFrame(cfLoop); }
-  }
-  var cfRun = false;
-  function cfLoop(){
-    cctx.clearRect(0,0,cf.width,cf.height);
-    parts.forEach(function(p){
-      p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life -= 0.012;
-      cctx.save(); cctx.translate(p.x,p.y); cctx.rotate(p.rot); cctx.globalAlpha = Math.max(p.life,0);
-      cctx.fillStyle = p.c; cctx.fillRect(-p.sz/2,-p.sz/2,p.sz,p.sz*0.6); cctx.restore();
-    });
-    parts = parts.filter(function(p){ return p.life>0 && p.y < cf.height+40; });
-    if (parts.length){ requestAnimationFrame(cfLoop); } else { cfRun = false; cctx.clearRect(0,0,cf.width,cf.height); }
-  }
-  document.getElementById("mascot").addEventListener("click", function(e){
-    var r = this.getBoundingClientRect();
-    burst(r.left + r.width/2, r.top + r.height/2);
   });
 })();
 </script>
