@@ -84,12 +84,9 @@
   .devil-track{position:fixed; top:0; left:0; right:0; height:66px; z-index:4; pointer-events:none; overflow:hidden}
   .devil{position:absolute; top:8px; left:0; width:58px; height:56px; cursor:pointer; pointer-events:auto;
     transition:transform .09s linear; will-change:transform}
-  .devil svg{width:58px; height:56px; display:block; animation:bobdevil .52s ease-in-out infinite; filter:drop-shadow(0 6px 10px var(--shadow))}
+  .devil img{width:58px; height:56px; display:block; object-fit:contain; animation:bobdevil .52s ease-in-out infinite; filter:drop-shadow(0 6px 10px var(--shadow))}
   @keyframes bobdevil{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-  .devil .eye{transform-origin:center; animation:blink 3.4s infinite}
-  .devil .tail{transform-origin:50px 44px; animation:tailwag 1.4s ease-in-out infinite}
-  @keyframes tailwag{0%,100%{transform:rotate(0)}50%{transform:rotate(14deg)}}
-  @media (prefers-reduced-motion:reduce){ .devil svg,.devil .eye,.devil .tail{animation:none} }
+  @media (prefers-reduced-motion:reduce){ .devil img{animation:none} }
 
   header{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
   .brand{font-size:34px; font-weight:900; letter-spacing:.5px; position:relative;
@@ -246,46 +243,7 @@
 
   <div class="devil-track" id="devilTrack">
     <div class="devil" id="devil" title="戳我一下 🎉">
-      <svg viewBox="0 0 64 64" aria-label="Johnny 小恶魔吉祥物">
-        <defs>
-          <linearGradient id="dg" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#FF9DB0"/><stop offset=".5" stop-color="#FF6FB5"/><stop offset="1" stop-color="#9B6BFF"/>
-          </linearGradient>
-          <radialGradient id="dbelly" cx=".5" cy=".38" r=".72">
-            <stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
-          </radialGradient>
-          <linearGradient id="dw" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#B79CFF" stop-opacity=".95"/><stop offset="1" stop-color="#7C5CFF" stop-opacity=".8"/>
-          </linearGradient>
-        </defs>
-        <!-- 卷卷尾巴 + 小爱心尖 -->
-        <path class="tail" d="M49 47 q15 1 13 -13 q-3 9 -11 8" fill="none" stroke="url(#dg)" stroke-width="4.5" stroke-linecap="round"/>
-        <path d="M60 31 q-3 -4 -6 0 q-3 -4 -6 0 q0 5 6 8 q6 -3 6 -8 Z" fill="#FF8FA3"/>
-        <!-- 小蝙蝠翅膀（在身体后面） -->
-        <path d="M19 24 C12 16 4 17 3 25 C6 22 7 26 10 25 C10 30 14 30 16 27 C17 31 19 30 19 26 Z" fill="url(#dw)"/>
-        <path d="M45 24 C52 16 60 17 61 25 C58 22 57 26 54 25 C54 30 50 30 48 27 C47 31 45 30 45 26 Z" fill="url(#dw)"/>
-        <!-- 圆润小角 -->
-        <path d="M22 14 C20 7 16 5 13 6 C16 9 18 12 21 15 Z" fill="url(#dg)"/>
-        <path d="M42 14 C44 7 48 5 51 6 C48 9 46 12 43 15 Z" fill="url(#dg)"/>
-        <!-- 萌身体 -->
-        <path d="M32 10 C17 10 11 22 12 35 C13 48 22 58 32 58 C42 58 51 48 52 35 C53 22 47 10 32 10 Z" fill="url(#dg)"/>
-        <!-- 肚皮柔光 -->
-        <path d="M32 19 C25 19 22 28 22 37 C22 46 26 51 32 51 C38 51 42 46 42 37 C42 28 39 19 32 19 Z" fill="url(#dbelly)"/>
-        <!-- 腮红 -->
-        <ellipse cx="17" cy="40" rx="4.6" ry="3" fill="#FF7EB6" opacity=".8"/>
-        <ellipse cx="47" cy="40" rx="4.6" ry="3" fill="#FF7EB6" opacity=".8"/>
-        <!-- 大眼睛 + 高光 -->
-        <ellipse class="eye" cx="24" cy="34" rx="6.2" ry="7.6" fill="#2a1733"/>
-        <ellipse class="eye" cx="40" cy="34" rx="6.2" ry="7.6" fill="#2a1733"/>
-        <circle cx="26.4" cy="30.5" r="2.7" fill="#fff"/>
-        <circle cx="42.4" cy="30.5" r="2.7" fill="#fff"/>
-        <circle cx="22.4" cy="37" r="1.5" fill="#fff" opacity=".85"/>
-        <circle cx="38.4" cy="37" r="1.5" fill="#fff" opacity=".85"/>
-        <!-- 嘴巴 + 小尖牙 -->
-        <path d="M28 44 q4 4 8 0 q-4 2.6 -8 0 Z" fill="#5a1f3d"/>
-        <path d="M29.6 44 l1.5 3 l1.5 -3 Z" fill="#fff"/>
-        <path d="M34 44 l1.5 3 l1.5 -3 Z" fill="#fff"/>
-      </svg>
+      <img src="assets/images/devil.png" alt="文强网络科技 · 小恶魔吉祥物" />
     </div>
   </div>
 
@@ -547,6 +505,6 @@
   })();
 </script>
   <!-- 不蒜子：全站真实访问量/访客数计数（国内可达，服务端持久化） -->
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/b.mini.js"></script>
 </body>
 </html>
