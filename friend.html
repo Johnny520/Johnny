@@ -1,83 +1,185 @@
-<!--
-拟态UI4.0个人主页设计采用GPL3.0开源协议
-博客：www.xfwl.club
-作者：小枫
-QQ：1809185784
--->
 <!DOCTYPE html>
-<html lang="zh-CN">
-
+<html lang="zh-CN" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>申请友链-个人引导页</title>
-    <link rel="shortcut icon" href="https://www.xfwl.club/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="assets/font/iconfont.css">
-    <link rel="stylesheet" href="assets/css/friend-1.css">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/font.css">
-    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://npm.elemecdn.com/sweetalert/dist/sweetalert.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<title>友链申请 · Johnny (文强哥)</title>
+<meta name="description" content="与文强哥 (Johnny520) 互换友情链接的申请页。">
+<meta name="author" content="文强哥 (Johnny520)">
+<style>
+  :root{
+    --bg1:#0b1020; --bg2:#131a33; --bg3:#1a1140;
+    --card:rgba(255,255,255,.10); --card-strong:rgba(255,255,255,.16);
+    --text:#eaf0ff; --muted:#9fb0d6; --faint:#6b7aa3;
+    --accent:#4F7CFF; --accent2:#7C5CFF; --accent3:#21D4FD;
+    --border:rgba(255,255,255,.22); --hl:rgba(255,255,255,.45); --shadow:rgba(0,0,0,.45);
+  }
+  html[data-theme="light"]{
+    --bg1:#eaf0ff; --bg2:#dbe4ff; --bg3:#eadcff;
+    --card:rgba(255,255,255,.55); --card-strong:rgba(255,255,255,.72);
+    --text:#16203a; --muted:#566389; --faint:#8a97b8;
+    --accent:#3a66ff; --accent2:#7C5CFF; --accent3:#0fb6e6;
+    --border:rgba(255,255,255,.85); --hl:rgba(255,255,255,.9); --shadow:rgba(80,110,180,.25);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--text); background:var(--bg1); min-height:100vh; display:flex; align-items:center;
+    justify-content:center; padding:28px 16px; position:relative; overflow-x:hidden;
+    transition:color .4s, background .4s}
+  .bg{position:fixed; inset:0; z-index:-2;
+    background:
+      radial-gradient(1100px 700px at 12% 0%, rgba(79,124,255,.32), transparent 60%),
+      radial-gradient(900px 700px at 88% 12%, rgba(124,92,255,.28), transparent 60%),
+      radial-gradient(900px 800px at 50% 100%, rgba(33,212,253,.22), transparent 60%),
+      linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3)); transition:background .6s}
+  .blob{position:fixed; z-index:-1; border-radius:50%; filter:blur(60px); opacity:.5; mix-blend-mode:screen; animation:fl 18s ease-in-out infinite}
+  .blob.b1{width:40vw;height:40vw;left:-6vw;top:-8vh;background:radial-gradient(circle,#4F7CFF,transparent 70%)}
+  .blob.b2{width:36vw;height:36vw;right:-5vw;top:10vh;background:radial-gradient(circle,#7C5CFF,transparent 70%);animation-delay:-7s}
+  html[data-theme="light"] .blob{mix-blend-mode:multiply;opacity:.4}
+  @keyframes fl{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.07)}66%{transform:translate(-3vw,-2vh) scale(.96)}}
+
+  .glass{background:linear-gradient(135deg,var(--card-strong),var(--card));
+    backdrop-filter:blur(26px) saturate(180%); -webkit-backdrop-filter:blur(26px) saturate(180%);
+    border:1px solid var(--border); border-radius:28px;
+    box-shadow:0 18px 50px var(--shadow), inset 0 1px 0 var(--hl); position:relative; overflow:hidden}
+  .glass::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.22),transparent 38%);pointer-events:none}
+
+  .card{width:min(620px,100%); padding:32px 30px 26px; z-index:1}
+  .brand{font-size:26px; font-weight:800; letter-spacing:.5px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
+    -webkit-background-clip:text; background-clip:text; color:transparent}
+  .brand small{display:block; font-size:11.5px; font-weight:600; color:var(--muted); letter-spacing:2px; margin-top:2px; -webkit-text-fill-color:var(--muted)}
+  h3{font-size:16px; margin:22px 0 12px; display:flex; align-items:center; gap:8px}
+  h3::before{content:""; width:6px; height:18px; border-radius:3px; background:linear-gradient(var(--accent),var(--accent2))}
+  .lead{color:var(--muted); line-height:1.8; font-size:14px}
+  ol{margin:6px 0 0 18px; color:var(--muted); font-size:13.5px; line-height:2}
+  ol b{color:var(--text)}
+  .field{margin-top:14px}
+  .field label{display:block; font-size:13px; font-weight:700; margin-bottom:6px; color:var(--text)}
+  .field input, .field textarea{width:100%; font:inherit; font-size:14px; color:var(--text);
+    background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px 14px; outline:none;
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+  .field textarea{resize:vertical; min-height:70px}
+  .field input::placeholder, .field textarea::placeholder{color:var(--faint)}
+  .field .err{color:#ff7a90; font-size:12px; margin-top:5px; display:none}
+  .field.invalid .err{display:block}
+  .field.invalid input, .field.invalid textarea{border-color:#ff7a90}
+  .actions{display:flex; gap:12px; margin-top:20px; align-items:center; flex-wrap:wrap}
+  .btn{border:0; cursor:pointer; font:inherit; font-weight:800; font-size:14px; color:#fff; padding:12px 24px; border-radius:14px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2)); box-shadow:0 8px 22px rgba(79,124,255,.45), inset 0 1px 0 var(--hl); transition:transform .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .ghost{color:var(--accent3); text-decoration:none; font-weight:700; font-size:14px}
+  .ghost:hover{text-decoration:underline}
+  .preview{margin-top:18px; display:none; padding:14px 16px; border-radius:14px; background:var(--card);
+    border:1px solid var(--border); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+  .preview code{display:block; white-space:pre-wrap; word-break:break-all; font-size:12.5px; color:var(--muted); line-height:1.7}
+  .toast{position:fixed; left:50%; bottom:32px; transform:translateX(-50%) translateY(20px); opacity:0;
+    background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-weight:700; font-size:14px;
+    padding:13px 22px; border-radius:14px; box-shadow:0 12px 30px var(--shadow); transition:.35s; z-index:9; pointer-events:none}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+  footer{margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:12.5px; color:var(--muted); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  footer a{color:var(--accent3); text-decoration:none; font-weight:700}
+
+  .tools{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:10px; z-index:5}
+  .tool{width:46px;height:46px; display:grid; place-items:center; cursor:pointer; font-size:20px; color:var(--text); text-decoration:none;
+    background:linear-gradient(135deg,var(--card-strong),var(--card)); border:1px solid var(--border); border-radius:14px;
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); box-shadow:0 8px 22px var(--shadow), inset 0 1px 0 var(--hl); transition:transform .2s}
+  .tool:hover{transform:translateY(-3px)}
+  @media (max-width:560px){ .card{padding:26px 18px 20px} }
+  @media (prefers-reduced-motion:reduce){ .blob{animation:none} *{transition:none!important} }
+</style>
 </head>
-
 <body>
-    <div class="xf_load"></div>
-    <div class="core">
-        <main class="xf_main firend_mimic_outer">
-            <div class="xf_biaoti">
-                <h1>friend/申请友链</h1>
-                <div class="underscore"><span></span></div>
-            </div>
-            <div class="xf_illustrate">
-                <h3 class="firend_mimic_outer" style="margin-top: 10px;">友情链接规范：</h3>
-                <ol>
-                    <li>添加本站友链或网站已ICP备案优先收录</li>
-                    <li>网站名称：<span>小枫网络</span></li>
-                    <li>网站URL：https://www.xfwl.club</li>
-                    <li>网站ICO：https://www.xfwl.club/favicon.ico<small>( ico是用于展示网站个性的缩略logo标志 )</small></li>
-                    <li>网站介绍：小枫网络是一家免费资源共享平台，专为新手打造的免费共享资源网,来这里璇与你一起访问爱问共享资料平台学习。</li>
-                </ol>
-            </div>
-            <div class="xf_biaodan">
-                <form action="" method="" class="xf_form_data">
-                    <div class="shipei-1">
-                        <input type="text" name="web-name" placeholder="填写网站名称" id="web_name" maxlength="15">
-                        <input type="text" name="web-url" placeholder="填写网站URL" id="web_url" maxlength="70">
-                        <input type="text" name="web-ico" placeholder="填写网站ICO" id="web_ico">
-                        <input type="email" name="web-email" placeholder="填写你的QQ邮箱" id="friend_inpemail" maxlength="50">
-                        <textarea name="web-introduce" rows="5" placeholder="填写网站介绍" id="web_introduce_30" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\.\,\?\。\，\-\——\;\！\!\+\$]/g,'')" maxlength="30"></textarea>
-                    </div>
-                    <div class="shipei-2" style="text-align: right;">
-                        <div class="controls">
-                            <div>
-                                <span class="useCount" id="useCount">0</span>
-                                <span>/</span>
-                                <span style="color: var(--red);">30</span>
-                            </div>
-                        </div>
-                        <span class="xf_sryzm">输入验证码：</span>
-                        <input class="xf_verify" type="text" autocomplete="off" maxlength="6"
-                            onkeyup="value=value.replace(/[^\d\.]/g,'')">
-                        <div class="xf_verify_code firend_mimic_outer"></div>
-                        <input class="xf_submit" type="submit" value="提 交">
-                    </div>
-                </form>
-            </div>
-        </main>
-        <footer class="firend_mimic_outer">
-            <p>Copyright &copy; 2022 <a href="https://www.xfwl.club" target="_blank" rel="noopener noreferrer">小枫网络</a>
-                版权所有&nbsp;<span>本站已安全运行<b id="xf_time"></b>天</span></p>
-            <p><img src="assets/images/filing.png" alt="备案ico"><a href="http://beian.miit.gov.cn/" target="_blank"
-                    rel="noopener noreferrer">赣ICP备2020011714号</a></p>
-            <!-- 希望大家可以把他留下😊🧡 -->
-            <!-- 开源地址：https://gitee.com/xfwlclub/nitai4 -->
-            <p>开源地址：<a href="https://gitee.com/xfwlclub/nitai4" target="_blank" rel="noopener noreferrer">gitee</a></p>
-        </footer>
-    </div>
-    <script src="assets/js/friend.js"></script>
-    <script src="assets/js/fireworks.js"></script>
-        
-</body>
+  <div class="bg"></div><div class="blob b1"></div><div class="blob b2"></div>
 
+  <main class="glass card">
+    <div class="brand">友链申请<small>JOHNNY · 文强哥 (JOHNNY520)</small></div>
+
+    <h3>互换友链规范</h3>
+    <ol>
+      <li>本站名称：<b>Johnny · 文强哥</b></li>
+      <li>本站地址：<b>https://johnny520.github.io</b></li>
+      <li>本站简介：Android 个人开发者，开源实用工具与 LSPosed 模块。</li>
+      <li>已添加本站友链者优先收录；内容合规、长期可访问优先。</li>
+      <li>提交后请在下方生成代码，并通过 <b>GitHub Issues</b> 发给文强哥。</li>
+    </ol>
+
+    <h3>填写你的站点</h3>
+    <div class="field" id="f-name">
+      <label>网站名称</label>
+      <input id="web-name" placeholder="例如：文强哥的小站" maxlength="20">
+      <div class="err">请填写网站名称</div>
+    </div>
+    <div class="field" id="f-url">
+      <label>网站地址 (URL)</label>
+      <input id="web-url" placeholder="https://example.com" maxlength="80">
+      <div class="err">请填写合法的 http(s) 链接</div>
+    </div>
+    <div class="field" id="f-ico">
+      <label>网站图标 (ICO，可选)</label>
+      <input id="web-ico" placeholder="https://example.com/favicon.ico" maxlength="120">
+      <div class="err">图标需为合法链接</div>
+    </div>
+    <div class="field" id="f-intro">
+      <label>网站介绍 (≤40字)</label>
+      <textarea id="web-intro" placeholder="一句话介绍你的站点" maxlength="40"></textarea>
+      <div class="err">请填写站点介绍</div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="gen">生成友链代码</button>
+      <a class="ghost" href="index.html">← 返回主页</a>
+    </div>
+
+    <div class="preview" id="preview">
+      <code id="code"></code>
+    </div>
+  </main>
+
+  <div class="tools">
+    <a class="tool" id="themeBtn" href="javascript:void(0)" title="切换主题">🌗</a>
+    <a class="tool" href="index.html" title="返回主页">🏠</a>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.documentElement, saved = null;
+  try { saved = localStorage.getItem("johnny-theme"); } catch(e){}
+  if (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) saved = "light";
+  if (saved) root.setAttribute("data-theme", saved);
+  document.getElementById("themeBtn").addEventListener("click", function(){
+    var n = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    root.setAttribute("data-theme", n); try{ localStorage.setItem("johnny-theme", n); }catch(e){}
+  });
+
+  function val(id){ return (document.getElementById(id).value || "").trim(); }
+  function setErr(id, on){ document.getElementById(id).classList.toggle("invalid", on); }
+  function isUrl(s){ return /^https?:\/\/.+\..+/.test(s); }
+
+  var toast = document.getElementById("toast"), t;
+  function show(msg){ toast.textContent = msg; toast.classList.add("show");
+    clearTimeout(t); t = setTimeout(function(){ toast.classList.remove("show"); }, 2600); }
+
+  document.getElementById("gen").addEventListener("click", function(){
+    var name = val("web-name"), url = val("web-url"), ico = val("web-ico"), intro = val("web-intro");
+    var ok = true;
+    setErr("f-name", !name); if(!name) ok=false;
+    setErr("f-url", !isUrl(url)); if(!isUrl(url)) ok=false;
+    setErr("f-ico", ico && !isUrl(ico)); if(ico && !isUrl(ico)) ok=false;
+    setErr("f-intro", !intro); if(!intro) ok=false;
+    if(!ok){ show("请检查标红的字段 🔍"); return; }
+    var code = '<a href="'+url+'" target="_blank" rel="noopener">\n'
+            + '  <img src="'+(ico||"")+'" alt="'+name+'"> '+name+'\n'
+            + '</a>\n'
+            + '<!-- '+name+'：'+(intro)+' | '+url+' -->';
+    document.getElementById("code").textContent = code;
+    document.getElementById("preview").style.display = "block";
+    show("已生成 ✅ 请通过 GitHub Issues 发给文强哥");
+  });
+})();
+</script>
+</body>
 </html>

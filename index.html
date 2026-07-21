@@ -1,315 +1,394 @@
-<!--
-拟态UI4.0个人主页设计采用GPL3.0开源协议
-博客：www.xfwl.club
-作者：小枫
-QQ：1809185784
--->
 <!DOCTYPE html>
-<html lang="zh-CN">
-
+<html lang="zh-CN" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=0, maximum-scale=1">
-    <title>文强哥拟态ui4.0-个人引导页</title>
-    <meta name="keywords" content="拟态ui设计,拟态ui,个人引导页,个人主页,个人介绍页,拟态引导页,简约个人主页,个人主页源码">
-    <meta name="description" content="拟态UI设计是文强哥原创的一款简约平滑开源的个人主页设计。">
-    <meta name="author" content="文强哥QQ1689969048">
-    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/font.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <!-- 如果这些插件库某天失效了，可以尝试把插件库存放到自己的cdn里（不建议存放本地） -->
-    <script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/axios/0.19.2/axios.min.js"></script>
-    <script src="https://cdn.staticfile.org/dayjs/1.8.21/dayjs.min.js"></script>
-    <script src="https://npm.elemecdn.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://npm.elemecdn.com/dark-mode-switcheroo/dist/dark-mode.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<title>Johnny · 文强哥 (Johnny520)</title>
+<meta name="description" content="Johnny（文强哥 / Johnny520）的个人主页 —— 液态玻璃 UI 风格，聚合分区清理大师、anti-detect、JohnnyAdBlock 等开源项目。">
+<meta name="author" content="文强哥 (Johnny520)">
+<style>
+  :root{
+    --bg1:#0b1020; --bg2:#131a33; --bg3:#1a1140;
+    --card: rgba(255,255,255,.10);
+    --card-strong: rgba(255,255,255,.16);
+    --text:#eaf0ff; --muted:#9fb0d6; --faint:#6b7aa3;
+    --accent:#4F7CFF; --accent2:#7C5CFF; --accent3:#21D4FD;
+    --border: rgba(255,255,255,.22);
+    --hl: rgba(255,255,255,.45);
+    --shadow: rgba(0,0,0,.45);
+  }
+  html[data-theme="light"]{
+    --bg1:#eaf0ff; --bg2:#dbe4ff; --bg3:#eadcff;
+    --card: rgba(255,255,255,.55);
+    --card-strong: rgba(255,255,255,.72);
+    --text:#16203a; --muted:#566389; --faint:#8a97b8;
+    --accent:#3a66ff; --accent2:#7C5CFF; --accent3:#0fb6e6;
+    --border: rgba(255,255,255,.85);
+    --hl: rgba(255,255,255,.9);
+    --shadow: rgba(80,110,180,.25);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--text); background:var(--bg1);
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:28px 16px; overflow-x:hidden; position:relative;
+    transition:color .4s ease, background .4s ease;
+  }
+  /* 动态渐变背景 + 流动光斑 */
+  .bg{position:fixed; inset:0; z-index:-2; overflow:hidden;
+    background:
+      radial-gradient(1200px 800px at 10% 0%, rgba(79,124,255,.35), transparent 60%),
+      radial-gradient(1000px 700px at 90% 10%, rgba(124,92,255,.30), transparent 60%),
+      radial-gradient(900px 900px at 50% 100%, rgba(33,212,253,.25), transparent 60%),
+      linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+    transition:background .6s ease;
+  }
+  .blob{position:fixed; z-index:-1; border-radius:50%; filter:blur(60px); opacity:.55;
+    mix-blend-mode:screen; animation:float 18s ease-in-out infinite;}
+  .blob.b1{width:42vw;height:42vw;left:-8vw;top:-10vh;background:radial-gradient(circle,#4F7CFF,transparent 70%)}
+  .blob.b2{width:38vw;height:38vw;right:-6vw;top:8vh;background:radial-gradient(circle,#7C5CFF,transparent 70%);animation-delay:-6s}
+  .blob.b3{width:46vw;height:46vw;left:20vw;bottom:-18vh;background:radial-gradient(circle,#21D4FD,transparent 70%);animation-delay:-12s}
+  html[data-theme="light"] .blob{mix-blend-mode:multiply; opacity:.4}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1)}
+    33%{transform:translate(4vw,3vh) scale(1.08)}
+    66%{transform:translate(-3vw,-2vh) scale(.95)}
+  }
+  #stars{position:fixed; inset:0; z-index:-1; pointer-events:none}
+
+  /* 液态玻璃卡片 */
+  .glass{
+    background:linear-gradient(135deg, var(--card-strong), var(--card));
+    backdrop-filter:blur(26px) saturate(180%);
+    -webkit-backdrop-filter:blur(26px) saturate(180%);
+    border:1px solid var(--border);
+    border-radius:28px;
+    box-shadow:0 18px 50px var(--shadow), inset 0 1px 0 var(--hl);
+    position:relative; overflow:hidden;
+  }
+  .glass::before{content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(255,255,255,.22), transparent 38%);
+    pointer-events:none;}
+
+  .card{width:min(880px,100%); padding:34px 32px 26px; z-index:1}
+  header{display:flex; align-items:center; justify-content:space-between; gap:12px}
+  .brand{font-size:30px; font-weight:800; letter-spacing:.5px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 1px 0 var(--hl);}
+  .brand small{display:block; font-size:12px; font-weight:600; color:var(--muted);
+    letter-spacing:2px; margin-top:2px; -webkit-text-fill-color:var(--muted)}
+
+  .hero{display:flex; align-items:center; gap:24px; margin:26px 0 8px; flex-wrap:wrap}
+  .avatar{width:96px; height:96px; flex:0 0 auto; filter:drop-shadow(0 6px 18px var(--shadow))}
+  .hero .info{flex:1 1 220px; min-width:0}
+  .greet{color:var(--muted); font-size:14px; letter-spacing:.5px}
+  .name{font-size:26px; font-weight:800; margin:2px 0 8px}
+  .name span{font-size:15px; font-weight:600; color:var(--accent3); margin-left:8px;
+    background:var(--card); border:1px solid var(--border); padding:2px 10px; border-radius:999px;
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+  .clockrow{display:flex; align-items:center; gap:14px}
+  .analog{width:54px;height:54px; filter:drop-shadow(0 2px 6px var(--shadow))}
+  .analog .face{fill:var(--card); stroke:var(--border); stroke-width:2}
+  .analog .tick{stroke:var(--faint); stroke-width:1.5}
+  .analog .h{stroke:var(--text); stroke-width:3.4; stroke-linecap:round; transform-origin:50px 50px}
+  .analog .m{stroke:var(--accent); stroke-width:2.6; stroke-linecap:round; transform-origin:50px 50px}
+  .analog .s{stroke:var(--accent3); stroke-width:1.4; stroke-linecap:round; transform-origin:50px 50px}
+  .analog .dot{fill:var(--accent3)}
+  .digi{font-variant-numeric:tabular-nums; font-size:22px; font-weight:700; letter-spacing:1px}
+  .digi small{display:block; font-size:12px; font-weight:600; color:var(--muted); letter-spacing:1px}
+
+  .tabs{display:flex; gap:6px; margin:24px 0 18px; padding:5px;
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+  .tabs button{flex:1; border:0; background:transparent; color:var(--muted);
+    font-size:15px; font-weight:700; padding:11px 8px; border-radius:11px; cursor:pointer;
+    transition:.25s}
+  .tabs button.active{color:var(--text);
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    box-shadow:0 6px 18px rgba(79,124,255,.4), inset 0 1px 0 var(--hl)}
+
+  .panel{display:none; animation:fade .4s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+  .panel h3{font-size:16px; margin-bottom:12px; display:flex; align-items:center; gap:8px}
+  .panel h3::before{content:""; width:6px; height:18px; border-radius:3px;
+    background:linear-gradient(var(--accent),var(--accent2))}
+  .lead{color:var(--muted); line-height:1.8; font-size:14.5px}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+  .chip{font-size:12.5px; font-weight:600; color:var(--text);
+    background:var(--card); border:1px solid var(--border); padding:6px 12px; border-radius:999px;
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px}
+  .proj{display:block; text-decoration:none; color:inherit; padding:16px 16px 14px;
+    border-radius:18px; background:var(--card); border:1px solid var(--border);
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    transition:transform .25s, box-shadow .25s, background .25s}
+  .proj:hover{transform:translateY(-4px); background:var(--card-strong);
+    box-shadow:0 14px 34px var(--shadow), inset 0 1px 0 var(--hl)}
+  .proj .pt{font-size:15.5px; font-weight:800; margin-bottom:4px}
+  .proj .pd{font-size:12.5px; color:var(--muted); line-height:1.6}
+  .proj .pg{margin-top:10px; font-size:11.5px; font-weight:700; color:var(--accent3)}
+  .proj .pg::before{content:"↗ ";}
+
+  .msgbox{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap}
+  .msgbox input,.msgbox textarea{flex:1 1 160px; min-width:0; font:inherit; font-size:14px;
+    color:var(--text); background:var(--card); border:1px solid var(--border);
+    border-radius:14px; padding:11px 14px; outline:none;
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+  .msgbox textarea{flex:1 1 100%; resize:vertical; min-height:64px}
+  .msgbox input::placeholder,.msgbox textarea::placeholder{color:var(--faint)}
+  .btn{border:0; cursor:pointer; font:inherit; font-weight:800; font-size:14px; color:#fff;
+    padding:11px 22px; border-radius:14px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    box-shadow:0 8px 22px rgba(79,124,255,.45), inset 0 1px 0 var(--hl); transition:transform .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .msgs{display:flex; flex-direction:column; gap:10px; max-height:280px; overflow:auto; padding-right:4px}
+  .msgs .m{padding:12px 14px; border-radius:14px; background:var(--card);
+    border:1px solid var(--border); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+  .msgs .m b{font-size:13.5px} .msgs .m p{font-size:13.5px; color:var(--muted); margin-top:4px; line-height:1.6}
+  .msgs .m time{font-size:11px; color:var(--faint); float:right}
+  .empty{color:var(--faint); font-size:13px; text-align:center; padding:18px}
+
+  footer{margin-top:24px; padding-top:16px; border-top:1px solid var(--border);
+    display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between;
+    font-size:12.5px; color:var(--muted)}
+  footer a{color:var(--accent3); text-decoration:none; font-weight:700}
+  footer a:hover{text-decoration:underline}
+
+  /* 右下浮动工具 */
+  .tools{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:10px; z-index:5}
+  .tool{width:46px;height:46px; display:grid; place-items:center; cursor:pointer; font-size:20px;
+    color:var(--text); text-decoration:none;
+    background:linear-gradient(135deg,var(--card-strong),var(--card));
+    border:1px solid var(--border); border-radius:14px;
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    box-shadow:0 8px 22px var(--shadow), inset 0 1px 0 var(--hl); transition:transform .2s}
+  .tool:hover{transform:translateY(-3px)}
+
+  @media (max-width:560px){
+    .card{padding:26px 18px 20px}
+    .brand{font-size:24px}
+    .hero{gap:16px}
+    .name{font-size:22px}
+  }
+  /* 降低动效（无障碍） */
+  @media (prefers-reduced-motion:reduce){
+    .blob{animation:none} *{transition:none!important}
+  }
+</style>
 </head>
-
 <body>
-    <div class="xf_load"></div>
-    <svg class="xf_triangle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="420px"
-        height="403px" style="position: absolute; top: -135px; left: -120px;">
+  <div class="bg"></div>
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <canvas id="stars"></canvas>
+
+  <main class="glass card">
+    <header>
+      <div class="brand">Johnny<small>文强哥 · JOHNNY520</small></div>
+    </header>
+
+    <section class="hero">
+      <svg class="avatar" viewBox="0 0 100 100" aria-label="头像">
         <defs>
-            <filter filterUnits="userSpaceOnUse" id="Filter_0" x="0px" y="0px" width="420px" height="403px">
-                <feOffset in="SourceAlpha" dx="6.691" dy="7.431" />
-                <feGaussianBlur result="blurOut" stdDeviation="3.606" />
-                <feFlood flood-color="rgb(220, 220, 220)" result="floodOut" />
-                <feComposite operator="atop" in="floodOut" in2="blurOut" />
-                <feComponentTransfer>
-                    <feFuncA type="linear" slope="1" />
-                </feComponentTransfer>
-                <feMerge>
-                    <feMergeNode />
-                    <feMergeNode in="SourceGraphic" />
-                </feMerge>
-            </filter>
+          <linearGradient id="ag" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#4F7CFF"/><stop offset=".5" stop-color="#7C5CFF"/><stop offset="1" stop-color="#21D4FD"/>
+          </linearGradient>
+          <linearGradient id="agl" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="rgba(255,255,255,.9)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/>
+          </linearGradient>
         </defs>
-        <g filter="url(#Filter_0)">
-            <path fill-rule="evenodd" fill="rgb(235, 236, 240)"
-                d="M399.535,130.239 L113.067,382.877 L19.129,19.632 L399.535,130.239 Z" style="transition: all .2s;" />
-        </g>
-    </svg>
-    <main class="core tow_core three_core">
-        <header class="xf_hd">
-            <h1 style="display: none;">文强哥拟态ui4.0-个人引导页</h1>
-            <h2>Mimic UI4.0</h2>
-        </header>
-        <section class="xf_content">
-            <nav class="xf_nav xf_mimic_outer">
-                <div class="xf_center_box">
-                    <div class="Certification"></div>
-                    <div class="xf_tx" data-tip="混蛋，不要碰我啊！！！">
-                        <img src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dec470b0-fed6-46e5-be53-ec85fadc01be/5b4bf217-52e8-4f39-9df5-e3ceb0b2282a.png">
-                        <img class="xf_mimic_outer" src="assets/images/xf.jpg" alt="头像">
-                    </div>
-                    <ul class="xf_name">
-                        <li class="xf_mimic_outer hello">Good morning</li>
-                        <li class="xf_mimic_outer">文强哥 | UP Maple</li>
-                        <li class="xf_mimic_outer address">遵义市 高温 99℃ 低温 -99℃</li>
-                    </ul>
-                    <div class="clock xf_mimic_outer">
-                        <div class="hand hours"></div>
-                        <div class="hand minutes"></div>
-                        <div class="hand seconds"></div>
-                        <div class="point"></div>
-                        <div class="marker">
-                            <span class="marker__1"></span>
-                            <span class="marker__2"></span>
-                            <span class="marker__3"></span>
-                            <span class="marker__4"></span>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <div class="xf_big_box">
-                <div class="xf_box_left">
-                    <div class="segmented-control xf_mimic_outer">
-                        <input type="radio" name="radio2" value="3" id="tab-1" checked="">
-                        <label for="tab-1" class="segmented-control__1 info">
-                            <p>关于</p>
-                        </label>
-                        <input type="radio" name="radio2" value="4" id="tab-2">
-                        <label for="tab-2" class="segmented-control__2 info">
-                            <p>信息</p>
-                        </label>
-                        <input type="radio" name="radio2" value="5" id="tab-3">
-                        <label for="tab-3" class="segmented-control__3 info">
-                            <p>留言</p>
-                        </label>
-                        <div class="segmented-control__color"></div>
-                    </div>
-                    <div class="xf_Show_box">
-                        <div class="menu_1 menu_2 xf_text xf_mimic_internal">
-                            <p id="xf_typewriter"></p>
-                        </div>
-                        <div class="menu_1 xf_information">
-                            <div class="xf_name_age">
-                                <h3 class="xf_mimic_outer">
-                                    <span><i class="iconfont">&#xe605;</i><strong>姓名：</strong>文强哥</span>
-                                </h3>
-                                <h3 class="xf_mimic_outer">
-                                    <span><i class="iconfont">&#xe6d8;</i><strong>年龄：</strong>24岁</span>
-                                </h3>
-                            </div>
-                            <div class="xf_area_like">
-                                <h3 class="xf_mimic_outer">
-                                    <span><i class="iconfont">&#xe64b;</i><strong>坐标：</strong>贵州遵义</span>
-                                </h3>
-                                <h3 class="xf_mimic_outer">
-                                    <span><i class="iconfont">&#xe8c6;</i><strong>爱好：</strong>割韭菜</span>
-                                </h3>
-                            </div>
-                        </div>
-                        <form action="" method="post" class="menu_1 xf_message xf_mimic_outer">
-                            <div class="xf_nama_QQ">
-                                <input type="text" id="xf_inpname" value="访客" name="inpname" tabindex="1"
-                                    placeholder="你的昵称" autocomplete="off">
-                                <input type="email" id="xf_inpemail" value="" name="inpemail" tabindex="2"
-                                    placeholder="QQ邮箱" autocomplete="off">
-                            </div>
-                            <textarea class="xf_inpmessage" value="" rows="4" cols="50" placeholder="来了就不要留下遗憾！"
-                                autocomplete="off" maxlength="20" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\.\,\?\。\，\-\——\;\！\!\+\$]/g,'')"></textarea>
-                            <div class="controls">
-                                <div>
-                                    <span class="useCount" id="useCount">0</span>
-                                    <span>/</span>
-                                    <span>20</span>
-                                </div>
-                            </div>
-                            <span class="xf_sryzm">输入验证码：</span>
-                            <input class="xf_verify xf_mimic_internal" type="text" autocomplete="off" maxlength="6"
-                                onkeyup="value=value.replace(/[^\d\.]/g,'')">
-                            <div class="xf_verify_code xf_mimic_outer"></div>
-                            <input class="xf_submit" type="submit" value="提 交">
-                        </form>
-                    </div>
-                </div>
-                <div class="xf_box_right xf_mimic_outer">
-                    <div class="xf_mes_list">
-                        <h3 class="xf_mimic_outer">留言列表</h3>
-                        <ul class="leave">
+        <circle cx="50" cy="50" r="48" fill="url(#ag)"/>
+        <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+        <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="52" font-weight="800" fill="#fff" font-family="sans-serif">J</text>
+        <path d="M14 26 A48 48 0 0 1 86 26" fill="none" stroke="url(#agl)" stroke-width="6" stroke-linecap="round" opacity=".8"/>
+      </svg>
+      <div class="info">
+        <div class="greet" id="greet">你好</div>
+        <div class="name">文强哥 <span>Johnny520</span></div>
+        <div class="clockrow">
+          <svg class="analog" viewBox="0 0 100 100">
+            <circle class="face" cx="50" cy="50" r="46"/>
+            <line class="tick" x1="50" y1="6"  x2="50" y2="12"/>
+            <line class="tick" x1="94" y1="50" x2="88" y2="50"/>
+            <line class="tick" x1="50" y1="94" x2="50" y2="88"/>
+            <line class="tick" x1="6"  y1="50" x2="12" y2="50"/>
+            <line class="h" id="ah" x1="50" y1="50" x2="50" y2="30"/>
+            <line class="m" id="am" x1="50" y1="50" x2="50" y2="20"/>
+            <line class="s" id="as" x1="50" y1="56" x2="50" y2="16"/>
+            <circle class="dot" cx="50" cy="50" r="3.2"/>
+          </svg>
+          <div class="digi"><span id="digi">--:--:--</span><small id="date">——</small></div>
+        </div>
+      </div>
+    </section>
 
-                        </ul>
-                    </div>
-                    <div class="xf_music_box">
-                        <div class="xf_QQ_wx">
-                            <a data-tip="快来加我的QQ吧！" href="http://wpa.qq.com/msgrd?v=3&uin=1689969048&site=qq&menu=yes"
-                                target="_blank" rel="noopener noreferrer" alt="QQ" target="_blank">
-                                <span class="xf_mimic_outer">
-                                    <img src="assets/images/QQ-pic.png">
-                                </span>
-                            </a>
-                            <a class="my-wx" data-tip="微信也是可以的噢~" href="javascript:;" rel="noopener noreferrer">
-                                <span class="xf_mimic_outer" alt="微信">
-                                    <img src="assets/images/WX-pic.png">
-                                </span>
-                            </a>
-                            <a data-tip="bilibili~" href="https://space.bilibili.com/349762020?spm_id_from=333.1007.0.0"
-                                rel="noopener noreferrer" target="_blank">
-                                <span class="xf_mimic_outer" alt="bilibili">
-                                    <img src="assets/images/bilibili.png">
-                                </span>
-                            </a>
-                        </div>
-                        <div class="xf_mimic_outer" id="music" key="606e5a8824639" api="https://music.xfyun.club">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="xf_Skill xf_mimic_outer technology">
-                <div class="xf_outs">
-                    <h2>Skill/专业技能</h2>
-                    <div class="underscore"><span></span></div>
-                    <ul class="xf_technology xf_mimic_internal">
-                        <li>
-                            <p class="xf_mimic_outer">Photoshop</p>
-                            <div data-tip="LOGO制作,UI设计,广告设计...都可以找我噢!" class="xf_progress xf_mimic_outer">
-                                <div class="xf_mimic_outer" style="width: 90%;"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="xf_mimic_outer">Illustrator</p>
-                            <div data-tip="绘图也很腻害噢!" class="xf_progress xf_mimic_outer">
-                                <div class="xf_mimic_outer" style="width: 70%;"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="xf_mimic_outer">PR/AE</p>
-                            <div data-tip="剪辑特效都可以找我噢!" class="xf_progress xf_mimic_outer">
-                                <div class="xf_mimic_outer" style="width: 66%;"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="xf_mimic_outer">HTML5</p>
-                            <div data-tip="标签语言的使用能力" class="xf_progress xf_mimic_outer">
-                                <div class="xf_mimic_outer" style="width: 80%;"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="xf_mimic_outer">CSS3</p>
-                            <div data-tip="层叠样式表的使用能力" class="xf_progress xf_mimic_outer">
-                                <div class="xf_mimic_outer" style="width: 70%;"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="xf_mimic_outer">JavaScript</p>
-                            <div data-tip="脚本语言的使用能力" class="xf_progress xf_mimic_outer">
-                                <div class="xf_mimic_outer" style="width: 30%;"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="xf_mimic_outer">社交</p>
-                            <div data-tip="患有社交牛逼症!" class="xf_progress xf_mimic_outer">
-                                <div class="xf_mimic_outer" style="width: 95%;"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="xf_mimic_outer">恋爱</p>
-                            <div data-tip="本人单身cpdd" class="xf_progress xf_mimic_outer">
-                                <div class="xf_mimic_outer" style="width: 99%;"></div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="xf_site xf_mimic_outer site">
-                <div class="xf_outs">
-                    <h2>site/旗下站点</h2>
-                    <div class="underscore"><span></span></div>
-                    <div class="xf_site_bigbox">
-                        <a href="https://www.xfwl.club" target="_blank" rel="noopener noreferrer">小枫网络</a>
-                        <a href="https://music.xfyun.club" target="_blank" rel="noopener noreferrer">h5音乐播放器</a>
-                        <a href="http://wpa.qq.com/msgrd?v=3&uin=1809185784&site=qq&menu=yes" target="_blank" rel="noopener noreferrer">联系小枫</a>
-                        <a href="http://wpa.qq.com/msgrd?v=3&uin=1809185784&site=qq&menu=yes" target="_blank" rel="noopener noreferrer">cpdd</a>
-                    </div>
-                </div>
-            </div>
-            <div class="xf_server_inf">
-                <div class="xf_cpu xf_mimic_outer">
-                    <h3>CPU / 处理器使用率</h3>
-                    <div class="underscore" style="margin: 15px"><span></span></div>
-                    <div class="xf_usage xf_mimic_outer">
-                        <span>30%</span>
-                        <div class="hw_progress xf_mimic_internal">
-                            <div class="xf_mimic_internal" style="width: 30%;"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="xf_mem xf_mimic_outer">
-                    <h3>MEM / 内存使用率</h3>
-                    <div class="underscore" style="margin: 15px"><span></span></div>
-                    <div class="xf_usage xf_mimic_outer">
-                        <span>50%</span>
-                        <div class="hw_progress xf_mimic_internal">
-                            <div class="xf_mimic_internal" style="width: 50%;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="xf_friend xf_mimic_outer">
-                <div class="xf_outs">
-                    <h3>友情链接：</h3>
-                    <span>
-                        <a href="https://www.xfwl.club" target="_blank" data-tip="小枫网络是一家免费资源共享平台。"
-                            rel="noopener noreferrer">
-                            <img src="https://www.xfwl.club/favicon.ico" alt="小枫网络">小枫网络</a>
-                    </span>
-                    <span>
-                        <a href="https://music.xfyun.club" target="_blank" data-tip="小枫音乐播放器是一款功能强大的HTML悬浮播放器。"
-                            rel="noopener noreferrer">
-                            <img src="https://www.xfwl.club/favicon.ico" alt="小枫音乐播放器">小枫音乐播放器</a>
-                    </span>
-                </div>
-            </div>
-        </section>
-        <footer class="xf_mimic_outer">
-            <p>Copyright &copy; 2022 <a href="https://www.xfwl.club" target="_blank" rel="noopener noreferrer">小枫网络</a>
-                版权所有&nbsp;<span>本站已安全运行<b id="xf_time"></b>天</span></p>
-            <p><img src="assets/images/filing.png" alt="备案ico"><a href="http://beian.miit.gov.cn/" target="_blank"
-                    rel="noopener noreferrer">赣ICP备2020011714号</a></p>
-            <!-- 希望大家可以把他留下😊🧡 -->
-            <!-- 开源地址：https://gitee.com/xfwlclub/nitai4 -->
-            <p>开源地址：<a href="https://gitee.com/xfwlclub/nitai4" target="_blank" rel="noopener noreferrer">gitee</a></p>
-        </footer>
-    </main>
-    <div class="wx_picture">
-        <img src="assets/images/wx.jpg" alt="我的微信">
+    <nav class="tabs">
+      <button data-tab="about" class="active">关于</button>
+      <button data-tab="projects">项目</button>
+      <button data-tab="msg">留言</button>
+    </nav>
+
+    <div class="panel active" id="about">
+      <h3>关于我</h3>
+      <p class="lead">我是 <b>文强哥（Johnny520）</b>，一名 Android 个人开发者，专注实用工具与隐私防护类应用。
+      喜欢把复杂能力做成简单好用的产品——从系统清理到 LSPosed 模块，尽量自己造轮子、自己发版。
+      以下站点与开源项目，欢迎 Star 与共建。</p>
+      <div class="chips">
+        <span class="chip">Android 开发</span>
+        <span class="chip">Kotlin / Java</span>
+        <span class="chip">Flutter / Dart</span>
+        <span class="chip">LSPosed 模块</span>
+        <span class="chip">逆向 & 隐私防护</span>
+        <span class="chip">Python 工具</span>
+      </div>
     </div>
-    <div id="xf_at_night" class="toggle xf_mimic_outer iconfont dark-mode-toggle btn btn-dark p-1" data-tip="切换主题">
-        <span><i id="daytime"></i></span>
-        <span><i id="night"></i></span>
+
+    <div class="panel" id="projects">
+      <h3>开源项目</h3>
+      <div class="grid" id="projGrid"></div>
     </div>
-    <div id="xf_friend_link" class="xf_mimic_outer iconfont" data-tip="添加友链" onclick="my_friend()"><span>&#xe726;</span>
+
+    <div class="panel" id="msg">
+      <h3>留言板</h3>
+      <div class="msgbox">
+        <input id="msgName" placeholder="你的昵称" maxlength="20">
+        <textarea id="msgText" placeholder="说点什么吧～（本地保存，仅展示）" maxlength="200"></textarea>
+        <button class="btn" id="msgSend">发送</button>
+      </div>
+      <div class="msgs" id="msgList"></div>
     </div>
-    <div id="xf_GoTop" class="mytooltip xf_mimic_outer iconfont" data-tip="返回顶部"><span>&#xe62c;</span></div>
-    <script id="xplayer" src="assets/js/player.js"></script>
-    <script src="assets/js/index.js"></script>
-    <script src="assets/js/script.js"></script>
-    <script src="assets/js/fireworks.js"></script>
-      
+
+    <footer>
+      <span>© <span id="year"></span> 文强哥 (Johnny520) · 版权所有</span>
+      <span>开源地址：<a href="https://github.com/Johnny520" target="_blank" rel="noopener">github.com/Johnny520</a></span>
+    </footer>
+  </main>
+
+  <div class="tools">
+    <a class="tool" id="themeBtn" href="javascript:void(0)" title="切换主题">🌗</a>
+    <a class="tool" href="friend.html" title="友链申请">🔗</a>
+    <a class="tool" id="topBtn" href="javascript:void(0)" title="返回顶部">↑</a>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+  var GH = "https://github.com/Johnny520/";
+  var projects = [
+    {t:"分区清理大师", d:"partition-cleaner · 安卓磁盘/分区清理工具", r:"partition-cleaner"},
+    {t:"anti-detect", d:"LSPosed 隐私防护模块 · 反检测/防追踪", r:"anti-detect"},
+    {t:"JohnnyAdBlock", d:"LSPosed 广告拦截模块", r:"JohnnyAdBlock"},
+    {t:"企信查 Web", d:"qixincha · 企业信息查询 (Python)", r:"qixincha"},
+    {t:"企信查 Android", d:"qixincha-android · 安卓端", r:"qixincha-android"},
+    {t:"企信查 Flutter", d:"qixincha-flutter · 跨端客户端", r:"qixincha-flutter"}
+  ];
+  var grid = document.getElementById("projGrid");
+  projects.forEach(function(p){
+    var a = document.createElement("a");
+    a.className = "proj"; a.href = GH + p.r; a.target = "_blank"; a.rel = "noopener";
+    a.innerHTML = '<div class="pt">'+p.t+'</div><div class="pd">'+p.d+'</div><div class="pg">'+GH+p.r.replace(/^https:\/\/github.com\//,"")+'</div>';
+    grid.appendChild(a);
+  });
+
+  // 主题
+  var root = document.documentElement;
+  var saved = null;
+  try { saved = localStorage.getItem("johnny-theme"); } catch(e){}
+  if (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) saved = "light";
+  if (saved) root.setAttribute("data-theme", saved);
+  document.getElementById("themeBtn").addEventListener("click", function(){
+    var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("johnny-theme", next); } catch(e){}
+  });
+
+  // 时钟
+  var g = document.getElementById("greet"), digi = document.getElementById("digi"),
+      dateEl = document.getElementById("date"), ah = document.getElementById("ah"),
+      am = document.getElementById("am"), as = document.getElementById("as");
+  function pad(n){ return n < 10 ? "0"+n : ""+n; }
+  function tick(){
+    var d = new Date(), h = d.getHours(), m = d.getMinutes(), s = d.getSeconds();
+    digi.textContent = pad(h)+":"+pad(m)+":"+pad(s);
+    var w = ["日","一","二","三","四","五","六"][d.getDay()];
+    dateEl.textContent = d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日 周"+w;
+    var h12 = h % 12;
+    ah.style.transform = "rotate("+(h12*30 + m*0.5)+"deg)";
+    am.style.transform = "rotate("+(m*6 + s*0.1)+"deg)";
+    as.style.transform = "rotate("+(s*6)+"deg)";
+    var greet = h<5?"夜深了":h<11?"早上好":h<13?"中午好":h<18?"下午好":h<23?"晚上好":"夜深了";
+    g.textContent = greet + "，欢迎来到 Johnny 的主页";
+  }
+  tick(); setInterval(tick, 1000);
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // 标签切换
+  document.querySelectorAll(".tabs button").forEach(function(b){
+    b.addEventListener("click", function(){
+      document.querySelectorAll(".tabs button").forEach(function(x){x.classList.remove("active");});
+      document.querySelectorAll(".panel").forEach(function(x){x.classList.remove("active");});
+      b.classList.add("active");
+      document.getElementById(b.getAttribute("data-tab")).classList.add("active");
+    });
+  });
+
+  // 留言板（localStorage）
+  var KEY = "johnny-msgs", list = document.getElementById("msgList"),
+      nameI = document.getElementById("msgName"), textI = document.getElementById("msgText");
+  function load(){
+    var arr = []; try { arr = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){}
+    if (!arr.length){ list.innerHTML = '<div class="empty">还没有留言，来抢沙发吧 🛋️</div>'; return; }
+    list.innerHTML = "";
+    arr.slice().reverse().forEach(function(it){
+      var d = document.createElement("div"); d.className = "m";
+      d.innerHTML = '<b></b><time></time><p></p>';
+      d.querySelector("b").textContent = it.name;
+      d.querySelector("time").textContent = it.time;
+      d.querySelector("p").textContent = it.text;
+      list.appendChild(d);
+    });
+  }
+  document.getElementById("msgSend").addEventListener("click", function(){
+    var name = (nameI.value || "").trim() || "匿名访客", text = (textI.value || "").trim();
+    if (!text){ textI.focus(); return; }
+    var arr = []; try { arr = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){}
+    var d = new Date();
+    arr.push({name:name, text:text, time:d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+pad(d.getHours())+":"+pad(d.getMinutes())});
+    try { localStorage.setItem(KEY, JSON.stringify(arr.slice(-50))); } catch(e){}
+    textI.value = ""; load();
+  });
+  load();
+
+  // 返回顶部
+  document.getElementById("topBtn").addEventListener("click", function(){
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  // 轻量光点背景
+  var cv = document.getElementById("stars"), ctx = cv.getContext("2d"), pts = [];
+  function resize(){ cv.width = innerWidth; cv.height = innerHeight; }
+  resize(); addEventListener("resize", resize);
+  var N = innerWidth < 600 ? 26 : 48;
+  for (var i=0;i<N;i++){ pts.push({x:Math.random()*cv.width, y:Math.random()*cv.height,
+    r:Math.random()*1.6+0.4, vx:(Math.random()-.5)*0.25, vy:(Math.random()-.5)*0.25}); }
+  var light = root.getAttribute("data-theme") !== "light";
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ctx.fillStyle = light ? "rgba(255,255,255,.7)" : "rgba(180,210,255,.55)";
+    pts.forEach(function(p){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>cv.width) p.vx*=-1; if(p.y<0||p.y>cv.height) p.vy*=-1;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  if (!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches)) draw();
+})();
+</script>
 </body>
-
 </html>
