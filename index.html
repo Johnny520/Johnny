@@ -232,6 +232,11 @@
   .empty{color:var(--faint); font-size:13px; text-align:center; padding:24px 18px}
   .discussion-hint{font-size:12px; color:var(--muted); margin-bottom:12px; display:flex; align-items:center; gap:6px; flex-wrap:wrap}
   .discussion-hint .chip{font-size:11px; padding:3px 10px; background:var(--card); border:1px solid var(--border); border-radius:999px; color:var(--accent3); font-weight:700}
+  .giscus-wrap{position:relative; min-height:200px}
+  .giscus-loading{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:var(--muted); font-size:14px; text-align:center; transition:opacity .4s; pointer-events:none}
+  .giscus-loading.hide{opacity:0}
+  .giscus iframe{border:0; width:100%; border-radius:16px; overflow:hidden}
 
   footer{margin-top:24px; padding-top:16px; border-top:1px solid var(--border);
     display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between; font-size:12.5px; color:var(--muted)}
@@ -347,17 +352,15 @@
     <div class="panel" id="msg">
       <h3>讨论区</h3>
       <div class="discussion-hint">
-        <span class="chip">💬 自由交流</span>
+        <span class="chip">💬 全局可见</span>
         <span class="chip">👍 点赞互动</span>
         <span class="chip">↩️ 回复讨论</span>
-        <span>所有留言保存在本地浏览器，刷新不丢失～</span>
+        <span>基于 GitHub Discussions，所有人可见可交流～</span>
       </div>
-      <div class="msgbox">
-        <input id="msgName" placeholder="你的昵称 ✏️" maxlength="20">
-        <textarea id="msgText" placeholder="说点什么吧～可以提问、分享想法、打招呼 💭" maxlength="300"></textarea>
-        <button class="btn" id="msgSend">发布讨论 📝</button>
+      <div class="giscus-wrap">
+        <div class="giscus"></div>
+        <div class="giscus-loading">⏳ 讨论区加载中...<br><small style="opacity:.6">如果一直加载不出来，请检查网络或刷新页面</small></div>
       </div>
-      <div class="msgs" id="msgList"></div>
     </div>
 
     <footer>
@@ -444,96 +447,58 @@
   btns.forEach(function(b){ b.addEventListener("click", function(){
     btns.forEach(function(x){x.classList.remove("active");}); document.querySelectorAll(".panel").forEach(function(x){x.classList.remove("active");});
     b.classList.add("active"); document.getElementById(b.getAttribute("data-tab")).classList.add("active"); movePill(b);
+    // 切换到讨论区时加载 Giscus
+    if(b.getAttribute("data-tab")==="msg") loadGiscus();
   }); });
 
-  // 讨论区（支持点赞 + 回复）
-  var KEY="johnny-discuss", list=document.getElementById("msgList"), nameI=document.getElementById("msgName"), textI=document.getElementById("msgText");
-  function fmtTime(d){ return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+pad(d.getHours())+":"+pad(d.getMinutes()); }
-  function loadMsgs(){ var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){}
-    if(!arr.length){ list.innerHTML='<div class="empty">还没有讨论，来发第一条话题吧 🎉<br><small style="opacity:.7">可以提问、分享想法、打招呼～</small></div>'; return; }
-    list.innerHTML=""; arr.slice().reverse().forEach(function(it, idx){
-      var realIdx = arr.length - 1 - idx;
-      var d=document.createElement("div"); d.className="m"; d.dataset.idx=realIdx;
-      var likes = it.likes||0, liked = it.liked||false;
-      d.innerHTML='<div class="m-head"><b></b><time></time></div><p></p>'+
-        '<div class="m-actions">'+
-          '<button class="like-btn" data-idx="'+realIdx+'">'+(liked?'❤️':'🤍')+' <span class="like-count">'+likes+'</span></button>'+
-          '<button class="reply-btn" data-idx="'+realIdx+'">↩️ 回复</button>'+
-        '</div>'+
-        '<div class="reply-box">'+
-          '<input class="reply-name" placeholder="你的昵称" maxlength="20">'+
-          '<input class="reply-text" placeholder="说点什么..." maxlength="200">'+
-          '<button class="btn reply-send" data-idx="'+realIdx+'">回复</button>'+
-        '</div>'+
-        '<div class="replies"></div>';
-      d.querySelector("b").textContent=it.name;
-      d.querySelector("time").textContent=it.time;
-      d.querySelector("p").textContent=it.text;
-      var repliesEl = d.querySelector(".replies");
-      if(it.replies && it.replies.length){
-        it.replies.forEach(function(r){
-          var rd=document.createElement("div"); rd.className="r";
-          rd.innerHTML='<b></b><time></time><p></p>';
-          rd.querySelector("b").textContent=r.name;
-          rd.querySelector("time").textContent=r.time;
-          rd.querySelector("p").textContent=r.text;
-          repliesEl.appendChild(rd);
-        });
+  // 讨论区：Giscus（GitHub Discussions，所有人可见）
+  // 注意：需要先在 Johnny 仓库 Settings → Features 勾选 Discussions
+  // 然后到 https://github.com/apps/giscus 安装 App 并授权 Johnny 仓库
+  // 最后到 https://giscus.app/zh-CN 获取正确的 repo-id 和 category-id 填入下方
+  var giscusContainer = document.querySelector(".giscus");
+  var giscusLoading = document.querySelector(".giscus-loading");
+  var giscusLoaded = false;
+  function giscusTheme(){ return root.getAttribute("data-theme")==="light" ? "light" : "dark_dimmed"; }
+  function loadGiscus(){
+    if(giscusLoaded || !giscusContainer) return;
+    giscusLoaded = true;
+    var s = document.createElement("script");
+    s.src = "https://giscus.app/client.js";
+    s.setAttribute("data-repo", "Johnny520/Johnny");
+    s.setAttribute("data-repo-id", "R_kgDONYOr1A");
+    s.setAttribute("data-category", "Announcements");
+    s.setAttribute("data-category-id", "DIC_kwDONYOr1M4CjLUc");
+    s.setAttribute("data-mapping", "pathname");
+    s.setAttribute("data-strict", "0");
+    s.setAttribute("data-reactions-enabled", "1");
+    s.setAttribute("data-emit-metadata", "0");
+    s.setAttribute("data-input-position", "top");
+    s.setAttribute("data-theme", giscusTheme());
+    s.setAttribute("data-lang", "zh-CN");
+    s.setAttribute("data-loading", "lazy");
+    s.crossOrigin = "anonymous";
+    s.async = true;
+    var observer = new MutationObserver(function(){
+      if(giscusContainer.querySelector("iframe")){
+        giscusLoading.classList.add("hide");
+        observer.disconnect();
       }
-      list.appendChild(d);
     });
-    // 绑定点赞
-    list.querySelectorAll(".like-btn").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        var idx = +this.dataset.idx;
-        var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){}
-        if(!arr[idx]) return;
-        arr[idx].liked = !arr[idx].liked;
-        arr[idx].likes = (arr[idx].likes||0) + (arr[idx].liked ? 1 : -1);
-        if(arr[idx].likes < 0) arr[idx].likes = 0;
-        try{localStorage.setItem(KEY,JSON.stringify(arr));}catch(e){}
-        loadMsgs();
-      });
-    });
-    // 绑定回复按钮
-    list.querySelectorAll(".reply-btn").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        var idx = +this.dataset.idx;
-        var box = list.querySelector('.m[data-idx="'+idx+'"] .reply-box');
-        box.classList.toggle("show");
-        if(box.classList.contains("show")){
-          box.querySelector(".reply-name").value = nameI.value || "";
-          box.querySelector(".reply-text").focus();
+    observer.observe(giscusContainer, {childList:true, subtree:true});
+    giscusContainer.appendChild(s);
+  }
+  // 切换主题时同步 Giscus
+  var origThemeBtn = document.getElementById("themeBtn");
+  if(origThemeBtn){
+    origThemeBtn.addEventListener("click", function(){
+      setTimeout(function(){
+        var iframe = giscusContainer.querySelector("iframe");
+        if(iframe && iframe.contentWindow){
+          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: giscusTheme() } } }, "https://giscus.app");
         }
-      });
-    });
-    // 绑定回复发送
-    list.querySelectorAll(".reply-send").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        var idx = +this.dataset.idx;
-        var box = list.querySelector('.m[data-idx="'+idx+'"] .reply-box');
-        var rname = box.querySelector(".reply-name");
-        var rtext = box.querySelector(".reply-text");
-        var name=(rname.value||"").trim()||"匿名访客 🐱";
-        var text=(rtext.value||"").trim();
-        if(!text){ rtext.focus(); return; }
-        var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){}
-        if(!arr[idx]) return;
-        if(!arr[idx].replies) arr[idx].replies = [];
-        var d=new Date();
-        arr[idx].replies.push({name:name, text:text, time:fmtTime(d)});
-        try{localStorage.setItem(KEY,JSON.stringify(arr.slice(-100)));}catch(e){}
-        rtext.value="";
-        loadMsgs();
-      });
+      }, 100);
     });
   }
-  document.getElementById("msgSend").addEventListener("click", function(){
-    var name=(nameI.value||"").trim()||"匿名访客 🐱", text=(textI.value||"").trim(); if(!text){ textI.focus(); return; }
-    var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){} var d=new Date();
-    arr.push({name:name,text:text,time:fmtTime(d),likes:0,liked:false,replies:[]});
-    try{localStorage.setItem(KEY,JSON.stringify(arr.slice(-100)));}catch(e){} textI.value=""; loadMsgs(); });
-  loadMsgs();
 
   document.getElementById("topBtn").addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
 
