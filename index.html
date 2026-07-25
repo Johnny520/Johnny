@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1020">
 <title>文强网络科技</title>
-<meta name="description" content="文强网络科技（文强哥 / Johnny520）的个人主页 —— Android 个人开发者 · 隐私防护与 LSPosed 模块作者。液态玻璃 UI + 专属吉祥物小恶魔，酷炫又可爱。">
+<meta name="description" content="文强网络科技（文强哥 / Johnny520）的个人主页 —— Android 个人开发者 · 专注 LSPosed 模块、微信增强、隐私防护与逆向分析。液态玻璃 UI + 专属吉祥物小恶魔，酷炫又可爱。">
 <meta name="author" content="文强哥 (Johnny520)">
 <style>
   :root{
@@ -201,12 +201,37 @@
     background:linear-gradient(135deg,var(--accent),var(--accent2));
     box-shadow:0 8px 22px rgba(79,124,255,.45), inset 0 1px 0 var(--hl); transition:transform .25s}
   .btn:hover{transform:scale(1.06)} .btn:active{transform:scale(.94)}
-  .msgs{display:flex; flex-direction:column; gap:10px; max-height:280px; overflow:auto; padding-right:4px}
-  .msgs .m{padding:12px 14px; border-radius:16px; background:var(--card); border:1px solid var(--border);
+  .btn.ghost{background:transparent; color:var(--accent3); border:1px solid var(--border); box-shadow:none}
+  .btn.ghost:hover{border-color:var(--accent); color:var(--accent)}
+  .msgs{display:flex; flex-direction:column; gap:12px; max-height:420px; overflow:auto; padding-right:4px}
+  .msgs .m{padding:14px 16px; border-radius:18px; background:var(--card); border:1px solid var(--border);
     -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); position:relative; animation:jelly .45s cubic-bezier(.5,1.6,.4,1) both}
-  .msgs .m b{font-size:13.5px; color:var(--cute)} .msgs .m p{font-size:13.5px; color:var(--muted); margin-top:4px; line-height:1.6}
-  .msgs .m time{font-size:11px; color:var(--faint); float:right}
-  .empty{color:var(--faint); font-size:13px; text-align:center; padding:18px}
+  .msgs .m .m-head{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px}
+  .msgs .m b{font-size:13.5px; color:var(--cute)}
+  .msgs .m time{font-size:11px; color:var(--faint)}
+  .msgs .m p{font-size:14px; color:var(--text); line-height:1.7; word-break:break-word}
+  .msgs .m .m-actions{display:flex; gap:12px; margin-top:10px; align-items:center; flex-wrap:wrap}
+  .msgs .m .m-actions button{background:none; border:0; cursor:pointer; font-size:12px; font-weight:700; color:var(--muted);
+    padding:4px 10px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:4px}
+  .msgs .m .m-actions button:hover{color:var(--cute); background:var(--card-strong)}
+  .msgs .m .m-actions button.liked{color:var(--cute)}
+  .msgs .m .m-actions .like-count{font-variant-numeric:tabular-nums}
+  .reply-box{margin-top:10px; padding:10px; border-radius:14px; background:var(--card-strong); border:1px dashed var(--border); display:none; gap:8px; flex-wrap:wrap}
+  .reply-box.show{display:flex}
+  .reply-box input{flex:1 1 140px; min-width:0; font:inherit; font-size:13px; color:var(--text);
+    background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px 12px; outline:none;
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); transition:.2s}
+  .reply-box input:focus{border-color:var(--accent3)}
+  .reply-box input::placeholder{color:var(--faint)}
+  .reply-box .btn{padding:8px 16px; font-size:12.5px}
+  .replies{margin-top:10px; display:flex; flex-direction:column; gap:8px; padding-left:12px; border-left:2px solid var(--border)}
+  .replies .r{padding:8px 12px; border-radius:12px; background:var(--card-strong); border:1px solid var(--border); font-size:12.5px}
+  .replies .r b{font-size:12px; color:var(--accent3)}
+  .replies .r time{font-size:10.5px; color:var(--faint); float:right}
+  .replies .r p{font-size:12.5px; color:var(--muted); margin-top:3px; line-height:1.6}
+  .empty{color:var(--faint); font-size:13px; text-align:center; padding:24px 18px}
+  .discussion-hint{font-size:12px; color:var(--muted); margin-bottom:12px; display:flex; align-items:center; gap:6px; flex-wrap:wrap}
+  .discussion-hint .chip{font-size:11px; padding:3px 10px; background:var(--card); border:1px solid var(--border); border-radius:999px; color:var(--accent3); font-weight:700}
 
   footer{margin-top:24px; padding-top:16px; border-top:1px solid var(--border);
     display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between; font-size:12.5px; color:var(--muted)}
@@ -291,13 +316,13 @@
       <span class="pill" id="pill"></span>
       <button data-tab="about" class="active">🌟 关于</button>
       <button data-tab="projects">🚀 项目</button>
-      <button data-tab="msg">💬 留言</button>
+      <button data-tab="msg">💬 讨论</button>
     </nav>
 
     <div class="panel active" id="about">
       <h3>关于我 & 我的专业</h3>
       <p class="lead">我是 <b>文强哥（Johnny520）</b> 👻，一只爱写代码的幽灵～ 不，是一个 <b>Android 个人开发者</b>。
-      专注把复杂能力做成简单好用的产品：从系统清理、磁盘分区优化，到 <b>LSPosed 隐私防护模块</b>、广告拦截，尽量自己造轮子、自己发版。
+      专注把复杂能力做成简单好用的产品：从系统清理、磁盘分区优化，到 <b>LSPosed 隐私防护模块</b>、广告拦截，再到 <b>微信增强模块 (WCX)</b> 与 <b>APK 逆向分析工具</b>，尽量自己造轮子、自己发版。
       相信「工具应当私密、可靠、属于用户自己」。下面这些开源项目，欢迎来 <b>GitHub</b> 看源码、提 Issue、点 <b>Star</b> 💖</p>
       <div class="chips">
         <span class="chip">🤖 Android 开发</span>
@@ -307,6 +332,10 @@
         <span class="chip">🛡️ 隐私 & 反检测</span>
         <span class="chip">🐍 Python 工具</span>
         <span class="chip">📦 自签名发版</span>
+        <span class="chip">🔬 APK 逆向分析</span>
+        <span class="chip">💬 微信模块开发</span>
+        <span class="chip">🦀 Rust</span>
+        <span class="chip">🎨 UI/UX 设计</span>
       </div>
     </div>
 
@@ -316,11 +345,17 @@
     </div>
 
     <div class="panel" id="msg">
-      <h3>留言板</h3>
+      <h3>讨论区</h3>
+      <div class="discussion-hint">
+        <span class="chip">💬 自由交流</span>
+        <span class="chip">👍 点赞互动</span>
+        <span class="chip">↩️ 回复讨论</span>
+        <span>所有留言保存在本地浏览器，刷新不丢失～</span>
+      </div>
       <div class="msgbox">
         <input id="msgName" placeholder="你的昵称 ✏️" maxlength="20">
-        <textarea id="msgText" placeholder="说点什么吧～（本地保存，仅展示）💭" maxlength="200"></textarea>
-        <button class="btn" id="msgSend">发送 💌</button>
+        <textarea id="msgText" placeholder="说点什么吧～可以提问、分享想法、打招呼 💭" maxlength="300"></textarea>
+        <button class="btn" id="msgSend">发布讨论 📝</button>
       </div>
       <div class="msgs" id="msgList"></div>
     </div>
@@ -348,12 +383,15 @@
   "use strict";
   var GH = "https://github.com/Johnny520/";
   var projects = [
-    {t:"分区清理大师", d:"partition-cleaner · 安卓磁盘/分区清理工具 🧹", r:"partition-cleaner"},
-    {t:"anti-detect", d:"LSPosed 隐私防护模块 · 反检测/防追踪 🛡️", r:"anti-detect"},
-    {t:"JohnnyAdBlock", d:"LSPosed 广告拦截模块 🚫", r:"JohnnyAdBlock"},
-    {t:"企信查 Web", d:"qixincha · 企业信息查询 (Python) 🔍", r:"qixincha"},
-    {t:"企信查 Android", d:"qixincha-android · 安卓端 📱", r:"qixincha-android"},
-    {t:"企信查 Flutter", d:"qixincha-flutter · 跨端客户端 ✨", r:"qixincha-flutter"}
+    {t:"WCX 微信增强", d:"基于 Xposed 的微信增强模块 · 美化主题/聊天增强/隐私防护/AI自动回复 💬", r:"wcx"},
+    {t:"分区清理大师", d:"安卓磁盘/分区深度清理工具 · 释放存储空间 🧹", r:"partition-cleaner"},
+    {t:"anti-detect", d:"LSPosed 隐私防护模块 · 反检测/防追踪/设备伪装 🛡️", r:"anti-detect"},
+    {t:"JohnnyAdBlock", d:"LSPosed 广告拦截模块 · 净化应用体验 🚫", r:"JohnnyAdBlock"},
+    {t:"APK Analyzer", d:"APK 智能逆向分析工具 · 文生图/MCP集成/深度解析 🔬", r:"APKAnalyzer"},
+    {t:"企信查 Web", d:"企业信息查询平台 (Python 后端) 🔍", r:"qixincha"},
+    {t:"企信查 Android", d:"企业信息查询安卓客户端 📱", r:"qixincha-android"},
+    {t:"企信查 Flutter", d:"企业信息查询跨端客户端 ✨", r:"qixincha-flutter"},
+    {t:"Johnny 主页", d:"个人网站源码 · 液态玻璃UI/小恶魔吉祥物 🌐", r:"Johnny"}
   ];
   var grid = document.getElementById("projGrid");
   projects.forEach(function(p){
@@ -408,18 +446,94 @@
     b.classList.add("active"); document.getElementById(b.getAttribute("data-tab")).classList.add("active"); movePill(b);
   }); });
 
-  // 留言板
-  var KEY="johnny-msgs", list=document.getElementById("msgList"), nameI=document.getElementById("msgName"), textI=document.getElementById("msgText");
-  function load(){ var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){}
-    if(!arr.length){ list.innerHTML='<div class="empty">还没有留言，来抢沙发吧 🛋️</div>'; return; }
-    list.innerHTML=""; arr.slice().reverse().forEach(function(it){ var d=document.createElement("div"); d.className="m";
-      d.innerHTML='<b></b><time></time><p></p>'; d.querySelector("b").textContent=it.name; d.querySelector("time").textContent=it.time; d.querySelector("p").textContent=it.text; list.appendChild(d); }); }
+  // 讨论区（支持点赞 + 回复）
+  var KEY="johnny-discuss", list=document.getElementById("msgList"), nameI=document.getElementById("msgName"), textI=document.getElementById("msgText");
+  function fmtTime(d){ return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+pad(d.getHours())+":"+pad(d.getMinutes()); }
+  function loadMsgs(){ var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){}
+    if(!arr.length){ list.innerHTML='<div class="empty">还没有讨论，来发第一条话题吧 🎉<br><small style="opacity:.7">可以提问、分享想法、打招呼～</small></div>'; return; }
+    list.innerHTML=""; arr.slice().reverse().forEach(function(it, idx){
+      var realIdx = arr.length - 1 - idx;
+      var d=document.createElement("div"); d.className="m"; d.dataset.idx=realIdx;
+      var likes = it.likes||0, liked = it.liked||false;
+      d.innerHTML='<div class="m-head"><b></b><time></time></div><p></p>'+
+        '<div class="m-actions">'+
+          '<button class="like-btn" data-idx="'+realIdx+'">'+(liked?'❤️':'🤍')+' <span class="like-count">'+likes+'</span></button>'+
+          '<button class="reply-btn" data-idx="'+realIdx+'">↩️ 回复</button>'+
+        '</div>'+
+        '<div class="reply-box">'+
+          '<input class="reply-name" placeholder="你的昵称" maxlength="20">'+
+          '<input class="reply-text" placeholder="说点什么..." maxlength="200">'+
+          '<button class="btn reply-send" data-idx="'+realIdx+'">回复</button>'+
+        '</div>'+
+        '<div class="replies"></div>';
+      d.querySelector("b").textContent=it.name;
+      d.querySelector("time").textContent=it.time;
+      d.querySelector("p").textContent=it.text;
+      var repliesEl = d.querySelector(".replies");
+      if(it.replies && it.replies.length){
+        it.replies.forEach(function(r){
+          var rd=document.createElement("div"); rd.className="r";
+          rd.innerHTML='<b></b><time></time><p></p>';
+          rd.querySelector("b").textContent=r.name;
+          rd.querySelector("time").textContent=r.time;
+          rd.querySelector("p").textContent=r.text;
+          repliesEl.appendChild(rd);
+        });
+      }
+      list.appendChild(d);
+    });
+    // 绑定点赞
+    list.querySelectorAll(".like-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var idx = +this.dataset.idx;
+        var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){}
+        if(!arr[idx]) return;
+        arr[idx].liked = !arr[idx].liked;
+        arr[idx].likes = (arr[idx].likes||0) + (arr[idx].liked ? 1 : -1);
+        if(arr[idx].likes < 0) arr[idx].likes = 0;
+        try{localStorage.setItem(KEY,JSON.stringify(arr));}catch(e){}
+        loadMsgs();
+      });
+    });
+    // 绑定回复按钮
+    list.querySelectorAll(".reply-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var idx = +this.dataset.idx;
+        var box = list.querySelector('.m[data-idx="'+idx+'"] .reply-box');
+        box.classList.toggle("show");
+        if(box.classList.contains("show")){
+          box.querySelector(".reply-name").value = nameI.value || "";
+          box.querySelector(".reply-text").focus();
+        }
+      });
+    });
+    // 绑定回复发送
+    list.querySelectorAll(".reply-send").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var idx = +this.dataset.idx;
+        var box = list.querySelector('.m[data-idx="'+idx+'"] .reply-box');
+        var rname = box.querySelector(".reply-name");
+        var rtext = box.querySelector(".reply-text");
+        var name=(rname.value||"").trim()||"匿名访客 🐱";
+        var text=(rtext.value||"").trim();
+        if(!text){ rtext.focus(); return; }
+        var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){}
+        if(!arr[idx]) return;
+        if(!arr[idx].replies) arr[idx].replies = [];
+        var d=new Date();
+        arr[idx].replies.push({name:name, text:text, time:fmtTime(d)});
+        try{localStorage.setItem(KEY,JSON.stringify(arr.slice(-100)));}catch(e){}
+        rtext.value="";
+        loadMsgs();
+      });
+    });
+  }
   document.getElementById("msgSend").addEventListener("click", function(){
     var name=(nameI.value||"").trim()||"匿名访客 🐱", text=(textI.value||"").trim(); if(!text){ textI.focus(); return; }
     var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){} var d=new Date();
-    arr.push({name:name,text:text,time:d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+pad(d.getHours())+":"+pad(d.getMinutes())});
-    try{localStorage.setItem(KEY,JSON.stringify(arr.slice(-50)));}catch(e){} textI.value=""; load(); });
-  load();
+    arr.push({name:name,text:text,time:fmtTime(d),likes:0,liked:false,replies:[]});
+    try{localStorage.setItem(KEY,JSON.stringify(arr.slice(-100)));}catch(e){} textI.value=""; loadMsgs(); });
+  loadMsgs();
 
   document.getElementById("topBtn").addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
 
