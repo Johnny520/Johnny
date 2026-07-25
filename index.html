@@ -452,9 +452,6 @@
   }); });
 
   // 讨论区：Giscus（GitHub Discussions，所有人可见）
-  // 注意：需要先在 Johnny 仓库 Settings → Features 勾选 Discussions
-  // 然后到 https://github.com/apps/giscus 安装 App 并授权 Johnny 仓库
-  // 最后到 https://giscus.app/zh-CN 获取正确的 repo-id 和 category-id 填入下方
   var giscusContainer = document.querySelector(".giscus");
   var giscusLoading = document.querySelector(".giscus-loading");
   var giscusLoaded = false;
@@ -465,9 +462,9 @@
     var s = document.createElement("script");
     s.src = "https://giscus.app/client.js";
     s.setAttribute("data-repo", "Johnny520/Johnny");
-    s.setAttribute("data-repo-id", "R_kgDONYOr1A");
+    s.setAttribute("data-repo-id", "R_kgDOH727Ug");
     s.setAttribute("data-category", "Announcements");
-    s.setAttribute("data-category-id", "DIC_kwDONYOr1M4CjLUc");
+    s.setAttribute("data-category-id", "DIC_kwDOH727Us4CROOA");
     s.setAttribute("data-mapping", "pathname");
     s.setAttribute("data-strict", "0");
     s.setAttribute("data-reactions-enabled", "1");
