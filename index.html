@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN" data-theme="dark" data-version="new">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -259,6 +259,34 @@
   #confetti{position:fixed; inset:0; z-index:50; pointer-events:none}
   @media (max-width:560px){ .card{padding:26px 18px 20px} .brand{font-size:27px} .hero{gap:16px} .name{font-size:22px} .ghost{width:100px;height:108px} }
   @media (prefers-reduced-motion:reduce){ .blob,.brand,.gh-btn,.ghost,.floaters span,.spark{animation:none!important} *{transition:none!important} .card{animation:none} }
+
+  /* ── 旧版简洁风格 ── */
+  [data-version="old"] .bg{ background: linear-gradient(160deg, #0b1020, #131a33 55%, #1a1140) !important; }
+  [data-version="old"] .blob{ display:none !important; }
+  [data-version="old"] .floaters{ display:none !important; }
+  [data-version="old"] #stars{ display:none !important; }
+  [data-version="old"] .glow{ display:none !important; }
+  [data-version="old"] .glass{ background:rgba(255,255,255,.08) !important; backdrop-filter:blur(12px) !important; -webkit-backdrop-filter:blur(12px) !important; box-shadow:0 8px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08) !important; }
+  [data-version="old"] .glass::before{ opacity:.35 !important; }
+  [data-version="old"] .brand{ animation:none !important; filter:none !important; background:linear-gradient(90deg,var(--accent),var(--accent2)) !important; -webkit-background-clip:text !important; background-clip:text !important; }
+  [data-version="old"] .brand .spark{ animation:none !important; }
+  [data-version="old"] .brand small{ -webkit-text-fill-color:var(--muted) !important; }
+  [data-version="old"] .card{ animation:none !important; }
+  [data-version="old"] .ghost{ animation:none !important; filter:drop-shadow(0 6px 12px var(--shadow)) !important; }
+  [data-version="old"] .ghost-shadow{ animation:none !important; }
+  [data-version="old"] .devil img{ animation:none !important; }
+  [data-version="old"] .proj:hover{ transform:translateY(-3px) !important; box-shadow:0 8px 20px var(--shadow), inset 0 1px 0 var(--hl) !important; }
+  [data-version="old"] .tabs .pill{ box-shadow:0 4px 12px rgba(79,124,255,.35), inset 0 1px 0 var(--hl) !important; }
+  [data-version="old"] .btn{ box-shadow:0 4px 14px rgba(79,124,255,.35), inset 0 1px 0 var(--hl) !important; }
+  [data-version="old"] .tool:hover{ transform:translateY(-2px) scale(1.04) !important; }
+  [data-version="old"] .mascot-tip{ opacity:1 !important; animation:none !important; }
+  [data-version="old"] .sparkle{ animation:none !important; opacity:.5 !important; }
+  [data-version="old"] .gh-btn:hover{ box-shadow:0 4px 14px rgba(79,124,255,.35) !important; }
+  [data-version="old"] .gh-line:hover{ box-shadow:0 4px 14px rgba(79,124,255,.35) !important; }
+  [data-version="old"] .panel.active{ animation:none !important; }
+  .ver-toggle{ position:relative; }
+  .ver-toggle .vtip{ position:absolute; right:58px; top:50%; transform:translateY(-50%); white-space:nowrap; font-size:11px; font-weight:800; color:var(--accent3); background:var(--card); border:1px solid var(--border); padding:4px 10px; border-radius:999px; opacity:0; pointer-events:none; transition:.25s; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
+  .ver-toggle:hover .vtip{ opacity:1; }
 </style>
 </head>
 <body>
@@ -373,6 +401,9 @@
     <a class="tool" id="themeBtn" href="javascript:void(0)" title="切换主题">🌗</a>
     <a class="tool music" id="musicBtn" href="javascript:void(0)" title="背景音乐：忘了 - 周林枫 (DJ阿智版)">🎵</a>
     <a class="tool" href="friend.html" title="友链申请">🔗</a>
+    <a class="tool ver-toggle" id="verBtn" href="javascript:void(0)" title="切换版本">
+      ⏪<span class="vtip">一键回归旧版</span>
+    </a>
     <a class="tool" id="topBtn" href="javascript:void(0)" title="返回顶部">↑</a>
   </div>
 
@@ -493,6 +524,28 @@
   }
 
   document.getElementById("topBtn").addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
+
+  // 版本切换：新版 ↔ 旧版
+  (function(){
+    var verBtn = document.getElementById("verBtn"), root = document.documentElement;
+    var savedVer = null;
+    try { savedVer = localStorage.getItem("johnny-version"); } catch(e){}
+    if (!savedVer) savedVer = "new";
+    root.setAttribute("data-version", savedVer);
+    function updateVerUI(){
+      var isNew = root.getAttribute("data-version") === "new";
+      verBtn.querySelector(".vtip").textContent = isNew ? "一键回归旧版" : "回到炫酷新版";
+      verBtn.innerHTML = (isNew ? "⏪" : "✨") + '<span class="vtip">' + (isNew ? "一键回归旧版" : "回到炫酷新版") + '</span>';
+    }
+    updateVerUI();
+    verBtn.addEventListener("click", function(){
+      var cur = root.getAttribute("data-version");
+      var next = cur === "old" ? "new" : "old";
+      root.setAttribute("data-version", next);
+      try { localStorage.setItem("johnny-version", next); } catch(e){}
+      updateVerUI();
+    });
+  })();
 
   // 光点背景
   var cv=document.getElementById("stars"), ctx=cv.getContext("2d"), pts=[];
