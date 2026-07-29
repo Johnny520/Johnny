@@ -242,8 +242,7 @@
     display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between; font-size:12.5px; color:var(--muted)}
   footer a{color:var(--accent3); text-decoration:none; font-weight:800}
   footer a:hover{text-decoration:underline}
-  .vstat{flex:1 0 100%; display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-bottom:6px; font-size:13px; color:var(--text); opacity:.95}
-  .vstat b{color:var(--cute); font-size:15px; font-weight:800; padding:0 2px}
+  footer b{color:var(--cute); font-size:14px; font-weight:800}
 
   .tools{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:10px; z-index:5}
   .tool{width:48px;height:48px; display:grid; place-items:center; cursor:pointer; font-size:21px; color:var(--text); text-decoration:none;
@@ -364,11 +363,7 @@
     </div>
 
     <footer>
-      <div class="vstat">
-        <span>👀 今日(本机) <b id="vToday">0</b></span>
-        <span>📊 总访问(全站) <b id="busuanzi_value_site_pv">0</b></span>
-        <span>👥 总访客(全站) <b id="busuanzi_value_site_uv">0</b></span>
-      </div>
+      <span>👀 <b id="visitorCount">…</b> 次访问</span>
       <span>© <span id="year"></span> 文强哥 (Johnny520) · 版权所有 🐾</span>
       <span>GitHub：<a href="https://github.com/Johnny520" target="_blank" rel="noopener">@Johnny520</a> · <a href="https://github.com/Johnny520?tab=repositories" target="_blank" rel="noopener">所有仓库</a></span>
     </footer>
@@ -571,16 +566,18 @@
   });
 })();
 
-  // 今日访问：本机计数（刷新即 +1，按日期重置）；总访问/总访客由「不蒜子」全站计数（底部脚本）
+  // 全站访问计数器（持久化，所有人可见同一数字）
   (function(){
-    try{
-      var d=new Date(), key="jv_"+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-      var today=+(localStorage.getItem(key)||0)+1; localStorage.setItem(key,today);
-      var te=document.getElementById("vToday"); if(te) te.textContent=today;
-    }catch(e){}
+    var el = document.getElementById("visitorCount");
+    if(!el) return;
+    var NS = "johnny520-site", KEY = "visits";
+    try {
+      fetch("https://api.counterapi.dev/v1/" + NS + "/" + KEY + "/up")
+        .then(function(r){ return r.json(); })
+        .then(function(d){ el.textContent = d.count.toLocaleString(); })
+        .catch(function(){ el.textContent = "…"; });
+    } catch(e) { el.textContent = "…"; }
   })();
 </script>
-  <!-- 不蒜子：全站真实访问量/访客数计数（国内可达，服务端持久化） -->
-  <script async src="https://busuanzi.ibruce.info/b.mini.js"></script>
 </body>
 </html>
