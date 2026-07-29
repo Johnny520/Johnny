@@ -239,20 +239,27 @@
 
   #confetti{position:fixed;inset:0;z-index:50;pointer-events:none}
 
+  /* ── 移动端侧边栏遮罩 ── */
+  .side-overlay{display:none;position:fixed;inset:0;z-index:3;background:rgba(0,0,0,.45);
+    backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);}
+  .side-overlay.show{display:block}
+
   /* ── 响应式 ── */
   @media (max-width:768px){
     :root{--side-w:0px}
-    .sidebar{transform:translateX(-100%)}
-    .sidebar.open{transform:translateX(0)}
-    .side-toggle{display:grid}
+    .sidebar{width:230px;transform:translateX(-100%);z-index:6}
+    .sidebar.open{transform:translateX(0);box-shadow:4px 0 30px rgba(0,0,0,.5)}
+    .side-toggle{display:grid;z-index:7}
     .main{margin-left:0;padding:0 12px 32px}
-    .hero-banner{padding:16px 16px;margin-top:12px;gap:12px}
+    .hero-banner{padding:16px 16px;margin-top:12px;gap:12px;margin-top:44px}
     .hero-name{font-size:21px}
     .hero-ghost{width:70px;height:76px}
-    .stats-row{grid-template-columns:repeat(3,1fr)}
-    .stat-card .stat-num{font-size:22px}
+    .stats-row{grid-template-columns:repeat(3,1fr);gap:6px}
+    .stat-card{padding:10px 8px}
+    .stat-card .stat-num{font-size:20px}
     .proj-grid{grid-template-columns:1fr}
     .section-body{padding:14px 14px}
+    .footer-bar{flex-direction:column;text-align:center;gap:4px}
   }
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
@@ -275,6 +282,7 @@
 
   <!-- 移动端侧边栏切换 -->
   <button class="side-toggle" id="sideToggle" title="菜单">☰</button>
+  <div class="side-overlay" id="sideOverlay"></div>
 
   <div class="app">
     <!-- 侧边栏 -->
@@ -481,16 +489,16 @@
       var el = document.getElementById(id);
       if(el) el.scrollIntoView({behavior:"smooth"});
       // 移动端关闭侧边栏
-      document.getElementById("sidebar").classList.remove("open");
+      closeSidebar();
     });
   });
 
   // 移动端侧边栏切换
-  var sidebar = document.getElementById("sidebar"), sideToggle = document.getElementById("sideToggle");
-  sideToggle.addEventListener("click", function(){ sidebar.classList.toggle("open"); });
-  document.getElementById("mainContent").addEventListener("click", function(e){
-    if(sidebar.classList.contains("open") && !sidebar.contains(e.target) && e.target !== sideToggle) sidebar.classList.remove("open");
-  });
+  var sidebar = document.getElementById("sidebar"), sideToggle = document.getElementById("sideToggle"), sideOverlay = document.getElementById("sideOverlay");
+  function openSidebar(){ sidebar.classList.add("open"); sideOverlay.classList.add("show"); document.body.style.overflow="hidden"; }
+  function closeSidebar(){ sidebar.classList.remove("open"); sideOverlay.classList.remove("show"); document.body.style.overflow=""; }
+  sideToggle.addEventListener("click", function(){ sidebar.classList.contains("open") ? closeSidebar() : openSidebar(); });
+  sideOverlay.addEventListener("click", closeSidebar);
 
   // 时钟
   var g = document.getElementById("greet"), digi = document.getElementById("digi"), dateEl = document.getElementById("date");

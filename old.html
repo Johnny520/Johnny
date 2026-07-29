@@ -177,24 +177,6 @@
   .proj .pg{margin-top:10px; font-size:11.5px; font-weight:800; color:var(--accent3)}
   .proj .pg::before{content:"↗ ";}
 
-  .msgbox{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap}
-  .msgbox input,.msgbox textarea{flex:1 1 160px; min-width:0; font:inherit; font-size:14px; color:var(--text);
-    background:var(--card); border:2px solid var(--border); border-radius:16px; padding:11px 14px; outline:none;
-    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:.2s}
-  .msgbox input:focus,.msgbox textarea:focus{border-color:var(--cute); box-shadow:0 0 0 4px rgba(255,126,182,.18)}
-  .msgbox textarea{flex:1 1 100%; resize:vertical; min-height:64px}
-  .msgbox input::placeholder,.msgbox textarea::placeholder{color:var(--faint)}
-  .btn{border:0; cursor:pointer; font:inherit; font-weight:900; font-size:14px; color:#fff; padding:11px 24px; border-radius:16px;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    box-shadow:0 8px 22px rgba(79,124,255,.45), inset 0 1px 0 var(--hl); transition:transform .25s}
-  .btn:hover{transform:scale(1.06)} .btn:active{transform:scale(.94)}
-  .msgs{display:flex; flex-direction:column; gap:10px; max-height:280px; overflow:auto; padding-right:4px}
-  .msgs .m{padding:12px 14px; border-radius:16px; background:var(--card); border:1px solid var(--border);
-    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); position:relative; animation:jelly .45s cubic-bezier(.5,1.6,.4,1) both}
-  .msgs .m b{font-size:13.5px; color:var(--cute)} .msgs .m p{font-size:13.5px; color:var(--muted); margin-top:4px; line-height:1.6}
-  .msgs .m time{font-size:11px; color:var(--faint); float:right}
-  .empty{color:var(--faint); font-size:13px; text-align:center; padding:18px}
-
   footer{margin-top:24px; padding-top:16px; border-top:1px solid var(--border);
     display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:space-between; font-size:12.5px; color:var(--muted)}
   footer a{color:var(--accent3); text-decoration:none; font-weight:800}
@@ -211,6 +193,13 @@
     animation:note 1s ease-in-out infinite}
   .tool.music.on::before{content:"♫"; position:absolute; bottom:-4px; left:-2px; font-size:11px; color:var(--accent3); animation:note 1.3s ease-in-out infinite}
   @keyframes note{0%,100%{transform:translateY(0); opacity:.6}50%{transform:translateY(-5px); opacity:1}}
+
+  .disc-hint{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;font-size:11px;color:var(--muted);align-items:center}
+  .disc-hint span{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--card);border:1px solid var(--border);color:var(--accent3)}
+  .giscus-wrap{position:relative;min-height:160px}
+  .giscus-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);font-size:13px;text-align:center;transition:opacity .4s;pointer-events:none}
+  .giscus-loading.hide{opacity:0}
+  .giscus iframe{border:0;width:100%;border-radius:10px;overflow:hidden}
 
   #confetti{position:fixed; inset:0; z-index:50; pointer-events:none}
   @media (max-width:560px){ .card{padding:26px 18px 20px} .brand{font-size:27px} .hero{gap:16px} .name{font-size:22px} .ghost{width:100px;height:108px} }
@@ -299,7 +288,7 @@
       <span class="pill" id="pill"></span>
       <button data-tab="about" class="active">🌟 关于</button>
       <button data-tab="projects">🚀 项目</button>
-      <button data-tab="msg">💬 留言</button>
+      <button data-tab="msg">💬 讨论</button>
     </nav>
 
     <div class="panel active" id="about">
@@ -324,13 +313,14 @@
     </div>
 
     <div class="panel" id="msg">
-      <h3>留言板</h3>
-      <div class="msgbox">
-        <input id="msgName" placeholder="你的昵称 ✏️" maxlength="20">
-        <textarea id="msgText" placeholder="说点什么吧～（本地保存，仅展示）💭" maxlength="200"></textarea>
-        <button class="btn" id="msgSend">发送 💌</button>
+      <h3>💬 讨论区</h3>
+      <div class="disc-hint">
+        <span>💬 全局可见</span><span>👍 点赞互动</span><span>↩️ 回复讨论</span> 基于 GitHub Discussions
       </div>
-      <div class="msgs" id="msgList"></div>
+      <div class="giscus-wrap">
+        <div class="giscus"></div>
+        <div class="giscus-loading">⏳ 讨论区加载中...<br><small style="opacity:.6">如果一直加载不出来，请检查网络或刷新页面</small></div>
+      </div>
     </div>
 
     <footer>
@@ -374,6 +364,12 @@
   document.getElementById("themeBtn").addEventListener("click", function(){
     var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
     root.setAttribute("data-theme", next); try { localStorage.setItem("johnny-theme", next); } catch(e){}
+    setTimeout(function(){
+      var iframe = giscusContainer && giscusContainer.querySelector("iframe");
+      if(iframe && iframe.contentWindow){
+        iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: giscusTheme() } } }, "https://giscus.app");
+      }
+    }, 100);
   });
 
   // 鼠标液态光晕
@@ -412,18 +408,36 @@
     b.classList.add("active"); document.getElementById(b.getAttribute("data-tab")).classList.add("active"); movePill(b);
   }); });
 
-  // 留言板
-  var KEY="johnny-msgs", list=document.getElementById("msgList"), nameI=document.getElementById("msgName"), textI=document.getElementById("msgText");
-  function load(){ var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){}
-    if(!arr.length){ list.innerHTML='<div class="empty">还没有留言，来抢沙发吧 🛋️</div>'; return; }
-    list.innerHTML=""; arr.slice().reverse().forEach(function(it){ var d=document.createElement("div"); d.className="m";
-      d.innerHTML='<b></b><time></time><p></p>'; d.querySelector("b").textContent=it.name; d.querySelector("time").textContent=it.time; d.querySelector("p").textContent=it.text; list.appendChild(d); }); }
-  document.getElementById("msgSend").addEventListener("click", function(){
-    var name=(nameI.value||"").trim()||"匿名访客 🐱", text=(textI.value||"").trim(); if(!text){ textI.focus(); return; }
-    var arr=[]; try{arr=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){} var d=new Date();
-    arr.push({name:name,text:text,time:d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+pad(d.getHours())+":"+pad(d.getMinutes())});
-    try{localStorage.setItem(KEY,JSON.stringify(arr.slice(-50)));}catch(e){} textI.value=""; load(); });
-  load();
+  // Giscus 讨论区（全局可见）
+  var giscusContainer = document.querySelector(".giscus");
+  var giscusLoading = document.querySelector(".giscus-loading");
+  var giscusLoaded = false;
+  function giscusTheme(){ return root.getAttribute("data-theme")==="light" ? "light" : "dark_dimmed"; }
+  function loadGiscus(){
+    if(giscusLoaded || !giscusContainer) return;
+    giscusLoaded = true;
+    var s = document.createElement("script");
+    s.src = "https://giscus.app/client.js";
+    s.setAttribute("data-repo", "Johnny520/Johnny");
+    s.setAttribute("data-repo-id", "R_kgDOH727Ug");
+    s.setAttribute("data-category", "Announcements");
+    s.setAttribute("data-category-id", "DIC_kwDOH727Us4CROOA");
+    s.setAttribute("data-mapping", "pathname");
+    s.setAttribute("data-strict", "0");
+    s.setAttribute("data-reactions-enabled", "1");
+    s.setAttribute("data-emit-metadata", "0");
+    s.setAttribute("data-input-position", "top");
+    s.setAttribute("data-theme", giscusTheme());
+    s.setAttribute("data-lang", "zh-CN");
+    s.setAttribute("data-loading", "lazy");
+    s.crossOrigin = "anonymous"; s.async = true;
+    var observer = new MutationObserver(function(){
+      if(giscusContainer.querySelector("iframe")){ giscusLoading.classList.add("hide"); observer.disconnect(); }
+    });
+    observer.observe(giscusContainer, {childList:true, subtree:true});
+    giscusContainer.appendChild(s);
+  }
+  loadGiscus();
 
   document.getElementById("topBtn").addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
 
