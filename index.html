@@ -229,10 +229,6 @@
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     box-shadow:0 5px 16px var(--shadow),inset 0 1px 0 var(--hl);transition:transform .25s,box-shadow .25s,border-color .25s}
   .tool:hover{transform:translateY(-3px) scale(1.06)}
-  .tool.music.on{color:var(--pink);border-color:var(--pink);box-shadow:0 5px 16px rgba(255,45,149,.35),inset 0 1px 0 var(--hl)}
-  .tool.music.on::after{content:"♪";position:absolute;top:-4px;right:-2px;font-size:11px;color:var(--pink);animation:note 1s ease-in-out infinite}
-  .tool.music.on::before{content:"♫";position:absolute;bottom:-3px;left:-2px;font-size:9px;color:var(--cyan);animation:note 1.3s ease-in-out infinite}
-  @keyframes note{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-4px);opacity:1}}
   .tool.ver-switch{font-size:13px;font-weight:900}
   .tool.ver-switch:hover{border-color:var(--amber);color:var(--amber)}
 
@@ -269,7 +265,6 @@
   <div class="bg-glow g1"></div><div class="bg-glow g2"></div>
   <canvas id="stars"></canvas>
   <canvas id="confetti"></canvas>
-  <audio id="bgm" preload="auto"></audio>
 
   <!-- 小恶魔 -->
   <div class="devil-track" id="devilTrack">
@@ -430,7 +425,6 @@
   <!-- 右下角工具 -->
   <div class="tools">
     <a class="tool" id="themeBtn" href="javascript:void(0)" title="切换主题">🌗</a>
-    <a class="tool music" id="musicBtn" href="javascript:void(0)" title="背景音乐">🎵</a>
     <a class="tool ver-switch" href="old.html" title="切换到经典版">⏪</a>
     <a class="tool" id="topBtn" href="javascript:void(0)" title="返回顶部">↑</a>
   </div>
@@ -598,43 +592,6 @@
   devil.addEventListener("click", function(){ var r=this.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2); });
   document.getElementById("mascot").addEventListener("click", function(e){ var r=this.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2); });
 
-  // 音乐
-  var SONGS=[
-    {f:"assets/music/forgot.mp3", n:"忘了 - 周林枫 (DJ阿智版)"},
-    {f:"assets/music/geshan.mp3",  n:"搁浅"},
-    {f:"assets/music/budong.mp3",  n:"根本你不懂得爱我"},
-    {f:"assets/music/xiayu.mp3",   n:"下雨天 - PPR (氛围R&B)"}
-  ];
-  var bgm=document.getElementById("bgm"), musicBtn=document.getElementById("musicBtn"),
-      playing=false, synthOn=false, actx=null, synthTimer=null, cur=-1, blocked=false;
-  bgm.loop=false;
-  function pick(){ var r; do{ r=Math.floor(Math.random()*SONGS.length); }while(SONGS.length>1 && r===cur); return r; }
-  var scale=[261.63,293.66,329.63,392.00,440.00,523.25];
-  function startSynth(){ try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
-    var i=0; synthTimer=setInterval(function(){ if(!actx) return;
-      var o=actx.createOscillator(), gn=actx.createGain(); o.type="sine";
-      o.frequency.value=scale[i%scale.length]*(i%8<4?1:0.5);
-      gn.gain.setValueAtTime(0.0001,actx.currentTime); gn.gain.exponentialRampToValueAtTime(0.10,actx.currentTime+0.06);
-      gn.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+1.25);
-      o.connect(gn); gn.connect(actx.destination); o.start(); o.stop(actx.currentTime+1.35); i++; }, 720); synthOn=true; }
-  function stopSynth(){ if(synthTimer) clearInterval(synthTimer); synthTimer=null; synthOn=false; if(actx){ try{actx.close();}catch(e){} actx=null; } }
-  function playSong(){ cur=pick(); bgm.src=SONGS[cur].f; musicBtn.title="🎵 正在播放："+SONGS[cur].n;
-    var p=bgm.play(); if(p&&p.catch){ p.catch(function(){ blocked=true; }); } }
-  bgm.addEventListener("error", function(){ if(playing && !synthOn){ startSynth(); musicBtn.title="🎵 演示旋律（缺少mp3）"; } });
-  bgm.addEventListener("ended", function(){ if(playing) playSong(); });
-  musicBtn.addEventListener("click", function(){
-    if(!playing){ playing=true; musicBtn.classList.add("on"); blocked=false; playSong(); }
-    else { playing=false; musicBtn.classList.remove("on"); if(synthOn) stopSynth(); else bgm.pause(); musicBtn.title="背景音乐：4 首随机播放"; }
-  });
-  musicBtn.title="背景音乐：4 首随机播放";
-  var autoStarted=false;
-  function autoStart(){ if(autoStarted) return; autoStarted=true; playing=true; musicBtn.classList.add("on"); playSong(); }
-  window.addEventListener("load", autoStart);
-  window.addEventListener("pointerdown", function(){
-    if(actx && actx.state==="suspended"){ try{ actx.resume(); }catch(e){} }
-    if(playing && blocked && !synthOn){ blocked=false; playSong(); }
-    if(playing && !synthOn && bgm.paused){ playSong(); }
-  });
 })();
 
   // 全站访问计数器
