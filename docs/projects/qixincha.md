@@ -20,3 +20,10 @@
 - [qixincha-android](https://github.com/Johnny520/qixincha-android)
 - [qixincha-flutter](https://github.com/Johnny520/qixincha-flutter)
 
+---
+
+## ❤️ 支持作者
+
+所有项目免费、无广告、源码公开，日常维护由我一个人在做。如果它帮到了你，欢迎到 [爱发电](https://afdian.com/a/Johnny520) 支持一下。
+
+<a class="VPButton medium brand" href="https://afdian.com/a/Johnny520" target="_blank" rel="noreferrer">❤️ 爱发电赞助</a>

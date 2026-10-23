@@ -26,9 +26,11 @@ export default defineConfig({
       { text: '项目', link: '/projects/' },
       { text: '友链', link: '/friend' },
       { text: '讨论', link: '/discuss' },
+      { text: '❤️ 支持作者', link: 'https://afdian.com/a/Johnny520' },
       {
         text: '更多',
         items: [
+          { text: '💗 爱发电赞助', link: 'https://afdian.com/a/Johnny520' },
           { text: '🐙 GitHub', link: 'https://github.com/Johnny520' },
           { text: '📦 我的所有仓库', link: 'https://github.com/Johnny520?tab=repositories' },
           { text: '📢 TG 群组', link: 'https://t.me/wcx12138' },

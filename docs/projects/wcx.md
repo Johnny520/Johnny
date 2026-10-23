@@ -35,6 +35,12 @@
 - 推荐使用 **微信 8.0.77 ~ 8.0.79**（维护中：8.0.69 ~ 8.0.76）
 - 框架：LSPosed（推荐）；架构：arm64-v8a / armeabi-v7a
 
+## ❤️ 支持作者
+
+WCX 完全免费、没有广告，源码也全部公开，日常维护都是我一个人在做。如果它帮到了你，欢迎到 [爱发电](https://afdian.com/a/Johnny520) 支持一下，这些支持会用在测试设备和新功能的开发上。
+
+<a class="VPButton medium brand" href="https://afdian.com/a/Johnny520" target="_blank" rel="noreferrer">❤️ 爱发电赞助</a>
+
 ## 获取
 
 - 源码与发版：[GitHub · Johnny520/wcx](https://github.com/Johnny520/wcx)

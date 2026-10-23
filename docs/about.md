@@ -31,9 +31,16 @@
 - 项目覆盖：微信增强、隐私防护、系统工具、逆向分析、企业信息查询
 - 全部自签名发版，源码公开在 [GitHub](https://github.com/Johnny520)
 
+## ❤️ 支持作者
+
+所有项目免费、无广告、源码公开，日常维护都是我一个人在做。如果它们帮到了你，欢迎请我喝杯咖啡：
+
+<a class="VPButton medium brand" href="https://afdian.com/a/Johnny520" target="_blank" rel="noreferrer">❤️ 爱发电赞助</a>
+
 ## 📮 找到我
 
 - 🐙 GitHub：<https://github.com/Johnny520>
 - 📢 TG 群组：<https://t.me/wcx12138>
 - 💬 [讨论区](/discuss)（基于 GitHub Discussions）
 - 🔗 [友链申请](/friend)
+- ❤️ 爱发电：<https://afdian.com/a/Johnny520>

@@ -18,6 +18,9 @@ hero:
     - theme: alt
       text: GitHub
       link: https://github.com/Johnny520
+    - theme: alt
+      text: ❤️ 爱发电赞助
+      link: https://afdian.com/a/Johnny520
 
 features:
   - icon: 💬
@@ -65,8 +68,16 @@ features:
 - 💬 [讨论区](/discuss) —— 基于 GitHub Discussions，欢迎来聊
 - 🔗 [友链申请](/friend) —— 欢迎互换友链
 
+::: tip ❤️ 支持我
+这些项目都是我一个人利用业余时间开发和维护的：**没有广告、没有捆绑、源码公开、自签名发版**。
+如果它们帮到了你，欢迎请我喝杯咖啡——你的支持会用在服务器、测试设备和新功能上。
+
+<a class="VPButton medium brand" href="https://afdian.com/a/Johnny520" target="_blank" rel="noreferrer">❤️ 爱发电赞助</a>
+:::
+
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
   <a class="VPButton medium alt" href="https://github.com/Johnny520" target="_blank" rel="noreferrer">🐙 GitHub</a>
   <a class="VPButton medium alt" href="https://t.me/wcx12138" target="_blank" rel="noreferrer">📢 TG 群组</a>
+  <a class="VPButton medium brand" href="https://afdian.com/a/Johnny520" target="_blank" rel="noreferrer">❤️ 爱发电赞助</a>
   <a class="VPButton medium alt" href="/Johnny/legacy/index.html">⏪ 经典版主页</a>
 </div>
