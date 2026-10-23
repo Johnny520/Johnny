@@ -22,7 +22,7 @@ hero:
 features:
   - icon: 💬
     title: WCX · 微信增强模块
-    details: 集成了微信 Xposed 模块与去混淆分析工具的综合项目，把好用的能力做进微信。
+    details: 200+ 功能开关的微信增强模块：防撤回、脚本插件中心、批量操作，外加去混淆分析工具。
     link: /projects/wcx
     linkText: 查看详情
   - icon: 🛡️
