@@ -63,7 +63,7 @@ export default defineConfig({
     ],
 
     footer: {
-      message: '工具应当私密、可靠、属于用户自己。',
+      message: '工具应当私密、可靠、属于用户自己。 · <a href="https://afdian.com/a/Johnny520" target="_blank" rel="noreferrer">❤️ 爱发电赞助</a>',
       copyright: '© 2026 文强哥 (Johnny520) · 版权所有'
     },
 
